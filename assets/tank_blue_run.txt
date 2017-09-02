@@ -1,0 +1,8 @@
+tank_blue_run0 = 0 0 32 32
+tank_blue_run1 = 32 0 32 32
+tank_blue_run2 = 0 32 32 32
+tank_blue_run3 = 32 32 32 32
+tank_blue_run4 = 64 0 32 32
+tank_blue_run5 = 64 32 32 32
+tank_blue_run6 = 96 0 32 32
+tank_blue_run7 = 96 32 32 32

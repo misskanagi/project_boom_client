@@ -1,0 +1,3 @@
+explode0 = 0 0 32 32
+explode1 = 32 0 32 32
+explode2 = 0 32 32 32
