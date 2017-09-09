@@ -1,8 +1,8 @@
 -- title-menu.lua是进游戏的第一个菜单
-networker = require "./scripts/chaos/networker"
-local gui = require "./libs/Gspot"
+networker = require("boom.system.networker")
+local gui = require("libs.Gspot")
 --必须到package.loaded表中把"./libs/Gspot"为key的项删除，不然的话，其他文件中require "./libs/Gspot"会直接到package.loaded中先找，导致使用和这里gui同一个的对象
-package.loaded["./libs/Gspot"] = nil  
+package.loaded["./libs/Gspot"] = nil
 
 local titlemenu = {}
 local timer = 0  --在title_menu中消耗的总时间（单位：s）
@@ -38,9 +38,9 @@ function titlemenu.load()
   image_title.y = 20
   image_title.draw = function (self)
     love.graphics.draw(self.image, self.x, self.y)
-  end 
-  
-  
+  end
+
+
   menu_item_width = image_title.width
   menu_item_height = 60
   menu_base_x = math.floor((love.graphics.getWidth() - menu_item_width)/2)
@@ -57,7 +57,7 @@ function titlemenu.update(dt)
     titlemenu.load()
     first_time_to_update = false
   end
-  
+
   gui:update(dt)
   timer = timer + dt
   if ready then
@@ -73,7 +73,7 @@ function titlemenu.draw()
   gui:draw()
   -- 根据玩家的选项，绘制一个焦点框
   love.graphics.polygon("line", menu_base_x, menu_base_y + (menu_item_height+menu_item_gapsize) * (menu_focous_index-1),
-                                menu_base_x + menu_item_width, menu_base_y + (menu_item_height+menu_item_gapsize) * (menu_focous_index-1), 
+                                menu_base_x + menu_item_width, menu_base_y + (menu_item_height+menu_item_gapsize) * (menu_focous_index-1),
                                 menu_base_x + menu_item_width, menu_base_y + (menu_item_height+menu_item_gapsize) * (menu_focous_index-1) + menu_item_height,
                                 menu_base_x, menu_base_y + (menu_item_height+menu_item_gapsize) * (menu_focous_index-1) + menu_item_height)
 end
@@ -90,7 +90,7 @@ function titlemenu.keypressed(key)
       menu_focous_index = 1
     end
   end
-  
+
   if key == "return" or key == "a" then
     -- 玩家确认了某一项
     ready = true

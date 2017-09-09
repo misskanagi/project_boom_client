@@ -405,7 +405,7 @@ function Map:setSpriteBatches(layer)
 						tab.batch = batch
 						tab.id = batch:add(tile.quad, tileX, tileY, tile.r, tile.sx, tile.sy)
             -- 这个是真正的要用到的一群sprite_id
-            -- 在层中的坐标为y,x, 
+            -- 在层中的坐标为y,x,
             layer.sprite_id_table[y][x] = tab.id
             log.debug("c. from sti: tab.id = "..tab.id)
 					end
@@ -422,7 +422,7 @@ function Map:setSpriteBatches(layer)
 			for y = 1, layer.height do
 				for x = 1, layer.width do
 					local tile = layer.data[y][x]
-          
+
 					if tile then
             -- tile是此层的有效块，计算tileX,tileY是其坐标，tab则是最需要的东西。想办法把它们拿出去
 						local tileset = tile.tileset
@@ -739,11 +739,12 @@ function Map:draw(tx, ty, sx, sy)
 	lg.setCanvas(self.canvas)
 	lg.clear()
 
+	--modified to be compatible with hump.camera
 	-- Scale map to 1.0 to draw onto canvas, this fixes tearing issues
 	-- Map is translated to correct position so the right section is drawn
-	lg.push()
-	lg.origin()
-	lg.translate(math.floor(tx or 0), math.floor(ty or 0))
+	--lg.push()
+	--lg.origin()
+	--lg.translate(math.floor(tx or 0), math.floor(ty or 0))
 
 	for _, layer in ipairs(self.layers) do
 		if layer.visible and layer.opacity > 0 then
@@ -751,13 +752,13 @@ function Map:draw(tx, ty, sx, sy)
 		end
 	end
 
-	lg.pop()
+	--lg.pop()
 
 	-- Draw canvas at 0,0; this fixes scissoring issues
 	-- Map is scaled to correct scale so the right section is shown
 	lg.push()
 	lg.origin()
-	lg.scale(sx or 1, sy or sx or 1)
+	--lg.scale(sx or 1, sy or sx or 1)
 
 	lg.setCanvas(current_canvas)
 	lg.draw(self.canvas)
