@@ -1,11 +1,14 @@
 local physics = require "boom.systems.physics"
-require "boom.systems.event" -- event system's initialization is different
+local graphic = require "boom.systems.graphic"
+local event = require "boom.systems.event" -- event system's initialization is different
 
 local system_manager = class("system_manager")
 
 function system_manager:initialize()
     self.modules = {
         physics = physics,
+        graphic = graphic,
+        event = event,
     }
 end
 

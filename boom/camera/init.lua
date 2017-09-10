@@ -9,7 +9,7 @@ function boom_camera:moveToPlayer()
         break
     end
     local cx,cy = self:position()
-    print(("camX: %04d, camY: %04d"):format(cx,cy))
+    --print(("camX: %04d, camY: %04d"):format(cx,cy))
 end
 
 function boom_camera:update(dt)

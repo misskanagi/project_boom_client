@@ -36,6 +36,8 @@ function test_place:enter()
     self.system_manager:addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera
+
+    debug_canvas = love.graphics.newCanvas( )
 end
 
 function test_place:update(dt)
@@ -62,12 +64,20 @@ function test_place:draw()
 
 end
 
-function test_place:keypressed(key, isrepeat)
+function test_place:keypressed(key, scancode, isrepeat)
     eventmanager:fireEvent(events.KeyPressed(key, isrepeat))
 end
 
-function test_place.mousepressed(x, y, button)
+function test_place.mousepressed(x, y, button, istouch)
     eventmanager:fireEvent(events.MousePressed(x, y, button))
+end
+
+function test_place:keyreleased(key, scancode)
+    eventmanager:fireEvent(events.KeyReleased(key))
+end
+
+function test_place.mousereleased(x, y, button, istouch)
+    eventmanager:fireEvent(events.MouseReleased(x, y, button))
 end
 
 return test_place
