@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="126">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="144">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" trans="ff00ff" width="544" height="480"/>
  </tileset>
@@ -8,7 +8,7 @@
    eJztmE2OwyAMhZP7jLLp1aI5CuftLMaqhTD+d2gbpLcpifnkmGfovr3v2P/0W6gM9p+JYL79C8+d6JkHo9XY8TNXsZ/bK4cWHR/InrkfNDXDPUOxz95rXYwodrwPs9j7GBZ2UB9rpAMJ/17NDvwbwY45ub0oYe/z4GWHUcU+W29V9rOYfeR3o3q35p3aO1rflLBrPEZbM713Ngd7XycHsc6snvp3Mtlxf61g53r5yuxRnr9SvVvzXukzM+7eUzl2aT6jehN3fv1Wds1ZjJIk5iy+hX3kt9zekkp614lgj1YF+yy+544olccjLdLWN/e+lV07rGt73/euGxHj29kl/djq/9ns0n0G/fPc5H22gp3zQssdVsJu8Qttb8pij8y7lx16aDa7tjdRucXzVexw3mrCdSj2nZjPrhnIk4ed+i6ZZ4KmZJd6I4i6r1Nepq134Lfm3cI+kqRuMYu2B3rZZ+doDbt2cOyS2o6q90h2zf8Tfcyr2SV+SMW82fl1Po29bXaPWIndIs/dxcueqZu9ll16xrKw4zO6t6+uwu6JmV0znCwxK9ijhqRmVmYf1dyo5t+VfdW8V/t71BixU99gRXaN7nHteAIrCLku
   </data>
  </layer>
- <objectgroup name="static_object_layer">
+ <objectgroup name="static_object_layer" visible="0">
   <properties>
    <property name="collidable" type="bool" value="true"/>
    <property name="sensor" type="bool" value="true"/>
@@ -118,7 +118,15 @@
   <object id="109" x="512" y="64" width="32" height="32"/>
   <object id="110" x="576" y="1600" width="64" height="64"/>
  </objectgroup>
- <objectgroup name="dynamic_object_layer">
+ <objectgroup name="dynamic_object_layer" visible="0">
   <object id="123" name="spawn_point_1" x="1280" y="1664" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="light_object_layer">
+  <object id="127" x="448" y="480" width="32" height="32"/>
+  <object id="133" x="800" y="192" width="32" height="32"/>
+  <object id="136" x="256" y="64" width="32" height="32"/>
+  <object id="139" x="512" y="960" width="32" height="32"/>
+  <object id="140" x="864" y="960" width="32" height="32"/>
+  <object id="141" x="1248" y="1760" width="32" height="32"/>
  </objectgroup>
 </map>

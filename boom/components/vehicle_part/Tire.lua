@@ -12,12 +12,12 @@ function Tire:initialize(world, x, y)
     }
     self.shape = love.physics.newRectangleShape(1*m, 1.618*m)
     self.fixture = love.physics.newFixture(self.body, self.shape, 0.5)
-    self.body:setUserData(self)
+    --self.body:setUserData(self)
     -- speed
-    self.max_forward_speed = -150
+    self.max_forward_speed = -200
     self.max_backward_speed = 80
-    self.max_drive_force = 600
-    self.torque_force = 5000
+    self.max_drive_force = 1200
+    self.torque_force = 2000
 end
 
 function Tire:getLateralVelocity()

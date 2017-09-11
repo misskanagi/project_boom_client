@@ -5,7 +5,7 @@ function boom_camera:moveToPlayer()
     for i, e in pairs(engine:getEntitiesWithComponent("IsPlayer")) do
         local p = e:get("Position")
         local dx,dy = p.x - self.x, p.y - self.y
-        self:move(dx/10, dy/15)
+        self:move(dx/10, dy/10)
         break
     end
     local cx,cy = self:position()

@@ -9,7 +9,7 @@ function Turret:initialize(world, x, y)
       spin_positive = 0,
       spin_negative = 1,
     }
-    self.body:setUserData(self)
+    --self.body:setUserData(self)
 
     -- turret spinner
     local shape = love.physics.newCircleShape(0.38*m)
