@@ -24,8 +24,34 @@ local game_state = require("libs.hump.gamestate")
 
 -- test scene
 local test_place = require("boom.scenes.test_place")
+local login = require("boom.scenes.login")
+
+
+--将guid对应的手柄映射到xbox键位
+local function map_gamepad_with_guid(joystick_guid)
+  love.joystick.setGamepadMapping(joystick_guid, "a", "button", 2)
+  love.joystick.setGamepadMapping(joystick_guid, "b", "button", 3)
+  love.joystick.setGamepadMapping(joystick_guid, "x", "button", 1)
+  love.joystick.setGamepadMapping(joystick_guid, "y", "button", 4)
+  love.joystick.setGamepadMapping(joystick_guid, "leftshoulder", "button", 5)--ps4 l1
+  love.joystick.setGamepadMapping(joystick_guid, "rightshoulder", "button", 6) --ps4 r1
+  love.joystick.setGamepadMapping(joystick_guid, "leftstick", "button", 11) --ps4 左摇杆按下
+  love.joystick.setGamepadMapping(joystick_guid, "rightstick", "button", 12) --ps4 右摇杆按下
+  love.joystick.setGamepadMapping(joystick_guid, "guide", "button", 13)  --ps4 PS键
+  love.joystick.setGamepadMapping(joystick_guid, "back", "button", 9) --ps4 SHARE键
+  love.joystick.setGamepadMapping(joystick_guid, "start", "button", 10)-- ps4 OPTIONS键
+  love.joystick.setGamepadMapping(joystick_guid, "dpup", "hat", 1, "u")
+  love.joystick.setGamepadMapping(joystick_guid, "dpdown", "hat", 1, "d")
+  love.joystick.setGamepadMapping(joystick_guid, "dpleft", "hat", 1, "l")
+  love.joystick.setGamepadMapping(joystick_guid, "dpright", "hat", 1, "r")
+end
+
+local osx_joystick_guid = "4c05000000000000cc09000000000000"
+local win_joystick_guid = "4c05cc09000000000000504944564944"
+map_gamepad_with_guid(osx_joystick_guid)
+map_gamepad_with_guid(win_joystick_guid)
 
 function love.load()
     game_state.registerEvents()
-    game_state.switch(test_place)
+    game_state.switch(login)
 end

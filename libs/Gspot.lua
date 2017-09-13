@@ -1031,10 +1031,12 @@ Gspot.scroll = {
 	done = function(this) this.Gspot:unfocus() end,
 	draw = function(this, pos)
 		if this == this.Gspot.mousein or this == this.Gspot.drag or this == this.Gspot.focus then love.graphics.setColor(this.style.default)
-		else love.graphics.setColor(this.style.bg) end
+		--else love.graphics.setColor(this.style.bg) end
+    else love.graphics.setColor({0,0,0,30}) end  --scroll条的颜色
 		this:rect(pos)
 		if this == this.Gspot.mousein or this == this.Gspot.drag or this == this.Gspot.focus then love.graphics.setColor(this.style.fg)
-		else love.graphics.setColor(this.style.hilite) end
+		--else love.graphics.setColor(this.style.hilite) end
+    else love.graphics.setColor({255,255,255,100}) end  --scroll条中的小滑块的颜色
 		local hs = this.style.hs
 		if hs == 'auto' then
 			if this.values.axis == 'vertical' then

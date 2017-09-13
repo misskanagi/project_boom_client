@@ -1,11 +1,10 @@
 -- 登陆游戏
 local login = class("login")
 
-local gui = require("libs.Gspot")
 local game_state = require("libs.hump.gamestate")
-local test_place = require("boom.scenes.test_place")
+local roomlist = require("boom.scenes.roomlist")
 
-
+local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local group_dl = 1 -- 驾驶证的控件group
@@ -25,7 +24,8 @@ local comps = {}
 local lg = love.graphics
 local first_time_update
 local first_time_to_update = true
-local window_w = 480   --固定的登陆界面的尺寸
+--所有的尺寸全都固定
+local window_w = 480   
 local window_h = 320
 local driving_liscense_x = 20
 local driving_liscense_y = 80
@@ -320,6 +320,14 @@ login_pressed = function()
       --播放进度条动画/照片更新到头像区域/写一些中二的登陆台词从屏幕上闪过
       processbar_login:increaseAt(0.2)
       login_success = true
+      
+      
+      for k,v in pairs(comps) do
+        gooi.removeComponent(v)
+      end
+      game_state.switch(roomlist)
+      
+      
       --创建一个closure
       local func_item = function()
         --一些closure需要的变量
@@ -350,7 +358,7 @@ login_pressed = function()
             for k,v in pairs(comps) do
               gooi.removeComponent(v)
             end
-            game_state.switch(test_place)
+            game_state.switch(roomlist)
           end
         end
       end
