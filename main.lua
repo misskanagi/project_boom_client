@@ -23,9 +23,11 @@ eventmanager = EventManager()
 local game_state = require("libs.hump.gamestate")
 
 -- test scene
-local test_place = require("boom.scenes.test_place")
-local login = require("boom.scenes.login")
-
+test_place = require("boom.scenes.test_place")
+login = require("boom.scenes.login")
+roomlist = require("boom.scenes.roomlist")
+room = require("boom.scenes.room")
+create_room = require("boom.scenes.create_room")
 
 --将guid对应的手柄映射到xbox键位
 local function map_gamepad_with_guid(joystick_guid)

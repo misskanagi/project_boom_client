@@ -20,4 +20,17 @@ function room:draw()
   gooi.draw()
 end
 
+function room:gamepadpressed(joystick, button)
+end
+
+function room:gamepadreleased(joystick, button)
+end
+
+function room:keypressed(key, scancode, isrepeat)
+end
+
+function room:keyreleased(key)
+end
+
+
 return room

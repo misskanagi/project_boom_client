@@ -7,8 +7,6 @@ require "./libs/gooi"
 local lg = love.graphics
 
 local game_state = require("libs.hump.gamestate")
-local create_room = require("boom.scenes.create_room")
-local room = require("boom.scenes.room")
 --前置声明
 local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets
 --固定尺寸

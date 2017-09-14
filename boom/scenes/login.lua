@@ -2,7 +2,6 @@
 local login = class("login")
 
 local game_state = require("libs.hump.gamestate")
-local roomlist = require("boom.scenes.roomlist")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
