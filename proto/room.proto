@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package org.studio9.protobuf;
+
+option java_package = "org.studio9.protobuf";
+option java_outer_classname = "RoomProto";
+
+
+message GetRoomListReq{
+    string playerId = 1;
+}
+
+
+message RoomInfo{
+    int32 roomId = 1;
+    int32 gameMode = 2;
+    int32 mapType = 3;
+    int32 lifeNumber = 4;
+    //数量
+    int32 playersPerGroup = 5;
+    //数量
+    int32 playersInRoom = 6;
+    //waiting, gaming
+    int32 roomState = 7;
+}
+
+message GetRoomListRes{
+    int32 roomNumbers = 1;
+    repeated RoomInfo roomsInfo = 2;
+}
+
+message CreateRoomReq {
+    string playerId = 1;
+    int32 gameMode = 2;
+    int32 mapType = 3;
+    int32 lifeNumber = 4;
+    int32 playersPerGroup = 5;
+}
+
+message CreateRoomRes {
+    //若不成功则返回-1
+    int32 roomId = 1;
+}
+
+message EnterRoomReq {
+    int32 roomId = 1;
+    string playerId = 2;
+}
+
+message PlayerInfo {
+    string playerId = 1;
+    //准备1，未准备2
+    int32 playerStatus = 2;
+    int32 groupId = 3;
+}
+
+message EnterRoomRes {
+    //成功1，失败2
+    int32 responseCode = 1;
+    int32 groupId = 2;
+    string roomMasterId = 3;
+    repeated PlayerInfo playersInfo = 4;
+}
+
+message EnterRoomBroadcast{
+    int32 roomId = 1;
+    string playerId = 2;
+}
+
+message QuitRoomReq{
+    int32 roomId = 1;
+    string playerId = 2;
+}
+
+message QuitRoomBroadcast{
+    int32 roomId = 1;
+    string playerId = 2;
+}
+

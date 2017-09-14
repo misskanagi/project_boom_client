@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package org.studio9.protobuf;
+
+option java_package = "org.studio9.protobuf";
+option java_outer_classname = "LoginProto";
+
+
+message LoginReq {
+    string name = 1;
+    string password = 2;
+}
+
+message LoginRes {
+    int32 resultCode = 1;
+}
+

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package org.studio9.protobuf;
+
+option java_package = "org.studio9.protobuf";
+option java_outer_classname = "CMDProto";
+
+enum CMD {
+    DEDAULT = 0;
+
+    LOGIN_REQ = 101;
+    LOGIN_RES = 102;
+
+    GET_ROOM_LIST_REQ = 201;
+    GET_ROOM_LIST_RES = 202;
+    CREATE_ROOM_REQ = 203;
+    CREATE_ROOM_RES = 204;
+    ENTER_ROOM_REQ = 205;
+    ENTER_ROOM_RES = 206;
+    ENTER_ROOM_BROADCAST = 207;
+    QUIT_ROOM_REQ = 208;
+    QUIT_ROOM_BROADCAST = 209;
+
+    GAME_READY_REQ = 301;
+    GAME_READY_BROADCAST = 302;
+    GAME_CANCEL_READY = 303;
+    GAME_CANCEL_READY_BROADCAST = 304;
+    GAME_BEGIN_REQ = 305;
+    GAME_BEGIN_BROADCAST = 306;
+    GAME_OVER_REQ = 307;
+    GAME_OVER_BROADCAST = 308;
+
+    //玩家汇报操作(按键)
+    PLAYER_COMMAND_REPORT = 401;
+    //向其他玩家广播操作(按键)
+    PLAYER_COMMAND_BROADCAST = 402;
+    //房主下发snapshot
+    ROOM_MASTER_SEND_SNAPSHOT = 403;
+    //404 not found
+    //snapshot广播给其他玩家
+    SNAPSHOT_BROADCAST = 405;
+    //房主发道具放到snapshot中
+    //道具（子弹+装备）仲裁
+    GAME_PROPS_DECISION_REQ = 501;
+    GAME_PROPS_DECISION_REQ_FORWARD = 502;
+    GAME_PROPS_DECISION_RES_FORWARD = 503;
+    GAME_PROPS_DECISION_RES = 504;
+    GAME_PROPS_DECISION_BROADCAST = 505;
+
+    //非主机玩家掉线
+    NONMASTER_DISCONNECT_EXCEPTION = 601;
+    //主机玩家掉线
+    MASTER_DISCONNECT_EXCEPTION = 602;
+
+    //UPLOAD_GAME_ACHIEVEMENT = 701;
+    //UPLOAD_GAME_ACHIEVEMENT_RES = 702;
+}
+
+

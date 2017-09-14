@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package org.studio9.protobuf;
+
+option java_package = "org.studio9.protobuf";
+option java_outer_classname = "ControlProto";
+
+message PlayerCommandReport {
+    string playerId = 1;
+    int32 roomId = 2;
+    repeated int32 playerCommand = 3;
+}
+
+message PlayerCommandBroadcast {
+    string playerId = 1;
+    repeated int32 playerCommand = 2;
+}
+
+message Body {
+    int32 x = 1;
+    int32 y = 2;
+    float rotation = 3;
+    float vx = 4;
+    float vy = 5;
+    float va = 6;
+}
+
+message Entity {
+    int32 worldId = 1;
+    int32 entityId = 2;
+    int32 status = 3;
+    repeated Body bodies = 4;
+}
+
+//主机向服务器发送
+message RoomMasterSendSnapshot {
+    int32 roomId = 1;
+    repeated Entity entities = 2;
+}
+
+message SnapshotBroadcast {
+    int32 roomId = 1;
+    repeated Entity entities = 2;
+}
+
+message GamePropsDecisionReq {
+    string playerId = 1;
+    string roomMasterId = 2;
+    int32 roomId = 3;
+    int32 propId = 4;
+}
+
+message GamePropsDecisionReqForward {
+    string playerId = 1;
+    int32 roomId = 2;
+    int32 propId = 3;
+}
+
+message GamePropsDecisionResForward {
+    string playerId = 1;
+    int32 roomId = 2;
+    int32 propId = 3;
+}
+
+message GamePropsDecisionRes {
+    string playerId = 1;
+    int32 roomId = 2;
+    int32 propId = 3;
+}
+
+message GamePropsDecisionBroadcast {
+    string playerId = 1;
+    int32 roomId = 2;
+    int32 propId = 3;
+}
