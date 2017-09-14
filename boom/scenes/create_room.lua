@@ -23,7 +23,7 @@ local gooi_widgets = {} --记录所有的gooi控件
 local submit_request
 
 function create_room:enter()
-  
+  --创建控件
 end
 
 function create_room:update(dt)
@@ -33,6 +33,21 @@ end
 function create_room:draw()
   
 end
+
+
+function create_room:gamepadpressed(joystick, button)
+end
+
+function create_room:gamepadreleased(joystick, button)
+end
+
+
+function create_room:keypressed(key, scancode, isrepeat)
+end
+
+function create_room:keyreleased(key)
+end
+
 
 --提交当前的选择表给Server
 submit_request = function()

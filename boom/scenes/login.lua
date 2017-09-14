@@ -293,6 +293,13 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --实现登陆的逻辑 
+  ---just for test------------------
+  for k,v in pairs(comps) do      --
+        gooi.removeComponent(v)   --
+      end                         --
+  game_state.switch(roomlist)     --
+  ----------------------------------    
+      
   local str_id = ""
   for k, v in ipairs(text_id.letters) do    --文本信息保存在了text_id的letters成员中，letters是个table，每一个项也是个table，其中char属性是真正的字符
     str_id = str_id..v.char
@@ -327,13 +334,6 @@ login_pressed = function()
       --播放进度条动画/照片更新到头像区域/写一些中二的登陆台词从屏幕上闪过
       processbar_login:increaseAt(0.2)
       login_success = true
-      
-      
-      for k,v in pairs(comps) do
-        gooi.removeComponent(v)
-      end
-      game_state.switch(roomlist)
-      
       
       --创建一个closure
       local func_item = function()

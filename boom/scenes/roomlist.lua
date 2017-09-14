@@ -10,7 +10,7 @@ local game_state = require("libs.hump.gamestate")
 local create_room = require("boom.scenes.create_room")
 local room = require("boom.scenes.room")
 --前置声明
-local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, enter_room
+local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets
 --固定尺寸
 local window_w = 480   
 local window_h = 320
@@ -36,9 +36,23 @@ local room_scroll_x = 10
 local room_scroll_y = 70
 local room_scroll_w = 444   --scroll条占16pixel宽
 local room_scroll_h = 210
-local room_item_height = 70
+local room_item_height = 70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
 local room_item_width = 460
-local room_items = {}  --存放所有的room item的text
+local scroll_items = {} --存放滑动列表中的所有的items
+local room_infos = {}  --存放从Server拿到的所有的房间item的数据
+--
+local refreshing = false --是否在刷新中
+local refresh_line_x1 = 240
+local refresh_line_x2 = 240
+local refresh_line_length_bound = 200
+local refresh_line_shrink = false
+--[[local keyboard_keys_funcs = {
+  ["pressed"] = {["up"] = ,
+                  ["down"] = ,
+                  [""]},
+  ["released"] = {}}
+local gamepad_inputs_]]--
+
 
 function roomlist:enter()
   --love.window.setFullscreen(true)
@@ -63,7 +77,8 @@ function roomlist:enter()
   lbl_title = gooi.newLabel({text = "Room List", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
   --创建scollgroup
   scrollgroup = gui:scrollgroup(nil, {room_scroll_x, room_scroll_y, room_scroll_w, room_scroll_h}, nil, 'vertical', {255,255,255,20}) -- scrollgroup will create its own scrollbar
-  scrollgroup.scrollv.drop = function(self, direction) -- 滑动监听
+  -- 设置scrollgroup的滑动监听函数
+  scrollgroup.scrollv.drop = function(self, direction) 
     --参数的类型检查
     if (direction ~= nil and type(direction) == "string") then
       if direction == "up" then
@@ -85,7 +100,7 @@ function roomlist:enter()
             --可以继续向上滑动
             room_selected_index = room_selected_index - 1
             self:update_focous(room_selected_index+1, room_selected_index)
-            if room_selected_index > #room_items - room_item_num_per_page then
+            if room_selected_index > #scroll_items - room_item_num_per_page then
               --此时不更新滑动
             else
               self.values.current = new_position
@@ -104,7 +119,7 @@ function roomlist:enter()
           local new_position = math.min(self.values.max, self.values.current + self.values.step) 
           if new_position == scroll_old_position then
             --无法在继续向下滑动了
-            if room_selected_index ~= #room_items then
+            if room_selected_index ~= #scroll_items then
               room_selected_index = room_selected_index + 1
               self:update_focous(room_selected_index-1, room_selected_index)
             end
@@ -128,27 +143,22 @@ function roomlist:enter()
   end
   
   scrollgroup.scrollv.update_focous = function(self, prev_index, current_index)
-    if not(prev_index < 1 or prev_index > #room_items) then
-      local old_item = room_items[prev_index]
+    if not(prev_index < 1 or prev_index > #scroll_items) then
+      local old_item = scroll_items[prev_index]
       old_item.bgcolor = {255,255,255,20}
     end
-    if not(current_index < 1 or current_index > #room_items) then
-      local new_item = room_items[current_index]
+    if not(current_index < 1 or current_index > #scroll_items) then
+      local new_item = scroll_items[current_index]
       new_item.bgcolor = {255,255,255,50}
     end
   end
-
   scrollgroup.scrollv.values.step = room_item_height -- 滑动一次的距离是一个room_item的高度
   
-  for i = 1, 20 do
-    local room_item = gui:text(""..i, {w = room_item_width, h = room_item_height}, nil, nil, {255,255,255,20})
-    room_items[#room_items+1] = room_item
-    scrollgroup:addchild(room_item, 'vertical')
-  end
-  scrollgroup.scrollv:update_focous(0, room_selected_index)
+  refresh()
 end
 
 function roomlist:update(dt)
+  refresh_update(dt)
   scroll_update(dt)
   gui:update(dt)
   gooi.update(dt)
@@ -201,9 +211,82 @@ stop_move_scrollgroup = function()
   scroll_focous_flag = false
 end
 
---手动刷新房间列表
+--处理refresh更新的逻辑
+refresh_update = function(dt)
+  --判断当前scrollgroup是否正在刷新中
+  if refreshing then
+    if refresh_line_shrink then
+      --收缩中
+      if refresh_line_x2 - refresh_line_x1 > 0 then
+        refresh_line_x2 = refresh_line_x2 - 3
+        refresh_line_x1 = refresh_line_x1 + 3
+      else
+        refresh_line_x1 = 240
+        refresh_line_x2 = 240
+        refresh_line_shrink = false
+      end
+    else
+      if refresh_line_x2 - refresh_line_x1 < refresh_line_length_bound then
+        refresh_line_x1 = refresh_line_x1 - 6
+        refresh_line_x2 = refresh_line_x2 + 6
+      else
+        refresh_line_x1 = 240 - refresh_line_length_bound/2
+        refresh_line_x2 = 240 + refresh_line_length_bound/2
+        refresh_line_shrink = true
+      end
+    end
+    
+    --检查最新数据是否已经到来
+    local hotdata = 1
+    if hotdata then
+      --hotdata中有最新的房间信息，添加到scrollgroup中
+      --移除老的控件
+      for i = #scroll_items, 1, -1 do
+        gui:rem(scroll_items[i])
+        scroll_items[i] = nil
+      end
+      --添加新的控件
+      for i = 1, 20 do
+        --w一共是444
+        local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
+        local room_id = ""..i..""         --x = 70, y = 5, w = 170, h = 60
+        local room_mode = "chaos battle"  --x = 240, y = 5, w = 100, h = 60,
+        local room_people = "5/8"         --x = 340, y = 5, w = 104 , h = 60,
+        --[[一个item需要显示的内容：
+        1.room image
+        2.room id
+        3.mode
+        4.人数情况:5/8
+        ]]--
+        local gi = gui:collapsegroup('', {w = room_item_width, h = room_item_height})
+        gi.bgcolor = {255,255,255,10}
+        local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
+        local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
+        local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false, {255,255,255,20})
+        local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false, {255,255,255,20})
+        scroll_items[#scroll_items+1] = gi
+    
+        scrollgroup:addchild(gi, 'vertical')
+      end
+      --恢复滑动列表的各项参数
+      room_selected_index = 1
+      scroll_window_index = 1
+      scrollgroup.scrollv.values.current = scrollgroup.scrollv.values.min
+      scrollgroup.scrollv:update_focous(0, room_selected_index)
+      refreshing = false
+    end
+  end
+end
+
+
+--刷新房间列表
 refresh = function()
-  
+  refreshing = true
+end
+
+--取消刷新房间列表的操作
+cancel_refresh = function()
+  refreshing = false
 end
 
 --进入房间
@@ -212,8 +295,22 @@ enter_room = function()
   game_state.switch(room)
 end
 
+--移除所有的控件
+remove_widgets = function()
+  gooi.removeComponent(lbl_title)
+  for i = #scroll_items, 1, -1 do
+    gui:rem(scroll_items[i])
+    scroll_items[i] = nil
+  end
+  gui:rem(scrollgroup)
+end
+
 
 function roomlist:draw()
+  if refreshing then
+    --绘制一个
+    lg.line(refresh_line_x1, window_h/2, refresh_line_x2, window_h/2)
+  end
   
   local r,g,b,a = lg.getColor()
   --绘制lbl_title的底框
@@ -237,13 +334,20 @@ end
 function roomlist:gamepadpressed(joystick, button)
   -- 此处直接处理所有的手柄操作
   if button == "b" then
+    remove_widgets()
     enter_room()
   elseif button == 'dpup' then
-    begin_move_scrollgroup("up")
+    if not refreshing then begin_move_scrollgroup("up") end
   elseif button == 'dpdown' then
-    begin_move_scrollgroup("down")
+    if not refreshing then begin_move_scrollgroup("down") end
   elseif button == 'rightshoulder' then
+    cancel_refresh()
+    remove_widgets()
     game_state.switch(create_room)
+  elseif button == 'leftshoulder' then
+    refresh()
+  elseif button == "a" then
+    cancel_refresh()
   end
 end
 
@@ -259,9 +363,9 @@ function roomlist:keypressed(key, scancode, isrepeat)
   if key == "b" then
     --game_state.switch(test_place)
   elseif key == 'up' then
-    begin_move_scrollgroup("up")
+    if not refreshing then begin_move_scrollgroup("up") end
   elseif key == 'down' then
-    begin_move_scrollgroup("down")
+    if not refreshing then begin_move_scrollgroup("down") end
   elseif key == 'r' then
     game_state.switch(create_room)
   end
