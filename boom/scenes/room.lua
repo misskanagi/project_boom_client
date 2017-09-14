@@ -57,6 +57,9 @@ local room_item_height = 50   --room_item_height * room_item_num_per_page == roo
 local room_item_width = 120
 local scroll_items = {} --存放滑动列表中的所有的items
 
+--控制信息
+local isready = false
+
 local tankbag = {
   [1] = "tank1",
   [2] = "tank2",
@@ -84,14 +87,21 @@ local friend_infos = {
   }  --存放所有的我方玩家信息
 
 --前置声明
-local update_players, choose_tank, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup
+local update_players, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, leave_room, begin_game
 
 update_players = function(dt)
   
 end
 
-choose_tank = function()
+--ready
+ready = function()
+  isready = true
 end
+--cancel_ready
+cancel_ready = function()
+  isready = false
+end
+
 
 remove_widgets = function()
   for k,v in pairs(gooi_widgets) do
@@ -100,7 +110,13 @@ remove_widgets = function()
   gooi_widgets = nil
   gui:rem(scrollgroup)
 end  
-  
+--离开房间
+leave_room = function()
+end
+--房主开始游戏
+begin_game = function()
+end
+
 function room:enter(pre, init_table)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
@@ -368,7 +384,7 @@ function room:draw()
   end
   --绘制提示文字
   local font_current = lg.getFont()
-  local ready_string = "X-ready/cancel ready"
+  local ready_string = "O-ready/X-cancel ready"
   local quit_string = "L1-quit room"
   local begin_string = "R1-master begin game"
   lg.print(ready_string, 10, 270)
@@ -383,20 +399,22 @@ function room:draw()
 end
 
 
---上下键翻阅坦克背包，A键选中tank，B键ready或者取消ready，L键退房间，房主R键开始游戏！
+--上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
 function room:gamepadpressed(joystick, button)
   if button == "dpup" then
+    if isready then return end
     begin_move_scrollgroup("up")
   elseif button == "dpdown" then
+    if isready then return end
     begin_move_scrollgroup("down")
-  elseif button == "b" then  --A键
-    
-  elseif button == "a" then  --B键
-    
+  elseif button == "b" then  --O键
+    ready()
+  elseif button == "a" then  --X键
+    cancel_ready()
   elseif button == "leftshoulder" then
-    
+    leave_room()
   elseif button == "rightshoulder" then
-    
+    begin_game()
   end
 end
 
