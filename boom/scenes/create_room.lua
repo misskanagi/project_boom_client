@@ -172,7 +172,7 @@ function create_room:update(dt)
     end
     
     --检查一下是否获取到了Server的返回值
-    local succeed = false
+    local succeed = true
     if succeed then
       --房间创建成功了
       remove_widgets()

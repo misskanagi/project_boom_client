@@ -17,7 +17,7 @@ local keyboard_to_gamepad = {
   ["b"] = "a"
   }
 --函数前置声明
-local login_pressed, exit_pressed, enter_kb_psw, enter_kb_id, open_kb, close_kb, delete_char
+local login_pressed, exit_pressed, enter_kb_psw, enter_kb_id, open_kb, close_kb, delete_char, processbar_login_update
 --键盘控件
 local keyboard_text, keyboard_label, btn_cancel, btn_delete, btn_confirm
 --driving license控件
@@ -28,8 +28,6 @@ local label_driving_license, label_id, label_psw, pOneLine, pBtnsLine, pGrid
 local comps = {}
 
 local lg = love.graphics
-local first_time_update
-local first_time_to_update = true
 --所有的尺寸全都固定
 local window_w = 480   
 local window_h = 320
@@ -60,7 +58,11 @@ local breath_acc_time = breath_loop_time
 local breath_sniff = false -- 是否是在吸气，吸气的话breath_acc_time递增
 
 local login_success = false --成功登陆否？
-local login_final_update = nil --登陆已经成功以后，update函数中不断调用的一个函数
+local logining = false --是否正在登陆中
+local login_feedback1 = false  --发出过了feedback否
+local login_feedback2 = false
+local login_feedback3 = false
+local login_feedback4 = false
 
 --状态机
 local states = {
@@ -293,12 +295,12 @@ local sm_keyboard = {
 login_pressed = function()
   --实现登陆的逻辑 
   ---just for test------------------
-  for k,v in pairs(comps) do      --
+  --[[for k,v in pairs(comps) do      --
         gooi.removeComponent(v)   --
       end                         --
   game_state.switch(roomlist)     --
   ----------------------------------    
-      
+  --]]
   local str_id = ""
   for k, v in ipairs(text_id.letters) do    --文本信息保存在了text_id的letters成员中，letters是个table，每一个项也是个table，其中char属性是真正的字符
     str_id = str_id..v.char
@@ -325,57 +327,49 @@ login_pressed = function()
     end
   else
     --------------------------------------------------
-    --str_id,str_psw交给Server
-    --!!!!!!!!吴允指
-    local ret_val = 1  --xxxx()
-    if ret_val == 1 then
-      --此时已经登陆成功了
-      --播放进度条动画/照片更新到头像区域/写一些中二的登陆台词从屏幕上闪过
-      processbar_login:increaseAt(0.2)
-      login_success = true
-      
-      --创建一个closure
-      local func_item = function()
-        --一些closure需要的变量
-        local info1 = "Your information is checked."
-        local feedback1 = true
-        local info2 = "Now we are doing some work."
-        local feedback2 = true
-        local info3 = "A country does not have permanent friends, or permanent enemies."
-        local feedback3 = true
-        local info4 = "Good luck."
-        local feedback4 = true
-        return function()
-          --
-          if processbar_login:getValue() >= 0.2 and feedback1 then
-            gui:feedback(info1)
-            feedback1 = false
-          elseif processbar_login:getValue() >= 0.4 and feedback2 then
-            gui:feedback(info2)
-            feedback2 = false
-          elseif processbar_login:getValue() >= 0.6 and feedback3 then
-            gui:feedback(info3)
-            feedback3 = false
-          elseif processbar_login:getValue() >= 0.8 and feedback4 then
-            gui:feedback(info4)
-            feedback4 = false
-          elseif processbar_login:getValue() == 1 then
-            --删除所有的component！
-            for k,v in pairs(comps) do
-              gooi.removeComponent(v)
-            end
-            game_state.switch(roomlist)
-          end
-        end
-      end
-      login_final_update = func_item()
-    else
+    --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
+    
+    processbar_login:increaseAt(0.2)
+    logining = true
+    
+    --[[登陆验证失败！
       log.debug("id:"..str_id..", psw:"..str_psw)
       --此时说明登陆失败，提示玩家登陆信息有误
       text_id:bg({255,0,0,100})
       text_psw:bg({255,0,0,100})
       current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
+    end]]--
+  end
+end
+--更新processbar_login_update的方法
+processbar_login_update = function()
+  local info1 = "Your information is checked."
+  local info2 = "Now we are doing some work."
+  local info3 = "A country does not have permanent friends, or permanent enemies."
+  local info4 = "Good luck."
+  if processbar_login:getValue() >= 0.2 and not login_feedback1 then
+    if not login_success then
+      --现在需要让进度条卡在0.2的位置，不再继续下去
+      processbar_login:increaseAt(0)
+    else
+      gui:feedback(info1)
+      login_feedback1 = true
     end
+  elseif processbar_login:getValue() >= 0.4 and not login_feedback2 then
+    gui:feedback(info2)
+    login_feedback2 = true
+  elseif processbar_login:getValue() >= 0.6 and not login_feedback3 then
+    gui:feedback(info3)
+    login_feedback3 = true
+  elseif processbar_login:getValue() >= 0.8 and not login_feedback4 then
+    gui:feedback(info4)
+    login_feedback4 = true
+  elseif processbar_login:getValue() == 1 then
+    --删除所有的component！
+    for k,v in pairs(comps) do
+      gooi.removeComponent(v)
+    end
+    game_state.switch(roomlist)
   end
 end
 
@@ -644,17 +638,31 @@ function login:enter()
   table.insert(comps, pOneLine)
   table.insert(comps, pBtnsLine)
   table.insert(comps, pGrid)
-
 end
 
 function login:update(dt)
-  
+  if logining then
+    --检查channel是否有已经有了返回值，如果有，检查是否登陆成功
+    local succeed = true
+    if succeed then
+      login_success = true
+    else
+      --身份验证未通过
+      logining = false
+      login_succes = false
+      --log.debug("id:"..str_id..", psw:"..str_psw)
+      --此时说明登陆失败，提示玩家登陆信息有误
+      text_id:bg({255,0,0,100})
+      text_psw:bg({255,0,0,100})
+      current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
+      processbar_login.value = 0
+      processbar_login:increaseAt(0)
+    end
+  end
+  processbar_login_update(dt)
   states.update(dt)
   gooi.update(dt)
   gui:update(dt)
-  if login_final_update then
-    login_final_update()
-  end
 end
 
 
