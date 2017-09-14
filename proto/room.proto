@@ -1,18 +1,14 @@
 syntax = "proto3";
 
-package org.studio9.protobuf;
+package RoomProto;
 
-option java_package = "org.studio9.protobuf";
-option java_outer_classname = "RoomProto";
-
-
-message GetRoomListReq{
+message GetRoomListReq {
     string playerId = 1;
 }
 
 
-message RoomInfo{
-    int32 roomId = 1;
+message RoomInfo {
+    string roomId = 1;
     int32 gameMode = 2;
     int32 mapType = 3;
     int32 lifeNumber = 4;
@@ -24,7 +20,7 @@ message RoomInfo{
     int32 roomState = 7;
 }
 
-message GetRoomListRes{
+message GetRoomListRes {
     int32 roomNumbers = 1;
     repeated RoomInfo roomsInfo = 2;
 }
@@ -39,11 +35,12 @@ message CreateRoomReq {
 
 message CreateRoomRes {
     //若不成功则返回-1
-    int32 roomId = 1;
+    string roomId = 1;
+    int32 groupId = 1;
 }
 
 message EnterRoomReq {
-    int32 roomId = 1;
+    string roomId = 1;
     string playerId = 2;
 }
 
@@ -52,6 +49,7 @@ message PlayerInfo {
     //准备1，未准备2
     int32 playerStatus = 2;
     int32 groupId = 3;
+    int32 tankType = 4;
 }
 
 message EnterRoomRes {
@@ -62,18 +60,20 @@ message EnterRoomRes {
     repeated PlayerInfo playersInfo = 4;
 }
 
-message EnterRoomBroadcast{
-    int32 roomId = 1;
+message EnterRoomBroadcast {
+    string roomId = 1;
+    string playerId = 2;
+    int32 groupId = 3;
+}
+
+message QuitRoomReq {
+    string roomId = 1;
     string playerId = 2;
 }
 
-message QuitRoomReq{
-    int32 roomId = 1;
-    string playerId = 2;
-}
-
-message QuitRoomBroadcast{
-    int32 roomId = 1;
-    string playerId = 2;
+message QuitRoomBroadcast {
+    bool isMaster = 1;
+    string roomId = 2;
+    string playerId = 3;
 }
 

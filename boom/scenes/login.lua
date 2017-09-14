@@ -57,7 +57,7 @@ local breath_loop_time = 1 --呼吸灯的时间长度
 local breath_acc_time = breath_loop_time
 local breath_sniff = false -- 是否是在吸气，吸气的话breath_acc_time递增
 
-local login_success = false --成功登陆否？
+local login_success = false --已经成功登陆校验
 local logining = false --是否正在登陆中
 local login_feedback1 = false  --发出过了feedback否
 local login_feedback2 = false
@@ -293,14 +293,14 @@ local sm_keyboard = {
 
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
+  --删除所有的component！
+    for k,v in pairs(comps) do
+      gooi.removeComponent(v)
+    end
+    game_state.switch(roomlist)
+    
+    
   --实现登陆的逻辑 
-  ---just for test------------------
-  --[[for k,v in pairs(comps) do      --
-        gooi.removeComponent(v)   --
-      end                         --
-  game_state.switch(roomlist)     --
-  ----------------------------------    
-  --]]
   local str_id = ""
   for k, v in ipairs(text_id.letters) do    --文本信息保存在了text_id的letters成员中，letters是个table，每一个项也是个table，其中char属性是真正的字符
     str_id = str_id..v.char
@@ -331,14 +331,6 @@ login_pressed = function()
     
     processbar_login:increaseAt(0.2)
     logining = true
-    
-    --[[登陆验证失败！
-      log.debug("id:"..str_id..", psw:"..str_psw)
-      --此时说明登陆失败，提示玩家登陆信息有误
-      text_id:bg({255,0,0,100})
-      text_psw:bg({255,0,0,100})
-      current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
-    end]]--
   end
 end
 --更新processbar_login_update的方法
@@ -439,8 +431,6 @@ enter_kb_psw = function()
 end
 
 
-
-
 --更新状态
 states.update = function(dt)
   if breath_sniff then
@@ -515,11 +505,6 @@ end
 
 
 function login:enter()
-  --[[local op = love.audio.newSource("audio/op.wav")
-  op:setLooping(true)
-  op:setVolume(0.5)
-  love.audio.play(op)]]--
-  
   love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
   function width() return lg.getWidth() end
@@ -665,7 +650,6 @@ function login:update(dt)
   gui:update(dt)
 end
 
-
 function login:draw()
   --绘制一个矩形框将框内信息框住
   if current_state == "kb_id" or current_state == "kb_psw" then
@@ -714,8 +698,3 @@ function quit()
 end
 
 return login
-
-
-
-
-

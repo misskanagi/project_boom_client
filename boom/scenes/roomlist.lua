@@ -44,12 +44,6 @@ local refresh_line_x1 = 240
 local refresh_line_x2 = 240
 local refresh_line_length_bound = 200
 local refresh_line_shrink = false
---[[local keyboard_keys_funcs = {
-  ["pressed"] = {["up"] = ,
-                  ["down"] = ,
-                  [""]},
-  ["released"] = {}}
-local gamepad_inputs_]]--
 
 
 function roomlist:enter()
@@ -279,6 +273,13 @@ end
 
 --刷新房间列表
 refresh = function()
+  --向server发送获取房间列表的请求
+  --[[
+  message GetRoomListReq {
+    string playerId = 1;
+  }
+  ]]--
+  
   refreshing = true
 end
 
@@ -290,6 +291,7 @@ end
 --进入房间
 enter_room = function()
   --将自己的id和要进入的房间id一同发送给Server，Server准入以后，切换场景
+  --local room = require("boom.scenes.room")
   game_state.switch(room)
 end
 

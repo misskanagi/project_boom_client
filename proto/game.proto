@@ -1,47 +1,44 @@
 syntax = "proto3";
 
-package org.studio9.protobuf;
-
-option java_package = "org.studio9.protobuf";
-option java_outer_classname = "GameProto";
+package GameProto;
 
 message GameReadyReq {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 tankType = 3;
 }
 
 message GameReadyBroadcast {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 tankType = 3;
 }
 
 message GameCancelReady {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
 }
 
 message GameCancelReadyBroadcast {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
 }
 
 message GameBeginReq {
-    int32 roomId = 1;
+    string roomId = 1;   //"-fail"
 }
 
 message GameBeginBroadcast {
-    int32 roomId = 1;
+    string roomId = 1;
 }
 
 message GameOverReq {
-    int32 roomId = 1;
+    string roomId = 1;
     int32 winGroupId = 2;
 }
 
 message GameOverBroadcast {
-    int32 roomId = 1;
+    string roomId = 1;
     int32 winGroupId = 2;
 }
 

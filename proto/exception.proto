@@ -1,9 +1,6 @@
 syntax = "proto3";
 
-package org.studio9.protobuf;
-
-option java_package = "org.studio9.protobuf";
-option java_outer_classname = "ExceptionProto";
+package ExceptionProto;
 
 message NonmasterDisconnectException {
     string playerId = 1;

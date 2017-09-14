@@ -97,7 +97,13 @@ end
 --提交当前的选择表给Server
 submit_request = function()
   --将results中的内容组织一下发送给Server
-  
+  --[[message CreateRoomReq {
+    string playerId = 1;
+    int32 gameMode = 2;
+    int32 mapType = 3;
+    int32 lifeNumber = 4;
+    int32 playersPerGroup = 5;
+  }]]--
   submitting = true  --当前状态变成了提交中...
 end
 
@@ -177,7 +183,7 @@ function create_room:update(dt)
       --房间创建成功了
       remove_widgets()
       submitting = false
-      game_state.switch(room)
+      game_state.switch(room,"haha")
     else
       --房间创建失败，弹框提示
       submitting = false

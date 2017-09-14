@@ -1,19 +1,26 @@
 syntax = "proto3";
 
-package org.studio9.protobuf;
+package ControlProto;
 
-option java_package = "org.studio9.protobuf";
-option java_outer_classname = "ControlProto";
+message PlayerCommand{
+    bool pressedOrReleased=1;
+    bool isRepeat = 2;
+    string key = 3;
+}
+
+message CommandQueue {
+    repeated PlayerCommand playerCommand = 1;
+}
 
 message PlayerCommandReport {
     string playerId = 1;
-    int32 roomId = 2;
-    repeated int32 playerCommand = 3;
+    string roomId = 2;
+    CommandQueue cmdQueue = 3;
 }
 
 message PlayerCommandBroadcast {
     string playerId = 1;
-    repeated int32 playerCommand = 2;
+    CommandQueue cmdQueue = 2;
 }
 
 message Body {
@@ -32,44 +39,48 @@ message Entity {
     repeated Body bodies = 4;
 }
 
+message Snapshot {
+    repeated Entity entities = 1;
+}
+
 //主机向服务器发送
 message RoomMasterSendSnapshot {
-    int32 roomId = 1;
-    repeated Entity entities = 2;
+    string roomId = 1;
+    Snapshot snapshot = 2;
 }
 
 message SnapshotBroadcast {
-    int32 roomId = 1;
-    repeated Entity entities = 2;
+    string roomId = 1;
+    Snapshot snapshot = 2;
 }
 
 message GamePropsDecisionReq {
     string playerId = 1;
     string roomMasterId = 2;
-    int32 roomId = 3;
+    string roomId = 3;
     int32 propId = 4;
 }
 
 message GamePropsDecisionReqForward {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 propId = 3;
 }
 
 message GamePropsDecisionResForward {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 propId = 3;
 }
 
 message GamePropsDecisionRes {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 propId = 3;
 }
 
 message GamePropsDecisionBroadcast {
     string playerId = 1;
-    int32 roomId = 2;
+    string roomId = 2;
     int32 propId = 3;
 }
