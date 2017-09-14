@@ -10,8 +10,8 @@ local game_state = require("libs.hump.gamestate")
 local create_room = require("boom.scenes.create_room")
 local room = require("boom.scenes.room")
 --前置声明
-local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh
-
+local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, enter_room
+--固定尺寸
 local window_w = 480   
 local window_h = 320
 
@@ -166,10 +166,10 @@ scroll_update = function (dt)
       scroll_frame_time_gap_account = scroll_frame_time_gap_account + dt
       if scroll_frame_time_gap_account >= scroll_frame_time_gap_bound then
         scroll_frame_time_gap_account = 0
-        if love.keyboard.isDown("up") or joystick:isGamepadDown("dpup") then
+        if love.keyboard.isDown("up") or (joystick and joystick:isGamepadDown("dpup")) then
           scroll:drop("up")
         end
-        if love.keyboard.isDown("down") or joystick:isGamepadDown("dpdown") then
+        if love.keyboard.isDown("down") or (joystick and joystick:isGamepadDown("dpdown")) then
           scroll:drop("down")
         end
       end
@@ -230,10 +230,6 @@ function roomlist:draw()
 end
 
 
-local function handle_input()
-end
-
-
 function roomlist:textinput(text)
     gooi.textinput(text)
 end
@@ -253,7 +249,7 @@ end
 
 function roomlist:gamepadreleased(joystick, button)
   if button == "dpup" or button == "dpdown" then
-    if not(joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown")) then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
       stop_move_scrollgroup()
     end
   end

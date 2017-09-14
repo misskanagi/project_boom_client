@@ -9,7 +9,14 @@ package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local group_dl = 1 -- 驾驶证的控件group
 local group_kb = 2 -- 小键盘的控件group
-
+local keyboard_to_gamepad = {
+  ["up"] = "dpup",
+  ["down"] = "dpdown",
+  ["left"] = "dpleft",
+  ["right"] = "dpright",
+  ["a"] = "b",
+  ["b"] = "a"
+  }
 --函数前置声明
 local login_pressed, exit_pressed, enter_kb_psw, enter_kb_id, open_kb, close_kb, delete_char
 --键盘控件
@@ -674,18 +681,16 @@ function login:draw()
 end
 
 function login:keypressed(key, scancode)
-
-  gooi.keypressed(key, scancode, isrepeat)
+  local button = keyboard_to_gamepad[key]
+  states.transfer(button)
 end
 
 
 function login:keyreleased(key)
-  
-  gooi.keyreleased(key, scancode)
 end
 
 function login:textinput(text)
-    gooi.textinput(text)
+    --gooi.textinput(text)
 end
 
 function login:gamepadpressed(joystick, button)
