@@ -45,6 +45,11 @@ local refresh_line_x2 = 240
 local refresh_line_length_bound = 200
 local refresh_line_shrink = false
 
+function roomlist:leave()
+  room_infos = {}
+  scroll_items = {}
+end
+
 
 function roomlist:enter()
   --love.window.setFullscreen(true)
