@@ -8,14 +8,15 @@ local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
 --init_table中带入的数据
 local myId = nil   --玩家自己的Id
-local roomId = nil
-local groupId = nil
-local roomMasterId = nil
-local gameMode = nil
-local mapType = nil
-local lifeNumber = nil
-local playerPerGroup = nil
+local roomId = ""
+local groupId = 1
+local roomMasterId = ""
+local gameMode = 1
+local mapType = 1
+local lifeNumber = 3
+local playersPerGroup = 1
 local roomState = nil   --waiting or gaming
+local playersInRoom = 1
 local PlayerInfos = nil   --包含房间内所有人的PlayerInfo, string playerId = 1;int32 playerStatus = 2;int32 groupId = 3;int32 tankType = 4;
 local room_people = 4 --每队几个人
 
@@ -194,9 +195,10 @@ quit_room = function()
     string roomId = 1;
     string playerId = 2;}]]--
   --返回到roomlist中
-  --remove_widgets()
-  --local roomlist = require("boom.scenes.roomlist")
-  game_state.switch(roomlist)
+  local roomlist = require("boom.scenes.roomlist")
+  local init_table = {}
+  init_table["myId"] = myId
+  game_state.switch(roomlist, init_table)
 end
 
 --房主开始游戏
@@ -242,7 +244,7 @@ end
 
 --[[room的入口，有两种进入的可能：
 1.roomlist:带入除了create_room带入的内容以外，还有所有PlayerInfo的集合
-2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playerPerGroup,roomState
+2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
@@ -266,9 +268,10 @@ function room:enter(pre, init_table)
   gameMode = init_table and init_table["gameMode"]
   mapType = init_table and init_table["mapType"]
   lifeNumber = init_table and init_table["lifeNumber"]
-  playerPerGroup = init_table and init_table["playerPerGroup"]
+  playersPerGroup = init_table and init_table["playersPerGroup"]
   roomState = init_table and init_table["roomState"]
   PlayerInfos = init_table and init_table["PlayerInfos"]
+  playersInRoom = init_table and init_table["playersInRoom"]
   --playersInfo = init_table and init_table["playersInfo"] or {}
   
   
@@ -277,7 +280,7 @@ function room:enter(pre, init_table)
   
   lbl_title = gooi.newLabel({text = roomId}):left()
   lbl_mode = gooi.newLabel({text = "mode:"..gameMode}):left()
-  lbl_people = gooi.newLabel({text = "people:"..playerPerGroup.." vs "..playerPerGroup}):left()
+  lbl_people = gooi.newLabel({text = "people:"..playersPerGroup.." vs "..playersPerGroup}):left()
   lbl_life = gooi.newLabel({text = "life:"..lifeNumber}):left()
   lbl_map = gooi.newLabel({text = "map:"..mapType}):left()
   gridRoominfo:add(lbl_title, "1,1")

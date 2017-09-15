@@ -48,6 +48,8 @@ local refresh_line_shrink = false
 --申请进入房间的相关值
 local entering = false
 
+local roomNumbers = 0  --房间数量
+local RoomInfos = {} --从服务器上拉下来的最新房间信息数据
 
 function roomlist:leave()
   --
@@ -65,7 +67,6 @@ end
 
 function roomlist:enter(prev, init_table)
   myId = init_table and init_table["myId"]
-  --love.window.setFullscreen(true)
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
   
@@ -82,7 +83,6 @@ function roomlist:enter(prev, init_table)
   gooi.setStyle(style)
   gooi.desktopMode()
   gooi.shadow()
-  
   --创建lbl_title
   lbl_title = gooi.newLabel({text = "Room List", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
   --创建scollgroup
@@ -249,6 +249,17 @@ refresh_update = function(dt)
     
     --检查最新数据是否已经到来
     local hotdata = 1
+    --hotdata中包含的是roomNumbers以及所有的RoomInfo的数组
+    roomNumbers = 6
+    RoomInfos = {
+      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [2] = {["roomId"] = "hackhaoxxx", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 8, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [3] = {["roomId"] = "yuge123", ["gameMode"] = "chaos", ["roomState"] = -1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [4] = {["roomId"] = "james0909", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 3, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [5] = {["roomId"] = "hahaha", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [6] = {["roomId"] = "hehehe", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1},
+      }
+    
     if hotdata then
       --hotdata中有最新的房间信息，添加到scrollgroup中
       --移除老的控件
@@ -256,13 +267,15 @@ refresh_update = function(dt)
         gui:rem(scroll_items[i])
         scroll_items[i] = nil
       end
+      scroll_items = {}  --scroll_items中啥都没有了
       --添加新的控件
-      for i = 1, 20 do
+      for i = 1, roomNumbers do
         --w一共是444
+        local roomInfo_item = RoomInfos[i]
         local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
-        local room_id = ""..i..""         --x = 70, y = 5, w = 170, h = 60
-        local room_mode = "chaos battle"  --x = 240, y = 5, w = 100, h = 60,
-        local room_people = "5/8"         --x = 340, y = 5, w = 104 , h = 60,
+        local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
+        local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
+        local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
         --[[一个item需要显示的内容：
         1.room image
         2.room id
@@ -273,8 +286,8 @@ refresh_update = function(dt)
         gi.bgcolor = {255,255,255,10}
         local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
         local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
-        local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false, {255,255,255,20})
-        local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false, {255,255,255,20})
+        local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
+        local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
         scroll_items[#scroll_items+1] = gi
     
         scrollgroup:addchild(gi, 'vertical')
@@ -296,18 +309,19 @@ enter_update = function(dt)
   local enter_succeed = true
   if enter_succeed then
     --Server准许进入房间
+    local roomMasterId_res = "lsm" --Server的response信息
     --把该带的东西带上进入room.lua
-    --remove_widgets()
+    local selected_roominfo_item = RoomInfos[room_selected_index]
     local init_table = {}
     init_table["myId"] = myId
-    init_table["roomId"] = "xxx"
+    init_table["roomId"] = selected_roominfo_item["roomId"]
     init_table["groupId"] = 1  --房主默认在1号队
-    init_table["roomMasterId"] = "lsm"
-    init_table["gameMode"] = 1  --"chaos"
-    init_table["mapType"] = 1  --"as_snow"
-    init_table["lifeNumber"] = 4
-    init_table["playerPerGroup"] = 4
-    init_table["roomState"] = 1
+    init_table["roomMasterId"] = roomMasterId_res
+    init_table["gameMode"] = selected_roominfo_item["gameMode"]  --"chaos"
+    init_table["mapType"] = selected_roominfo_item["mapType"]  --"as_snow"
+    init_table["lifeNumber"] = selected_roominfo_item["lifeNumber"]
+    init_table["playersPerGroup"] = selected_roominfo_item["playersPerGroup"]
+    init_table["playersInRoom"] = selected_roominfo_item["playersInRoom"]
     game_state.switch(room, init_table)
   else
     --未准许

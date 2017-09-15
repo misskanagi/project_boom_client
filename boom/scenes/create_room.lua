@@ -7,7 +7,7 @@ local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local lg = love.graphics
-
+local myId = nil
 --各种控件
 local lbl_title = nil
 local lbl_mode = nil
@@ -74,6 +74,8 @@ local submit_line_x1 = 240
 local submit_line_x2 = 240
 local submit_line_length_bound = 200
 local submit_line_shrink = false
+
+
 --移除所有的组件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
@@ -89,7 +91,9 @@ remove_widgets = function()
 end
 --返回roomlist
 back_to_roomlist = function()
-  game_state.switch(roomlist)
+  local init_table = {}
+  init_table["myId"] = myId
+  game_state.switch(roomlist, init_table)
 end
 --提交当前的选择表给Server
 submit_request = function()
@@ -104,7 +108,9 @@ submit_request = function()
   submitting = true  --当前状态变成了提交中...
 end
 
-function create_room:enter()
+function create_room:enter(prev, init_table)
+  myId = init_table and init_table["myId"]
+  
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -178,20 +184,20 @@ function create_room:update(dt)
     local succeed = true
     if succeed then
       --房间创建成功了
-      remove_widgets()
-      submitting = false
       --此时可以进入room.lua了，把该带的带进入
+      --检查Server返回的roomId
+      local res_roomId = "createxxxxxx"
       local init_table = {}
-      init_table["myId"] = "lsm"
-      init_table["roomId"] = "xxx"
+      init_table["myId"] = myId
+      init_table["roomId"] = res_roomId
       init_table["groupId"] = 1  --房主默认在1号队
-      init_table["roomMasterId"] = "lsm"
-      init_table["gameMode"] = 1  --"chaos"
-      init_table["mapType"] = 1  --"as_snow"
-      init_table["lifeNumber"] = 4
-      init_table["playerPerGroup"] = 4
-      init_table["roomState"] = 1
-      
+      init_table["roomMasterId"] = myId
+      init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
+      init_table["mapType"] = selections["map"][results["map"]]  --"as_snow"
+      init_table["lifeNumber"] = selections["life"][results["life"]]
+      init_table["playersPerGroup"] = selections["people"][results["people"]]
+      init_table["playersInRoom"] = 1
+      --init_table["roomState"] = 1
       game_state.switch(room, init_table)
     else
       --房间创建失败，弹框提示
@@ -277,6 +283,7 @@ function create_room:leave()
   for k,v in pairs(results) do
     results[k] = 1
   end
+  submitting = false
   remove_widgets()
 end
 
