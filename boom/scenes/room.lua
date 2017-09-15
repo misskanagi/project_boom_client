@@ -85,15 +85,15 @@ local tankbag = {
 --存放所有的玩家的信息，groupId作key
 local all_players_infos = {
   [1] = {
-    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1},
-    [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1},
-    [3] = {["playerId"] = "yuge", ["playerStatus"] = 2},
-    [4] = {["playerId"] = "james", ["playerStatus"] = 1}
+    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
+    [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
+    [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
+    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
     },--groupId为1的所有players
   [2] = {
-    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1},
-    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1},
-    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2},
+    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
+    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 1},
+    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},
     }--groupId为2的所有players
   }
 
@@ -104,25 +104,68 @@ isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadca
 --将获取到的广播内容直接传入handle_broadcast进行解析，调用相应的broadcast处理函数
 handle_broadcast = function(broadcast)
 end
+
 --获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
 get_enterroom_broadcast = function(playerId, groupId)
-  
+  local group_players = all_players_infos[groupId]
+  --group_players是groupId对应的table
+  local new_player_info_item = {}
+  new_player_info_item["playerId"] = playerId
+  new_player_info_item["playerStatus"] = 2 -- ready为1，未ready为2
+  group_players[#group_players+1] = new_player_info_item
 end
+
 --获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
 get_quitroom_broadcast = function(isMaster, playerId, groupId)
-  
+  if isMaster then
+    game_state.switch(roomlist)  --散了散了
+  else
+    local group_players = all_players_infos[groupId]
+    local group_players_copy = {}
+    for i = 1, #group_players do 
+      if group_players[i]["playerId"] ~= playerId then
+        group_players_copy[#group_players_copy+1] = group_players[i]
+      end
+    end
+    --此时group_players_copy是新的table
+    group_players = group_players_copy
+  end
 end
+
 --获取一个游戏开始的广播
 get_gamebegin_broadcast = function()
-  
+  local test_place = require("boom.scenes.test_place")
+  local init_table = {}
+  game_state.switch(test_place, init_table)
 end
+
 --获取一个玩家取消ready状态的广播
 get_gamecancelready_broadcast = function(playerId)
-  
+  for i = 1, 2 do
+    local group_players = all_players_infos[i]
+    for j = 1, #group_players do
+      if group_players[j]["playerId"] == playerId then
+        --found!
+        group_players[j]["playerStatus"] = 2
+        return
+      end
+    end
+  end
 end
+
 --获取一个玩家进入ready状态的广播
 get_gamereadybroadcast = function(playerId, tankType)
-  
+  for i = 1, 2 do
+    local group_players = all_players_infos[i]
+    for j = 1, #group_players do
+      if group_players[j]["playerId"] == playerId then
+        --found!
+        group_players[j]["playerStatus"] = 1
+        group_players[j]["tankType"] = tankType
+        return
+      end
+    end
+  end
 end
 
 --更新players的相应的控件
