@@ -368,10 +368,11 @@ end
 --移除所有的控件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
-  for i = #scroll_items, 1, -1 do
+  --[[for i = #scroll_items, 1, -1 do
     gui:rem(scroll_items[i])
-  end
+  end]]--
   gui:rem(scrollgroup)
+  scroll_items = {}
 end
 
 

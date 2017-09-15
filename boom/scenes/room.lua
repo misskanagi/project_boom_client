@@ -52,20 +52,20 @@ local enemy_widgets = {}  --有序
 local gooi_widgets = {}
 local scrollgroup = nil --坦克背包
 --坦克背包scrollgroup的各项参数
-local room_selected_index = 1 --当前被选中的房间的index
-local scroll_window_index = 1 --变化范围是1~room_item_num_per_page
+local tank_selected_index = 1 --当前被选中的战车的index
+local scroll_window_index = 1 --变化范围是1~scroll_item_num_per_page
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
 local scroll_focous_time_account = 0
 local scroll_focous_flag = false
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
 local scroll_frame_time_gap_account = 0
-local room_item_num_per_page = 3 -- 一页显示几个room_item
-local room_scroll_x = 10
-local room_scroll_y = 120
-local room_scroll_w = 120   --scroll条占16pixel宽
-local room_scroll_h = 150
-local room_item_height = 50   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
-local room_item_width = 120
+local scroll_item_num_per_page = 3 -- 一页显示几个room_item
+local scrollgroup_x = 10
+local scrollgroup_y = 120
+local scrollgroup_w = 120   --scroll条占16pixel宽
+local scrollgroup_h = 150
+local scroll_item_height = 50   --scroll_item_height * scroll_item_num_per_page == scrollgroup_h，这一点在这里就要保证，不然会出问题
+local scroll_item_width = 120
 local scroll_items = {} --存放滑动列表中的所有的items
 
 --控制信息
@@ -164,6 +164,10 @@ ready = function()
     string roomId = 2;
     int32 tankType = 3;}]]--
 --发送
+
+  gui:feedback("ready with the tank no."..tank_selected_index)
+  --network args : myId, roomId,tank_selected_index
+  
 end
 --cancel_ready
 cancel_ready = function()
@@ -173,6 +177,8 @@ cancel_ready = function()
     string roomId = 2;
 }]]--
   --发送
+  gui:feedback("cancel ready")
+  --network args : myId, roomId
   
 end
 
@@ -187,6 +193,7 @@ remove_widgets = function()
   enemy_widgets = {}
   friend_widgets = {}
   gui:rem(scrollgroup)
+  scroll_items = {}
 end  
 
 --离开房间
@@ -195,6 +202,8 @@ quit_room = function()
     string roomId = 1;
     string playerId = 2;}]]--
   --返回到roomlist中
+  --network args : roomId, myId
+  
   local roomlist = require("boom.scenes.roomlist")
   local init_table = {}
   init_table["myId"] = myId
@@ -224,22 +233,15 @@ begin_game = function()
   end
   --此时已经通过了全员到齐且ready的检查
   --向Server发送GameBeginReq的请求
-  
+  --[[message GameBeginReq {
+    string roomId = 1;   //"-fail"
+  }]]--
+  --network args : roomId
 end
 
 function room:leave()
   gui:feedback("room:leave")
-  for k,v in pairs(gooi_widgets) do
-    gooi.removeComponent(v)
-    --gooi_widgets[k] = nil
-  end
-  gooi_widgets = {}
-  enemy_widgets = {}
-  friend_widgets = {}
-  gui:rem(scrollgroup)
- -- remove_widgets()
-  --scroll_items = {}
-  --gooi_widgets = {}
+  remove_widgets()
 end
 
 --[[room的入口，有两种进入的可能：
@@ -364,7 +366,7 @@ function room:enter(pre, init_table)
   
   --创建一个选择tank的列表
   --创建scollgroup
-  scrollgroup = gui:scrollgroup(nil, {room_scroll_x, room_scroll_y, room_scroll_w, room_scroll_h}, nil, 'vertical', {255,255,255,20}) -- scrollgroup will create its own scrollbar
+  scrollgroup = gui:scrollgroup(nil, {scrollgroup_x, scrollgroup_y, scrollgroup_w, scrollgroup_h}, nil, 'vertical', {255,255,255,20}) -- scrollgroup will create its own scrollbar
   -- 设置scrollgroup的滑动监听函数
   scrollgroup.scrollv.drop = function(self, direction) 
     --参数的类型检查
@@ -373,61 +375,61 @@ function room:enter(pre, init_table)
         if scroll_window_index > 1 then
           --滑动窗口还没有到最底下
           scroll_window_index = scroll_window_index - 1
-          room_selected_index = room_selected_index - 1
-          self:update_focous(room_selected_index+1, room_selected_index)
+          tank_selected_index = tank_selected_index - 1
+          self:update_focous(tank_selected_index+1, tank_selected_index)
         else
           local scroll_old_position = self.values.current
           local new_position = math.max(self.values.min, self.values.current - self.values.step) 
           if new_position == scroll_old_position then
             --无法在继续向上滑动了
-            if room_selected_index ~= 1 then
-              room_selected_index = room_selected_index - 1
-              self:update_focous(room_selected_index+1, room_selected_index)
+            if tank_selected_index ~= 1 then
+              tank_selected_index = tank_selected_index - 1
+              self:update_focous(tank_selected_index+1, tank_selected_index)
             end
           else
             --可以继续向上滑动
-            room_selected_index = room_selected_index - 1
-            self:update_focous(room_selected_index+1, room_selected_index)
-            if room_selected_index > #scroll_items - room_item_num_per_page then
+            tank_selected_index = tank_selected_index - 1
+            self:update_focous(tank_selected_index+1, tank_selected_index)
+            if tank_selected_index > #scroll_items - scroll_item_num_per_page then
               --此时不更新滑动
             else
               self.values.current = new_position
             end
           end
         end
-        --gui:feedback(""..room_selected_index)
+        --gui:feedback(""..tank_selected_index)
       elseif direction == "down" then
-        if scroll_window_index < room_item_num_per_page then
+        if scroll_window_index < scroll_item_num_per_page then
           --滑动窗口还没有到最底下
           scroll_window_index = scroll_window_index + 1
-          room_selected_index = room_selected_index + 1
-          self:update_focous(room_selected_index-1, room_selected_index)
+          tank_selected_index = tank_selected_index + 1
+          self:update_focous(tank_selected_index-1, tank_selected_index)
         else
           local scroll_old_position = self.values.current
           local new_position = math.min(self.values.max, self.values.current + self.values.step) 
           if new_position == scroll_old_position then
             --无法在继续向下滑动了
-            if room_selected_index ~= #scroll_items then
-              room_selected_index = room_selected_index + 1
-              self:update_focous(room_selected_index-1, room_selected_index)
+            if tank_selected_index ~= #scroll_items then
+              tank_selected_index = tank_selected_index + 1
+              self:update_focous(tank_selected_index-1, tank_selected_index)
             end
           else
             --可以继续向下滑动
-            room_selected_index = room_selected_index + 1
-            self:update_focous(room_selected_index-1, room_selected_index)
-            if room_selected_index <= room_item_num_per_page then
+            tank_selected_index = tank_selected_index + 1
+            self:update_focous(tank_selected_index-1, tank_selected_index)
+            if tank_selected_index <= scroll_item_num_per_page then
               --此时不更新滑动
             else
               self.values.current = new_position
             end
           end
         end
-        --gui:feedback(""..room_selected_index)
+        --gui:feedback(""..tank_selected_index)
       end
       -- 播放一个"咻"的音效
     end
     -- 播放一个"吥"的滑到底了的音效
-    --gui:feedback('current focous room '..room_selected_index)
+    --gui:feedback('current focous room '..tank_selected_index)
   end
   
   scrollgroup.scrollv.update_focous = function(self, prev_index, current_index)
@@ -440,7 +442,7 @@ function room:enter(pre, init_table)
       new_item.bgcolor = {255,255,255,50}
     end
   end
-  scrollgroup.scrollv.values.step = room_item_height -- 滑动一次的距离是一个room_item的高度
+  scrollgroup.scrollv.values.step = scroll_item_height -- 滑动一次的距离是一个room_item的高度
   for i = 1, #tankbag do
     local tank_text = gui:text(tankbag[i], {0, 0, 140, 50}, nil, false, {255,255,255,20})
     scrollgroup:addchild(tank_text, 'vertical')

@@ -359,13 +359,16 @@ processbar_login_update = function()
     gui:feedback(info4)
     login_feedback4 = true
   elseif processbar_login:getValue() == 1 then
-    --删除所有的component！
-    for k,v in pairs(comps) do
-      gooi.removeComponent(v)
-    end
     local init_table = {}
     init_table["myId"] = myId
     game_state.switch(roomlist, init_table)
+  end
+end
+
+function login:leave()
+  --删除所有的component！
+  for k,v in pairs(comps) do
+    gooi.removeComponent(v)
   end
 end
 
