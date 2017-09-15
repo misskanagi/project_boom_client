@@ -186,10 +186,10 @@ function create_room:update(dt)
       --房间创建成功了
       --此时可以进入room.lua了，把该带的带进入
       --检查Server返回的roomId
-      local res_roomId = "createxxxxxx"
+      local roomId_res = "createxxxxxx"
       local init_table = {}
       init_table["myId"] = myId
-      init_table["roomId"] = res_roomId
+      init_table["roomId"] = roomId_res
       init_table["groupId"] = 1  --房主默认在1号队
       init_table["roomMasterId"] = myId
       init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
@@ -197,7 +197,6 @@ function create_room:update(dt)
       init_table["lifeNumber"] = selections["life"][results["life"]]
       init_table["playersPerGroup"] = selections["people"][results["people"]]
       init_table["playersInRoom"] = 1
-      --init_table["roomState"] = 1
       game_state.switch(room, init_table)
     else
       --房间创建失败，弹框提示

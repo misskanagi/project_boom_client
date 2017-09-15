@@ -247,17 +247,17 @@ refresh_update = function(dt)
       end
     end
     
-    --检查最新数据是否已经到来
+    --检查Server最新response数据是否到来
     local hotdata = 1
     --hotdata中包含的是roomNumbers以及所有的RoomInfo的数组
     roomNumbers = 6
     RoomInfos = {
-      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1},
-      [2] = {["roomId"] = "hackhaoxxx", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 8, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1},
-      [3] = {["roomId"] = "yuge123", ["gameMode"] = "chaos", ["roomState"] = -1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1},
-      [4] = {["roomId"] = "james0909", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 3, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1},
-      [5] = {["roomId"] = "hahaha", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1},
-      [6] = {["roomId"] = "hehehe", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
+      [2] = {["roomId"] = "hackhaoxxx", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 8, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
+      [3] = {["roomId"] = "yuge123", ["gameMode"] = "chaos", ["roomState"] = -1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
+      [4] = {["roomId"] = "james0909", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 3, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
+      [5] = {["roomId"] = "hahaha", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
+      [6] = {["roomId"] = "hehehe", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
       }
     
     if hotdata then
@@ -322,6 +322,7 @@ enter_update = function(dt)
     init_table["lifeNumber"] = selected_roominfo_item["lifeNumber"]
     init_table["playersPerGroup"] = selected_roominfo_item["playersPerGroup"]
     init_table["playersInRoom"] = selected_roominfo_item["playersInRoom"]
+    local room = require("boom.scenes.room")
     game_state.switch(room, init_table)
   else
     --未准许
@@ -352,8 +353,14 @@ end
 
 --进入房间
 enter_room = function()
+  --先检查一下是否被选中的房间的人数还未满，当人数未满的时候才可以加入
+  local selected_room_item = RoomInfos[room_selected_index]
+  if not (selected_room_item and selected_room_item["playersInRoom"] ~= selected_room_item["playersPerGroup"] * 2) then 
+    gui:feedback("sorry, the room is full!")
+    return 
+  end
+  
   --将自己的id和要进入的房间id一同发送给Server，Server准入以后，切换场景
-  --local room = require("boom.scenes.room")
   
   entering  = true
 end
