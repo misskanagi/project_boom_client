@@ -85,26 +85,61 @@ local tankbag = {
 
 --local enemy_players = {}  --存放所有的敌方玩家信息
 local enemy_infos = {
-  [1] = {["playerId"] = "lsm", ["playerStatus"] = true},
-  [2] = {["playerId"] = "hackhao", ["playerStatus"] = true},
-  [3] = {["playerId"] = "yuge", ["playerStatus"] = false},
-  [4] = {["playerId"] = "james", ["playerStatus"] = true}
+  [1] = {["playerId"] = "lsm", ["playerStatus"] = 1},
+  [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1},
+  [3] = {["playerId"] = "yuge", ["playerStatus"] = 2},
+  [4] = {["playerId"] = "james", ["playerStatus"] = 1}
   }
 local friend_infos = {
-  [1] = {["playerId"] = "lsm2", ["playerStatus"] = true},
-  [2] = {["playerId"] = "hackhao2", ["playerStatus"] = true},
-  [3] = {["playerId"] = "yuge2", ["playerStatus"] = false},
+  [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1},
+  [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1},
+  [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2},
   --[4] = {["playerId"] = "james2", ["playerStatus"] = false}
-  }  --存放所有的我方玩家信息
+}  --存放所有的我方玩家信息
+--存放所有的玩家的信息，groupId作key
+local all_players_infos = {
+  [1] = {
+    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1},
+    [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1},
+    [3] = {["playerId"] = "yuge", ["playerStatus"] = 2},
+    [4] = {["playerId"] = "james", ["playerStatus"] = 1}
+    },--groupId为1的所有players
+  [2] = {
+    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1},
+    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1},
+    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2},
+    }--groupId为2的所有players
+  }
 
 --前置声明
-local update_players, update_players_widgets, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, quit_room, begin_game,
-isMaster
+local update_players_widgets, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, quit_room, begin_game,
+isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadcast,get_gamecancelready_broadcast, get_gamereadybroadcast, handle_broadcast
 
-update_players = function()
+--将获取到的广播内容直接传入handle_broadcast进行解析，调用相应的broadcast处理函数
+handle_broadcast = function(broadcast)
+end
+--获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
+get_enterroom_broadcast = function(playerId, groupId)
   
-end  
---更新players的data和相应的控件
+end
+--获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
+get_quitroom_broadcast = function(isMaster, playerId, groupId)
+  
+end
+--获取一个游戏开始的广播
+get_gamebegin_broadcast = function()
+  
+end
+--获取一个玩家取消ready状态的广播
+get_gamecancelready_broadcast = function(playerId)
+  
+end
+--获取一个玩家进入ready状态的广播
+get_gamereadybroadcast = function(playerId, tankType)
+  
+end
+
+--更新players的相应的控件
 update_players_widgets = function()
   --当前的玩家
   --直接拿着新的friend_infos数据进行friend_widgets的更新
@@ -113,7 +148,7 @@ update_players_widgets = function()
       local f_widget = friend_widgets[i]
       local f_info_item = friend_infos[i]
       f_widget:setText(f_info_item["playerId"])
-      if f_info_item["playerStatus"] then
+      if f_info_item["playerStatus"] == 1 then
         --设置一个坦克缩略图
         --f_widget:setIcon()
       else
@@ -134,7 +169,7 @@ update_players_widgets = function()
       local e_widget = enemy_widgets[i]
       local e_info_item = enemy_infos[i]
       e_widget:setText(e_info_item["playerId"])
-      if e_info_item["playerStatus"] then
+      if e_info_item["playerStatus"] == 1 then
         --设置一个准备完成的图片
         e_widget:setIcon(img_ready)
       else
@@ -150,11 +185,11 @@ update_players_widgets = function()
     end
   end
 end
+
 --判断当前玩家是否是房主
 isMaster = function()
   return roomMasterId == myId
 end
-
 
 --ready
 ready = function()
@@ -219,12 +254,12 @@ begin_game = function()
   --检查是否是已经全员到齐且全员ready
   if #friend_infos == room_people and #enemy_infos == room_people then
     for k, v in friend_infos do
-      if not v["playerStatus"] then
+      if not v["playerStatus"] == 1 then
         return
       end
     end
     for k, v in enemy_infos do
-      if not v["playerStatus"] then
+      if not v["playerStatus"] == 1 then
         return
       end
     end
@@ -237,11 +272,6 @@ begin_game = function()
     string roomId = 1;   //"-fail"
   }]]--
   --network args : roomId
-end
-
-function room:leave()
-  gui:feedback("room:leave")
-  remove_widgets()
 end
 
 --[[room的入口，有两种进入的可能：
@@ -298,6 +328,8 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, lbl_map)
   
   --创建敌方的显示列表
+  
+  --创建groupId==1的显示列表
   grid_enemies = gooi.newPanel({x = grid_enemies_x, y = grid_enemies_y, w = grid_enemies_w, h = grid_enemies_h, layout = "grid 4x2"})
   for i = 1, 8 do
     local lbl_enemy = nil
@@ -305,7 +337,7 @@ function room:enter(pre, init_table)
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_enemy = gooi.newLabel({text = enemy_infos[i]["playerId"]}):left()
-      if enemy_infos[i]["playerStatus"] then
+      if enemy_infos[i]["playerStatus"]==1 then
         lbl_enemy:setIcon(img_ready)
       else
         --lbl_enemy设置一个空的图片作为icon
@@ -338,7 +370,7 @@ function room:enter(pre, init_table)
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_friend = gooi.newLabel({text = friend_infos[i]["playerId"]}):left()
-      if friend_infos[i]["playerStatus"] then
+      if friend_infos[i]["playerStatus"]==1 then
         --设置该玩家的tankType对应的tank缩略图作为icon
         lbl_friend:setIcon(img_ready)
       else
@@ -452,6 +484,90 @@ function room:enter(pre, init_table)
   
 end
 
+function room:leave()
+  gui:feedback("room:leave")
+  remove_widgets()
+end
+
+function room:update(dt)
+  --判断此时是否有服务器的broadcast
+  --如果有的话，那么更新一下
+  --GameCancelReadyBroadcast/EnterRoomBroadcast/QuitRoomBroadcast/EnterRoomBroadcast
+  local broadcast = 1
+  handle_broadcast(broadcast)
+  update_players_widgets()  --根据最新的enemy_infos,friend_infos的内容更新所有的控件
+  scroll_update(dt)
+  gui:update(dt)
+  gooi.update()
+end
+
+function room:draw()
+  local r,g,b,a = lg.getColor()
+  --绘制出两个玩家表格的格线
+  --grid_enemies
+  for i = 1, 5 do
+    lg.line(grid_enemies_x, grid_enemies_y+(i-1)*grid_enemies_h/4, grid_enemies_x + grid_enemies_w, grid_enemies_y+(i-1)*grid_enemies_h/4)
+  end
+  for i = 1, 3 do
+    lg.line(grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y, grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y+grid_enemies_h)
+  end
+  
+  --grid_friends
+  for i = 1, 5 do
+    lg.line(grid_friends_x, grid_friends_y+(i-1)*grid_friends_h/4, grid_friends_x + grid_friends_w, grid_friends_y+(i-1)*grid_friends_h/4)
+  end
+  for i = 1, 3 do
+    lg.line(grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y, grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y+grid_friends_h)
+  end
+  --绘制提示文字
+  local font_current = lg.getFont()
+  local ready_string = "O-ready/X-cancel ready"
+  local quit_string = "L1-quit room"
+  local begin_string = "R1-master begin game"
+  lg.print(ready_string, 10, 270)
+  lg.print(quit_string, 10, 270 + font_current:getHeight())
+  lg.print(begin_string, 10, 270 + 2*font_current:getHeight())
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", gridRoominfo_x, gridRoominfo_y, gridRoominfo_w, gridRoominfo_h)
+  lg.setColor(r,g,b,a)
+  gui:draw()
+  gooi.draw()
+end
+
+--上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
+function room:gamepadpressed(joystick, button)
+  if button == "dpup" then
+    if isready then return end
+    begin_move_scrollgroup("up")
+  elseif button == "dpdown" then
+    if isready then return end
+    begin_move_scrollgroup("down")
+  elseif button == "b" then  --O键
+    ready()
+  elseif button == "a" then  --X键
+    cancel_ready()
+  elseif button == "leftshoulder" then
+    quit_room()
+  elseif button == "rightshoulder" then
+    begin_game()
+  end
+end
+
+function room:gamepadreleased(joystick, button)
+  if button == "dpup" or button == "dpdown" then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
+      stop_move_scrollgroup()
+    end
+  end
+end
+
+function room:keypressed(key, scancode, isrepeat)
+end
+
+function room:keyreleased(key)
+end
+
+
 --该函数可以实现长按快速滑动的功能
 scroll_update = function (dt)
   -- 判断用户是否正在上下查看房间
@@ -497,86 +613,5 @@ stop_move_scrollgroup = function()
   scroll_focous_time_account = 0
   scroll_focous_flag = false
 end
-
-
-function room:update(dt)
-  --判断此时是否有服务器的broadcast
-  --如果有的话，那么更新一下
-  --GameCancelReadyBroadcast/EnterRoomBroadcast/QuitRoomBroadcast/EnterRoomBroadcast
-  update_players()  --先解析广播的内容，调整enemy_infos,friend_infos的内容
-  update_players_widgets()  --根据最新的enemy_infos,friend_infos的内容更新所有的控件
-  scroll_update(dt)
-  gui:update(dt)
-  gooi.update()
-end
-
-function room:draw()
-  local r,g,b,a = lg.getColor()
-  --绘制出两个玩家表格的格线
-  --grid_enemies
-  for i = 1, 5 do
-    lg.line(grid_enemies_x, grid_enemies_y+(i-1)*grid_enemies_h/4, grid_enemies_x + grid_enemies_w, grid_enemies_y+(i-1)*grid_enemies_h/4)
-  end
-  for i = 1, 3 do
-    lg.line(grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y, grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y+grid_enemies_h)
-  end
-  
-  --grid_friends
-  for i = 1, 5 do
-    lg.line(grid_friends_x, grid_friends_y+(i-1)*grid_friends_h/4, grid_friends_x + grid_friends_w, grid_friends_y+(i-1)*grid_friends_h/4)
-  end
-  for i = 1, 3 do
-    lg.line(grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y, grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y+grid_friends_h)
-  end
-  --绘制提示文字
-  local font_current = lg.getFont()
-  local ready_string = "O-ready/X-cancel ready"
-  local quit_string = "L1-quit room"
-  local begin_string = "R1-master begin game"
-  lg.print(ready_string, 10, 270)
-  lg.print(quit_string, 10, 270 + font_current:getHeight())
-  lg.print(begin_string, 10, 270 + 2*font_current:getHeight())
-  lg.setColor(0, 0, 0, 127)
-  lg.rectangle("fill", gridRoominfo_x, gridRoominfo_y, gridRoominfo_w, gridRoominfo_h)
-  lg.setColor(r,g,b,a)
-  gui:draw()
-  gooi.draw()
-
-end
-
-
---上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
-function room:gamepadpressed(joystick, button)
-  if button == "dpup" then
-    if isready then return end
-    begin_move_scrollgroup("up")
-  elseif button == "dpdown" then
-    if isready then return end
-    begin_move_scrollgroup("down")
-  elseif button == "b" then  --O键
-    ready()
-  elseif button == "a" then  --X键
-    cancel_ready()
-  elseif button == "leftshoulder" then
-    quit_room()
-  elseif button == "rightshoulder" then
-    begin_game()
-  end
-end
-
-function room:gamepadreleased(joystick, button)
-  if button == "dpup" or button == "dpdown" then
-    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
-      stop_move_scrollgroup()
-    end
-  end
-end
-
-function room:keypressed(key, scancode, isrepeat)
-end
-
-function room:keyreleased(key)
-end
-
 
 return room
