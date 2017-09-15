@@ -30,14 +30,14 @@ local gridRoominfo_x = 10
 local gridRoominfo_y = 10
 local gridRoominfo_w = 140
 local gridRoominfo_h = 100
-local grid_enemies_x = 160
-local grid_enemies_y = 10
-local grid_enemies_w = 300
-local grid_enemies_h = 145
-local grid_friends_x = 160
-local grid_friends_y = 165
-local grid_friends_w = 300
-local grid_friends_h = 145
+local grid_1_x = 160
+local grid_1_y = 10
+local grid_1_w = 300
+local grid_1_h = 145
+local grid_2_x = 160
+local grid_2_y = 165
+local grid_2_w = 300
+local grid_2_h = 145
 
 local gridRoominfo = nil
 local lbl_title = nil
@@ -45,10 +45,9 @@ local lbl_mode = nil
 local lbl_people = nil
 local lbl_life = nil
 local lbl_map = nil
-local grid_enemies = nil  --放置每一个地方的信息
-local grid_friends = nil
-local friend_widgets = {}--敌方和我方的players信息展示控件
-local enemy_widgets = {}  --有序
+local grid_1 = nil  --放置groupId为1的grid
+local grid_2 = nil  --放置groupId为2的grid
+local players_widgets = {[1] = {}, [2] = {}}  --存放两个groupId的所有玩家的信息显示的widget
 local gooi_widgets = {}
 local scrollgroup = nil --坦克背包
 --坦克背包scrollgroup的各项参数
@@ -83,19 +82,6 @@ local tankbag = {
   [9] = "tank9",
 }  --存放所有的tank
 
---local enemy_players = {}  --存放所有的敌方玩家信息
-local enemy_infos = {
-  [1] = {["playerId"] = "lsm", ["playerStatus"] = 1},
-  [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1},
-  [3] = {["playerId"] = "yuge", ["playerStatus"] = 2},
-  [4] = {["playerId"] = "james", ["playerStatus"] = 1}
-  }
-local friend_infos = {
-  [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1},
-  [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1},
-  [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2},
-  --[4] = {["playerId"] = "james2", ["playerStatus"] = false}
-}  --存放所有的我方玩家信息
 --存放所有的玩家的信息，groupId作key
 local all_players_infos = {
   [1] = {
@@ -142,11 +128,11 @@ end
 --更新players的相应的控件
 update_players_widgets = function()
   --当前的玩家
-  --直接拿着新的friend_infos数据进行friend_widgets的更新
+  --直接拿着新的all_players_infos[2]数据进行players_widgets[2]的更新
   for i = 1, 8 do
-    if i <= #friend_infos then
-      local f_widget = friend_widgets[i]
-      local f_info_item = friend_infos[i]
+    if i <= #all_players_infos[2] then
+      local f_widget = players_widgets[2][i]
+      local f_info_item = all_players_infos[2][i]
       f_widget:setText(f_info_item["playerId"])
       if f_info_item["playerStatus"] == 1 then
         --设置一个坦克缩略图
@@ -156,18 +142,18 @@ update_players_widgets = function()
         f_widget:setIcon(img_blank)
       end
     elseif i <= room_people then
-      local f_widget = friend_widgets[i]
+      local f_widget = players_widgets[2][i]
       f_widget:setText("")
       f_widget:setIcon(nil)
     else 
       break
     end
   end
-  --直接拿着新的enemy_infos数据进行enemy_widgets的更新
+  --直接拿着新的all_players_infos[1]数据进行players_widgets[1]的更新
   for i = 1, 8 do
-    if i <= #enemy_infos then
-      local e_widget = enemy_widgets[i]
-      local e_info_item = enemy_infos[i]
+    if i <= #all_players_infos[1] then
+      local e_widget = players_widgets[1][i]
+      local e_info_item = all_players_infos[1][i]
       e_widget:setText(e_info_item["playerId"])
       if e_info_item["playerStatus"] == 1 then
         --设置一个准备完成的图片
@@ -177,7 +163,7 @@ update_players_widgets = function()
         e_widget:setIcon(img_blank)
       end
     elseif i <= room_people then
-      local e_widget = enemy_widgets[i]
+      local e_widget = players_widgets[1][i]
       e_widget:setText("")
       e_widget:setIcon(nil)
     else 
@@ -204,6 +190,7 @@ ready = function()
   --network args : myId, roomId,tank_selected_index
   
 end
+
 --cancel_ready
 cancel_ready = function()
   isready = false
@@ -225,8 +212,8 @@ remove_widgets = function()
     --gooi_widgets[k] = nil
   end
   gooi_widgets = {}
-  enemy_widgets = {}
-  friend_widgets = {}
+  players_widgets[1] = {}
+  players_widgets[2] = {}
   gui:rem(scrollgroup)
   scroll_items = {}
 end  
@@ -252,13 +239,13 @@ begin_game = function()
     return
   end
   --检查是否是已经全员到齐且全员ready
-  if #friend_infos == room_people and #enemy_infos == room_people then
-    for k, v in friend_infos do
+  if #all_players_infos[2] == room_people and #all_players_infos[1] == room_people then
+    for k, v in all_players_infos[2] do
       if not v["playerStatus"] == 1 then
         return
       end
     end
-    for k, v in enemy_infos do
+    for k, v in all_players_infos[1] do
       if not v["playerStatus"] == 1 then
         return
       end
@@ -330,71 +317,71 @@ function room:enter(pre, init_table)
   --创建敌方的显示列表
   
   --创建groupId==1的显示列表
-  grid_enemies = gooi.newPanel({x = grid_enemies_x, y = grid_enemies_y, w = grid_enemies_w, h = grid_enemies_h, layout = "grid 4x2"})
+  grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
   for i = 1, 8 do
-    local lbl_enemy = nil
-    if i <= #enemy_infos then
+    local lbl_1_item = nil
+    if i <= #all_players_infos[1] then
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_enemy = gooi.newLabel({text = enemy_infos[i]["playerId"]}):left()
-      if enemy_infos[i]["playerStatus"]==1 then
-        lbl_enemy:setIcon(img_ready)
+      lbl_1_item = gooi.newLabel({text = all_players_infos[1][i]["playerId"]}):left()
+      if all_players_infos[1][i]["playerStatus"]==1 then
+        lbl_1_item:setIcon(img_ready)
       else
-        --lbl_enemy设置一个空的图片作为icon
-        lbl_enemy:setIcon(img_blank)
+        --lbl_1_item设置一个空的图片作为icon
+        lbl_1_item:setIcon(img_blank)
       end
-      grid_enemies:add(lbl_enemy, r..","..c)
+      grid_1:add(lbl_1_item, r..","..c)
     elseif i <= room_people then
       --还未到来的选手
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_enemy = gooi.newLabel({text = ""}):left()
-      grid_enemies:add(lbl_enemy, r..","..c)
+      lbl_1_item = gooi.newLabel({text = ""}):left()
+      grid_1:add(lbl_1_item, r..","..c)
     else
       --永远的空位
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_enemy = gooi.newLabel({text = "————"}):center()
-      grid_enemies:add(lbl_enemy, r..","..c)
+      lbl_1_item = gooi.newLabel({text = "————"}):center()
+      grid_1:add(lbl_1_item, r..","..c)
     end
-    enemy_widgets[#enemy_widgets+1] = lbl_enemy
-    table.insert(gooi_widgets, lbl_enemy)
+    players_widgets[1][#players_widgets[1]+1] = lbl_1_item
+    table.insert(gooi_widgets, lbl_1_item)
   end
-  table.insert(gooi_widgets, grid_enemies)
+  table.insert(gooi_widgets, grid_1)
   
   --创建我方的显示列表
-  grid_friends = gooi.newPanel({x = grid_friends_x, y = grid_friends_y, w = grid_friends_w, h = grid_friends_h, layout = "grid 4x2"})
+  grid_2 = gooi.newPanel({x = grid_2_x, y = grid_2_y, w = grid_2_w, h = grid_2_h, layout = "grid 4x2"})
   for i = 1, 8 do
-    local lbl_friend = nil
-    if i <= #friend_infos then
+    local lbl_2_item = nil
+    if i <= #all_players_infos[2] then
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_friend = gooi.newLabel({text = friend_infos[i]["playerId"]}):left()
-      if friend_infos[i]["playerStatus"]==1 then
+      lbl_2_item = gooi.newLabel({text = all_players_infos[2][i]["playerId"]}):left()
+      if all_players_infos[2][i]["playerStatus"]==1 then
         --设置该玩家的tankType对应的tank缩略图作为icon
-        lbl_friend:setIcon(img_ready)
+        lbl_2_item:setIcon(img_ready)
       else
         --如果没有ready，就设置一个空icon
-        lbl_friend:setIcon(img_blank)
+        lbl_2_item:setIcon(img_blank)
       end
-      grid_friends:add(lbl_friend, r..","..c)
+      grid_2:add(lbl_2_item, r..","..c)
     elseif i <= room_people then
       --还未到来的选手
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_friend = gooi.newLabel({text = ""}):left()
-      grid_friends:add(lbl_friend, r..","..c)
+      lbl_2_item = gooi.newLabel({text = ""}):left()
+      grid_2:add(lbl_2_item, r..","..c)
     else
       --永远的空位
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
-      lbl_friend = gooi.newLabel({text = "————"}):center()
-      grid_friends:add(lbl_friend, r..","..c)
+      lbl_2_item = gooi.newLabel({text = "————"}):center()
+      grid_2:add(lbl_2_item, r..","..c)
     end
-    friend_widgets[#friend_widgets+1] = lbl_friend
-    table.insert(gooi_widgets, lbl_friend)
+    players_widgets[2][#players_widgets[2]+1] = lbl_2_item
+    table.insert(gooi_widgets, lbl_2_item)
   end
-  table.insert(gooi_widgets, grid_friends)
+  table.insert(gooi_widgets, grid_2)
   
   --创建一个选择tank的列表
   --创建scollgroup
@@ -495,7 +482,7 @@ function room:update(dt)
   --GameCancelReadyBroadcast/EnterRoomBroadcast/QuitRoomBroadcast/EnterRoomBroadcast
   local broadcast = 1
   handle_broadcast(broadcast)
-  update_players_widgets()  --根据最新的enemy_infos,friend_infos的内容更新所有的控件
+  update_players_widgets()  --根据最新的all_players_infos[1],all_players_infos[2]的内容更新所有的控件
   scroll_update(dt)
   gui:update(dt)
   gooi.update()
@@ -504,20 +491,20 @@ end
 function room:draw()
   local r,g,b,a = lg.getColor()
   --绘制出两个玩家表格的格线
-  --grid_enemies
+  --grid_1
   for i = 1, 5 do
-    lg.line(grid_enemies_x, grid_enemies_y+(i-1)*grid_enemies_h/4, grid_enemies_x + grid_enemies_w, grid_enemies_y+(i-1)*grid_enemies_h/4)
+    lg.line(grid_1_x, grid_1_y+(i-1)*grid_1_h/4, grid_1_x + grid_1_w, grid_1_y+(i-1)*grid_1_h/4)
   end
   for i = 1, 3 do
-    lg.line(grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y, grid_enemies_x+(i-1)*grid_enemies_w/2, grid_enemies_y+grid_enemies_h)
+    lg.line(grid_1_x+(i-1)*grid_1_w/2, grid_1_y, grid_1_x+(i-1)*grid_1_w/2, grid_1_y+grid_1_h)
   end
   
-  --grid_friends
+  --grid_2
   for i = 1, 5 do
-    lg.line(grid_friends_x, grid_friends_y+(i-1)*grid_friends_h/4, grid_friends_x + grid_friends_w, grid_friends_y+(i-1)*grid_friends_h/4)
+    lg.line(grid_2_x, grid_2_y+(i-1)*grid_2_h/4, grid_2_x + grid_2_w, grid_2_y+(i-1)*grid_2_h/4)
   end
   for i = 1, 3 do
-    lg.line(grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y, grid_friends_x+(i-1)*grid_friends_w/2, grid_friends_y+grid_friends_h)
+    lg.line(grid_2_x+(i-1)*grid_2_w/2, grid_2_y, grid_2_x+(i-1)*grid_2_w/2, grid_2_y+grid_2_h)
   end
   --绘制提示文字
   local font_current = lg.getFont()
