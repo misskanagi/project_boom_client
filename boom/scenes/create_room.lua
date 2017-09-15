@@ -89,9 +89,6 @@ remove_widgets = function()
 end
 --返回roomlist
 back_to_roomlist = function()
-  for k,v in pairs(results) do
-    results[k] = 1
-  end
   game_state.switch(roomlist)
 end
 --提交当前的选择表给Server
@@ -183,7 +180,19 @@ function create_room:update(dt)
       --房间创建成功了
       remove_widgets()
       submitting = false
-      game_state.switch(room,"haha")
+      --此时可以进入room.lua了，把该带的带进入
+      local init_table = {}
+      init_table["myId"] = "lsm"
+      init_table["roomId"] = "xxx"
+      init_table["groupId"] = 1  --房主默认在1号队
+      init_table["roomMasterId"] = "lsm"
+      init_table["gameMode"] = 1  --"chaos"
+      init_table["mapType"] = 1  --"as_snow"
+      init_table["lifeNumber"] = 4
+      init_table["playerPerGroup"] = 4
+      init_table["roomState"] = 1
+      
+      game_state.switch(room, init_table)
     else
       --房间创建失败，弹框提示
       submitting = false
@@ -200,6 +209,7 @@ function create_room:update(dt)
   lbl_life_value:setText(life_value)
   lbl_map_value:setText(map_value)
   gooi.update(dt)
+  gui:update(dt)
 end
 
 function create_room:draw()
@@ -215,6 +225,7 @@ function create_room:draw()
   lg.rectangle("fill", choose_table_x, choose_table_y, choose_table_w, choose_table_h)
   lg.setColor(r,g,b,a)
   gooi.draw()
+  gui:draw()
   --为当前的选项绘制一个白色透明的盖板
   lg.setColor(255, 255, 255, 20)
   lg.rectangle("fill", table_item_x, table_item_ys[current_select_class], table_item_w, table_item_h)
@@ -256,11 +267,19 @@ function create_room:gamepadpressed(joystick, button)
   elseif button == "rightshoulder" then  --确认创建房间
     submit_request()
   elseif button == "leftshoulder" then --取消创建房间，退回到roomlist
-    remove_widgets()
+    --remove_widgets()
     back_to_roomlist()
   end
   
 end
+
+function create_room:leave()
+  for k,v in pairs(results) do
+    results[k] = 1
+  end
+  remove_widgets()
+end
+
 
 function create_room:gamepadreleased(joystick, button)
 end

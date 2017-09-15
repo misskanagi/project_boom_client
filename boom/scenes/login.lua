@@ -63,6 +63,7 @@ local login_feedback1 = false  --发出过了feedback否
 local login_feedback2 = false
 local login_feedback3 = false
 local login_feedback4 = false
+local myId = nil
 
 --状态机
 local states = {
@@ -329,6 +330,7 @@ login_pressed = function()
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
     
+    myId = str_id
     processbar_login:increaseAt(0.2)
     logining = true
   end
@@ -361,7 +363,9 @@ processbar_login_update = function()
     for k,v in pairs(comps) do
       gooi.removeComponent(v)
     end
-    game_state.switch(roomlist)
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(roomlist, init_table)
   end
 end
 

@@ -7,8 +7,9 @@ require "./libs/gooi"
 local lg = love.graphics
 
 local game_state = require("libs.hump.gamestate")
+local myId = nil   --当前玩家的id
 --前置声明
-local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets
+local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update
 --固定尺寸
 local window_w = 480   
 local window_h = 320
@@ -36,22 +37,34 @@ local room_scroll_w = 444   --scroll条占16pixel宽
 local room_scroll_h = 210
 local room_item_height = 70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
 local room_item_width = 460
-local scroll_items = {} --存放滑动列表中的所有的items
+local scroll_items = {} --存放滑动列表中的所有的控件groupitem，与room_infos中的相同顺序一一对应的
 local room_infos = {}  --存放从Server拿到的所有的房间item的数据
---
+--刷新相关值
 local refreshing = false --是否在刷新中
 local refresh_line_x1 = 240
 local refresh_line_x2 = 240
 local refresh_line_length_bound = 200
 local refresh_line_shrink = false
+--申请进入房间的相关值
+local entering = false
+
 
 function roomlist:leave()
+  --
+  room_selected_index = 1
+  scroll_window_index = 1
+  scroll_frame_time_gap_account = 0
+  scroll_frame_time_gap_account = 0
+  refreshing = false
+  entering = false
+  remove_widgets()
   room_infos = {}
   scroll_items = {}
 end
 
 
-function roomlist:enter()
+function roomlist:enter(prev, init_table)
+  myId = init_table and init_table["myId"]
   --love.window.setFullscreen(true)
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
@@ -137,7 +150,7 @@ function roomlist:enter()
     end
     -- 播放一个"吥"的滑到底了的音效
     --gui:feedback('current focous room '..room_selected_index)
-  end
+  end--scrollgroup的滑动监听函数结束
   
   scrollgroup.scrollv.update_focous = function(self, prev_index, current_index)
     if not(prev_index < 1 or prev_index > #scroll_items) then
@@ -151,10 +164,11 @@ function roomlist:enter()
   end
   scrollgroup.scrollv.values.step = room_item_height -- 滑动一次的距离是一个room_item的高度
   
-  refresh()
+  refresh()   --enter的最后就
 end
 
 function roomlist:update(dt)
+  enter_update(dt)
   refresh_update(dt)
   scroll_update(dt)
   gui:update(dt)
@@ -275,6 +289,35 @@ refresh_update = function(dt)
   end
 end
 
+--正在进入房间的状态下的update函数
+enter_update = function(dt)
+  if not entering then return end
+  --首先，检查Server是否发回了准许进入房间的response
+  local enter_succeed = true
+  if enter_succeed then
+    --Server准许进入房间
+    --把该带的东西带上进入room.lua
+    --remove_widgets()
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = "xxx"
+    init_table["groupId"] = 1  --房主默认在1号队
+    init_table["roomMasterId"] = "lsm"
+    init_table["gameMode"] = 1  --"chaos"
+    init_table["mapType"] = 1  --"as_snow"
+    init_table["lifeNumber"] = 4
+    init_table["playerPerGroup"] = 4
+    init_table["roomState"] = 1
+    game_state.switch(room, init_table)
+  else
+    --未准许
+    entering = false
+    --弹框说明一下
+    gui:feedback("sorry, you cannot enter the room")
+  end
+  
+end
+
 
 --刷新房间列表
 refresh = function()
@@ -297,7 +340,8 @@ end
 enter_room = function()
   --将自己的id和要进入的房间id一同发送给Server，Server准入以后，切换场景
   --local room = require("boom.scenes.room")
-  game_state.switch(room)
+  
+  entering  = true
 end
 
 --移除所有的控件
@@ -305,7 +349,6 @@ remove_widgets = function()
   gooi.removeComponent(lbl_title)
   for i = #scroll_items, 1, -1 do
     gui:rem(scroll_items[i])
-    scroll_items[i] = nil
   end
   gui:rem(scrollgroup)
 end
@@ -338,8 +381,9 @@ end
 
 function roomlist:gamepadpressed(joystick, button)
   -- 此处直接处理所有的手柄操作
+  if entering then return end   --如果正在进入房间，禁止按键操作，直到收到一个返回
   if button == "b" then
-    remove_widgets()
+    --remove_widgets()
     enter_room()
   elseif button == 'dpup' then
     if not refreshing then begin_move_scrollgroup("up") end
@@ -347,8 +391,8 @@ function roomlist:gamepadpressed(joystick, button)
     if not refreshing then begin_move_scrollgroup("down") end
   elseif button == 'rightshoulder' then
     cancel_refresh()
-    remove_widgets()
-    game_state.switch(create_room)
+    local init_table = {}
+    game_state.switch(create_room, init_table)
   elseif button == 'leftshoulder' then
     refresh()
   elseif button == "a" then
@@ -372,7 +416,9 @@ function roomlist:keypressed(key, scancode, isrepeat)
   elseif key == 'down' then
     if not refreshing then begin_move_scrollgroup("down") end
   elseif key == 'r' then
-    game_state.switch(create_room)
+    local init_table = {}
+    
+    game_state.switch(create_room, init_table)
   end
 end
 

@@ -6,14 +6,21 @@ package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
+--init_table中带入的数据
+local myId = nil   --玩家自己的Id
 local roomId = nil
-local roomMasterId = nil
 local groupId = nil
-local playersInfo = nil
+local roomMasterId = nil
+local gameMode = nil
+local mapType = nil
+local lifeNumber = nil
+local playerPerGroup = nil
+local roomState = nil   --waiting or gaming
+local PlayerInfos = nil   --包含房间内所有人的PlayerInfo, string playerId = 1;int32 playerStatus = 2;int32 groupId = 3;int32 tankType = 4;
 local room_people = 4 --每队几个人
 
 local img_ready = lg.newImage("assets/sign_bullet.png")
-local img_blank = lg.newImage("assets/sign_bullet.png")
+local img_blank = lg.newImage("assets/blank_32.png")
 
 --固定尺寸
 local window_w = 480
@@ -38,8 +45,6 @@ local lbl_people = nil
 local lbl_life = nil
 local lbl_map = nil
 local grid_enemies = nil  --放置每一个地方的信息
-local lbl_enemies = nil  --所有的我方玩家的label信息
-local lbl_friends = nil  --所有的敌方玩家的label信息
 local grid_friends = nil
 local friend_widgets = {}--敌方和我方的players信息展示控件
 local enemy_widgets = {}  --有序
@@ -92,7 +97,8 @@ local friend_infos = {
   }  --存放所有的我方玩家信息
 
 --前置声明
-local update_players, update_players_widgets, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, quit_room, begin_game
+local update_players, update_players_widgets, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, quit_room, begin_game,
+isMaster
 
 update_players = function()
   
@@ -143,6 +149,11 @@ update_players_widgets = function()
     end
   end
 end
+--判断当前玩家是否是房主
+isMaster = function()
+  return roomMasterId == myId
+end
+
 
 --ready
 ready = function()
@@ -164,27 +175,36 @@ cancel_ready = function()
   
 end
 
-
+--离开时移除所有的组件
 remove_widgets = function()
+  gui:feedback("remove_widgets")
   for k,v in pairs(gooi_widgets) do
     gooi.removeComponent(v)
+    --gooi_widgets[k] = nil
   end
-  gooi_widgets = nil
+  gooi_widgets = {}
+  enemy_widgets = {}
+  friend_widgets = {}
   gui:rem(scrollgroup)
 end  
+
 --离开房间
 quit_room = function()
   --[[message QuitRoomReq {
     string roomId = 1;
     string playerId = 2;}]]--
   --返回到roomlist中
-  remove_widgets()
-  local roomlist = require("boom.scenes.roomlist")
+  --remove_widgets()
+  --local roomlist = require("boom.scenes.roomlist")
   game_state.switch(roomlist)
-
 end
+
 --房主开始游戏
 begin_game = function()
+  --不是房主你开始个p啊
+  if not isMaster() then
+    return
+  end
   --检查是否是已经全员到齐且全员ready
   if #friend_infos == room_people and #enemy_infos == room_people then
     for k, v in friend_infos do
@@ -206,10 +226,24 @@ begin_game = function()
 end
 
 function room:leave()
-  scroll_items = {}
+  gui:feedback("room:leave")
+  for k,v in pairs(gooi_widgets) do
+    gooi.removeComponent(v)
+    --gooi_widgets[k] = nil
+  end
   gooi_widgets = {}
+  enemy_widgets = {}
+  friend_widgets = {}
+  gui:rem(scrollgroup)
+ -- remove_widgets()
+  --scroll_items = {}
+  --gooi_widgets = {}
 end
 
+--[[room的入口，有两种进入的可能：
+1.roomlist:带入除了create_room带入的内容以外，还有所有PlayerInfo的集合
+2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playerPerGroup,roomState
+]]--
 function room:enter(pre, init_table)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
@@ -220,30 +254,39 @@ function room:enter(pre, init_table)
       innerRadius = 3,
       showBorder = true,
   }
-  
   gooi.setStyle(style)
   gooi.desktopMode()
   gooi.shadow()
+  
+  --把从init_table带进来的数据拿出来
+  myId = init_table and init_table["myId"]
   roomId = init_table and init_table["roomId"]
   roomMasterId = init_table and init_table["roomMasterId"]
   groupId = init_table and init_table["groupId"]
-  playersInfo = init_table and init_table["playersInfo"] or {}
+  gameMode = init_table and init_table["gameMode"]
+  mapType = init_table and init_table["mapType"]
+  lifeNumber = init_table and init_table["lifeNumber"]
+  playerPerGroup = init_table and init_table["playerPerGroup"]
+  roomState = init_table and init_table["roomState"]
+  PlayerInfos = init_table and init_table["PlayerInfos"]
+  --playersInfo = init_table and init_table["playersInfo"] or {}
+  
   
   --init_table中有roomId,roomMasterId,groupId,playersInfo
-  gridRoominfo = gooi.newPanel({x = gridRoominfo_x, y = gridRoominfo_y , w = gridRoominfo_w, h = gridRoominfo_h, layout = "grid 4x1"})
+  gridRoominfo = gooi.newPanel({x = gridRoominfo_x, y = gridRoominfo_y , w = gridRoominfo_w, h = gridRoominfo_h, layout = "grid 5x1"})
   
-  --lbl_title = gooi.newLabel({text = "RoomInfo"}):left()
-  lbl_mode = gooi.newLabel({text = "mode:".."chaos"}):left()
-  lbl_people = gooi.newLabel({text = "people:".."4 vs 4"}):left()
-  lbl_life = gooi.newLabel({text = "life:".."5"}):left()
-  lbl_map = gooi.newLabel({text = "map:".."as_snow"}):left()
-  --gridRoominfo:add(lbl_title, "1,1")
-  gridRoominfo:add(lbl_mode, "1,1")
-  gridRoominfo:add(lbl_people, "2,1")
-  gridRoominfo:add(lbl_life, "3,1")
-  gridRoominfo:add(lbl_map, "4,1")
+  lbl_title = gooi.newLabel({text = roomId}):left()
+  lbl_mode = gooi.newLabel({text = "mode:"..gameMode}):left()
+  lbl_people = gooi.newLabel({text = "people:"..playerPerGroup.." vs "..playerPerGroup}):left()
+  lbl_life = gooi.newLabel({text = "life:"..lifeNumber}):left()
+  lbl_map = gooi.newLabel({text = "map:"..mapType}):left()
+  gridRoominfo:add(lbl_title, "1,1")
+  gridRoominfo:add(lbl_mode, "2,1")
+  gridRoominfo:add(lbl_people, "3,1")
+  gridRoominfo:add(lbl_life, "4,1")
+  gridRoominfo:add(lbl_map, "5,1")
   table.insert(gooi_widgets, gridRoominfo)
-  --table.insert(gooi_widgets, lbl_title)
+  table.insert(gooi_widgets, lbl_title)
   table.insert(gooi_widgets, lbl_mode)
   table.insert(gooi_widgets, lbl_people)
   table.insert(gooi_widgets, lbl_life)
@@ -264,24 +307,23 @@ function room:enter(pre, init_table)
         lbl_enemy:setIcon(img_blank)
       end
       grid_enemies:add(lbl_enemy, r..","..c)
-      table.insert(gooi_widgets, lbl_enemy)
     elseif i <= room_people then
       --还未到来的选手
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_enemy = gooi.newLabel({text = ""}):left()
       grid_enemies:add(lbl_enemy, r..","..c)
-      table.insert(gooi_widgets, lbl_enemy)
     else
       --永远的空位
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_enemy = gooi.newLabel({text = "————"}):center()
       grid_enemies:add(lbl_enemy, r..","..c)
-      table.insert(gooi_widgets, lbl_enemy)
     end
     enemy_widgets[#enemy_widgets+1] = lbl_enemy
+    table.insert(gooi_widgets, lbl_enemy)
   end
+  table.insert(gooi_widgets, grid_enemies)
   
   --创建我方的显示列表
   grid_friends = gooi.newPanel({x = grid_friends_x, y = grid_friends_y, w = grid_friends_w, h = grid_friends_h, layout = "grid 4x2"})
@@ -299,25 +341,23 @@ function room:enter(pre, init_table)
         lbl_friend:setIcon(img_blank)
       end
       grid_friends:add(lbl_friend, r..","..c)
-      table.insert(gooi_widgets, lbl_friend)
     elseif i <= room_people then
       --还未到来的选手
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_friend = gooi.newLabel({text = ""}):left()
       grid_friends:add(lbl_friend, r..","..c)
-      table.insert(gooi_widgets, lbl_friend)
     else
       --永远的空位
       local r = (i-1) % 4 + 1
       local c = math.floor((i-1)/4) + 1
       lbl_friend = gooi.newLabel({text = "————"}):center()
       grid_friends:add(lbl_friend, r..","..c)
-      table.insert(gooi_widgets, lbl_friend)
     end
     friend_widgets[#friend_widgets+1] = lbl_friend
+    table.insert(gooi_widgets, lbl_friend)
   end
-  
+  table.insert(gooi_widgets, grid_friends)
   
   --创建一个选择tank的列表
   --创建scollgroup
