@@ -3,7 +3,7 @@ local room = class("room")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
-local scrollview = require("boom.scrollview")
+local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
@@ -34,8 +34,7 @@ local lbl_life = nil
 local lbl_map = nil
 local grid_1 = nil  --放置groupId为1的grid
 local grid_2 = nil  --放置groupId为2的grid
-local scrollgroup = nil --坦克背包是一个scroll列表
-local sv = nil --坦克背包
+local sv_tank = nil --坦克背包
 --存放所有控件的table
 local players_widgets = {[1] = {}, [2] = {}}  --存放两个groupId的所有玩家的信息显示的widget，为了方便更新显示玩家在房间中的情况
 local gooi_widgets = {}
@@ -58,24 +57,14 @@ local grid_2_h = 145
 
 
 --坦克背包scrollgroup的各项参数
-local tank_selected_index = 1 --当前被选中的战车的index
 local scroll_window_index = 1 --变化范围是1~scroll_item_num_per_page
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
---local scroll_focous_time_account = 0
---local scroll_focous_flag = false
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
---local scroll_frame_time_gap_account = 0
 local scroll_item_num_per_page = 3 -- 一页显示几个room_item
 local scrollgroup_x = 10
 local scrollgroup_y = 120
-local scrollgroup_w = 120   --scroll条占16pixel宽
-local scrollgroup_h = 150
 local scroll_item_height = 50   --scroll_item_height * scroll_item_num_per_page == scrollgroup_h，这一点在这里就要保证，不然会出问题
 local scroll_item_width = 120
---local scroll_items = {} --存放滑动列表中的所有的items
-
---local scrollview = {}
---scrollview.init()
 
 --控制信息
 local isready = false  --玩家已经ready
@@ -235,8 +224,13 @@ function room:enter(pre, init_table)
   
   --创建一个选择tank的列表
   --创建scollgroup
-  sv = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
-  sv:setDataSource(tankbag)
+  sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
+  --sv_tankbag:setDataSource(tankbag)
+  for i = 1, #tankbag do
+    local tank_text = gui:text(tankbag[i], {0, 0, 140, 50}, nil, false, {255,255,255,20})
+    sv_tankbag:addChild(tank_text, 'vertical')
+  end
+  sv_tankbag:allChildAdded()
 end
 
 function room:leave()
@@ -252,8 +246,7 @@ function room:update(dt)
   local broadcast = 1
   handle_broadcast(broadcast)
   update_players_widgets()  --根据最新的all_players_infos[1],all_players_infos[2]的内容更新所有的控件
-  --scroll_update(dt)
-  sv:update(dt)
+  sv_tankbag:update(dt)
   gui:update(dt)
   gooi.update()
 end
@@ -296,11 +289,11 @@ function room:gamepadpressed(joystick, button)
   if button == "dpup" then
     if isready then return end
     --begin_move_scrollgroup("up")
-    sv:begin_move("up")
+    sv_tankbag:scrollUp()
   elseif button == "dpdown" then
     if isready then return end
     --begin_move_scrollgroup("down")
-    sv:begin_move("down")
+    sv_tankbag:scrollDown()
   elseif button == "b" then  --O键
     ready()
   elseif button == "a" then  --X键
@@ -316,7 +309,7 @@ function room:gamepadreleased(joystick, button)
   if button == "dpup" or button == "dpdown" then
     if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
       --stop_move_scrollgroup()
-      sv:stop_move()
+      sv_tankbag:stop_move()
     end
   end
 end
@@ -455,7 +448,7 @@ ready = function()
     string roomId = 2;
     int32 tankType = 3;}]]--
 --发送
-
+  local tank_selected_index = sv_tankbag.getSelectedIndex()
   gui:feedback("ready with the tank no."..tank_selected_index)
   --network args : myId, roomId,tank_selected_index
   
@@ -484,7 +477,7 @@ remove_widgets = function()
   gooi_widgets = {}
   players_widgets[1] = {}
   players_widgets[2] = {}
-  sv:clean()
+  sv_tankbag:clean()
   scroll_items = {}
 end  
 

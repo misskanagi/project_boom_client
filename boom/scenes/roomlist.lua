@@ -4,6 +4,7 @@ local game_state = require("libs.hump.gamestate")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
+local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local lg = love.graphics
 

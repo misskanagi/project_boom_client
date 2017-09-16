@@ -1,6 +1,6 @@
 local scrollview = {}
 
-local gui = nil
+local gui = nil   --需要在构造器中传入！
 function scrollview.createObject(init_table, gui_obj)
   gui = gui_obj
   local sv_obj = {}  --存放了scrollview的各种参数的一个table
@@ -19,6 +19,7 @@ function scrollview.createObject(init_table, gui_obj)
   
   sv_obj.scrollgroup = gui:scrollgroup(nil, {sv_obj.x, sv_obj.y, sv_obj.item_width, sv_obj.item_height*sv_obj.item_num_per_page}, sv_obj.parent, 'vertical', sv_obj.bgcolor)
   sv_obj.scrollgroup.scrollv.values.step = sv_obj.item_height -- 设置滑动步长
+  --sv_obj.scrollgroup.scrollv:update_focous(0, 1)
   
   --各种用于sv_obj的控制信息
   local scroll_window_index = 1   --目前是滑动窗口中的哪一个item，范围是1~sv_obj.item_num_per_page
@@ -28,7 +29,7 @@ function scrollview.createObject(init_table, gui_obj)
   local scroll_frame_time_gap_account = 0
   
   --滑动的过程中更新focous的背景颜色
-  sv_obj.scrollgroup.scrollv.update_focous =  function(self, prev_index, current_index)
+  sv_obj.scrollgroup.scrollv.update_focous = function(self, prev_index, current_index)
     if not(prev_index < 1 or prev_index > #sv_obj.scroll_items) then
       local old_item = sv_obj.scroll_items[prev_index]   --old_item是一个gui:group
       old_item.bgcolor = sv_obj.bgcolor
@@ -156,21 +157,25 @@ function scrollview.createObject(init_table, gui_obj)
   end
 
   sv_obj.getSelectedIndex = function()
+    return selected_index
   end
   
-  sv_obj.setDataSource = function(self, datatable)
-    for i = 1, #datatable do
-      local tank_text = gui:text(datatable[i], {0, 0, 140, 50}, nil, false, {255,255,255,20})
-      self.scrollgroup:addchild(tank_text, 'vertical')
-      self.scroll_items[#self.scroll_items+1] = tank_text
-    end
+  sv_obj.addChild = function(self, item)
+    self.scrollgroup:addchild(item, 'vertical')
+    self.scroll_items[#self.scroll_items+1] = item
+  end
+  
+  sv_obj.allChildAdded = function(self)
     self.scrollgroup.scrollv:update_focous(0, 1)
   end
   
-  sv_obj.scrollUp = function()
+  
+  sv_obj.scrollUp = function(self)
+    self:begin_move("up")
   end
   
-  sv_obj.scrollDown = function()
+  sv_obj.scrollDown = function(self)
+    self:begin_move("down")
   end
 
   sv_obj.setReachBottomListener = function(listener_func)
@@ -180,7 +185,6 @@ function scrollview.createObject(init_table, gui_obj)
   sv_obj.setReachTopListener = function(listener_func)
     sv_obj.reachtop_listener = listener_func
   end
-  
   
   sv_obj.clean = function(self)
     gui:rem(self.scrollgroup)
