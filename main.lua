@@ -14,6 +14,10 @@ log.logswitch(false)  --关闭log开关
 --ECS engine
 engine = Engine()
 
+--network
+local network = require("boom.network")
+net = network:instance()
+
 --event manager
 eventmanager = EventManager()
 
@@ -29,6 +33,8 @@ roomlist = require("boom.scenes.roomlist")
 room = require("boom.scenes.room")
 create_room = require("boom.scenes.create_room")
 
+-- test choice
+-- local test_choice = require("boom.scenes.test_choice")
 --将guid对应的手柄映射到xbox键位
 local function map_gamepad_with_guid(joystick_guid)
   love.joystick.setGamepadMapping(joystick_guid, "a", "button", 2)
@@ -48,6 +54,8 @@ local function map_gamepad_with_guid(joystick_guid)
   love.joystick.setGamepadMapping(joystick_guid, "dpright", "hat", 1, "r")
 end
 
+-- test network
+-- local test_network = require("boom.scenes.test_network")
 local osx_joystick_guid = "4c05000000000000cc09000000000000"
 local win_joystick_guid = "4c05cc09000000000000504944564944"
 map_gamepad_with_guid(osx_joystick_guid)
@@ -56,4 +64,7 @@ map_gamepad_with_guid(win_joystick_guid)
 function love.load()
     game_state.registerEvents()
     game_state.switch(login)
+    --game_state.switch(test_choice)
+    --game_state.switch(test_network)
+    game_state.switch(test_place)
 end

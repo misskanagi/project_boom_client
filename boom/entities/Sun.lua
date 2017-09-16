@@ -1,4 +1,5 @@
 local Light = require("boom.components.graphic.Light")
+local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
 -- sun entity
 local createSun = function(map, light_world)
@@ -10,6 +11,7 @@ local createSun = function(map, light_world)
     local range = math.max(w, h)*1.5
     local glow = 0.85
     e:add(Light(light_world, w/2, h/2, z, r, g, b, range, glow))
+    e:add(GlobalEntityId())
     return e
 end
 return createSun

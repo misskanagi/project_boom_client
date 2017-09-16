@@ -31,7 +31,7 @@ local function new(id, type, ...)
   obj.rotation = 0
   obj.scalex = 1
   obj.scaley = 1
- 
+
   obj.castsNoShadow = false
   obj.visible = true
   obj.is_on_screen = true
@@ -42,9 +42,9 @@ local function new(id, type, ...)
 
     circle_canvas = love.graphics.newCanvas(args[3]*2, args[3]*2)
     util.drawto(circle_canvas, 0, 0, 1, function()
-      love.graphics.circle('fill', args[3], args[3], args[3]) 
+      love.graphics.circle('fill', args[3], args[3], args[3])
     end)
-    obj.img = love.graphics.newImage(circle_canvas:newImageData()) 
+    obj.img = love.graphics.newImage(circle_canvas:newImageData())
     obj.imgWidth = obj.img:getWidth()
     obj.imgHeight = obj.img:getHeight()
     obj.ix = obj.imgWidth * 0.5
@@ -130,13 +130,13 @@ function body:refresh()
 end
 
 function body:has_changed()
-  return self:position_changed() or 
-          self:rotation_changed() or 
+  return self:position_changed() or
+          self:rotation_changed() or
           self:scale_changed()
 end
 
 function body:position_changed()
-  return self.old_x ~= self.x or 
+  return self.old_x ~= self.x or
          self.old_y ~= self.y
 end
 
@@ -157,12 +157,12 @@ end
 
 function body:newGrid(frameWidth, frameHeight, imageWidth, imageHeight, left, top, border)
   return anim8.newGrid(
-    frameWidth, frameHeight, 
-    imageWidth or self.img:getWidth(), imageHeight or self.img:getHeight(), 
+    frameWidth, frameHeight,
+    imageWidth or self.img:getWidth(), imageHeight or self.img:getHeight(),
     left, top, border
   )
 end
--- frameWidth, frameHeight, imageWidth, imageHeight, left, top, border 
+-- frameWidth, frameHeight, imageWidth, imageHeight, left, top, border
 function body:addAnimation(name, frames, durations, onLoop)
   self.animations[name] = anim8.newAnimation(frames, durations, onLoop)
 
@@ -193,7 +193,7 @@ function body:update(dt)
     local frame = self.animation.frames[self.animation.position]
     _,_,self.width, self.height = frame:getViewport()
     self.imgWidth, self.imgHeight = self.width, self.height
-    self.normalWidth, self.normalHeight = self.width, self.height 
+    self.normalWidth, self.normalHeight = self.width, self.height
     self.ix, self.iy = self.imgWidth * 0.5,self.imgHeight * 0.5
     self.nx, self.ny = self.ix, self.iy
     self.animation:update(dt)
@@ -206,6 +206,10 @@ end
 
 function body:setRotation(angle)
   self.rotation = angle
+end
+
+function body:setZHeight(zheight)
+	self.zheight = zheight
 end
 
 function body:scale(sx, sy)
@@ -338,7 +342,7 @@ function body:setPoints(...)
 
   local poly_canvas = love.graphics.newCanvas(self.width, self.height)
   util.drawto(poly_canvas, 0, 0, 1, function()
-    love.graphics.polygon('fill', self.unit_data) 
+    love.graphics.polygon('fill', self.unit_data)
   end)
 
   --normalize points to be around the center x y
@@ -347,14 +351,14 @@ function body:setPoints(...)
   end
 
   if not self.img then
-    self.img = love.graphics.newImage(poly_canvas:newImageData()) 
+    self.img = love.graphics.newImage(poly_canvas:newImageData())
     self.imgWidth = self.img:getWidth()
     self.imgHeight = self.img:getHeight()
     self.ix = self.imgWidth * 0.5
     self.iy = self.imgHeight * 0.5
     self:generateNormalMapFlat("top")
   end
-  --wrapping with polygon normals causes edges to show 
+  --wrapping with polygon normals causes edges to show
   --also we do not need wrapping for this default normal map
   self.normal:setWrap("clamp", "clamp")
   self.shadowType = "polygon"
@@ -544,7 +548,7 @@ function body:isVisible()
 end
 
 function body:inLightRange(light)
-  local l, t, w = light.x - light.range, light.y - light.range, light.range*2 
+  local l, t, w = light.x - light.range, light.y - light.range, light.range*2
   return self:inRange(l,t,w,w,1)
 end
 
@@ -557,7 +561,7 @@ function body:inRange(l, t, w, h, s)
     local sh = (self.height * self.scaley)
     radius = (sw > sh and sw or sh)
   end
-    
+
   local bx, by, bw, bh = self.x - radius, self.y - radius, radius * 2, radius * 2
 
   return self.visible and (bx+bw) > (l/s) and bx < (l+w)/s and (by+bh) > (t/s) and by < (t+h)/s
@@ -678,7 +682,7 @@ function body:drawShadow(light)
   if self.castsNoShadow or (self.zheight - light.z) > 0 then
     return
   end
-   
+
   love.graphics.setColor(self.red, self.green, self.blue, self.alpha)
   if self.shadowType == "polygon" then
     self:drawPolyShadow(light)
@@ -695,7 +699,7 @@ function body:drawPolyShadow(light)
   local lightPosition = vector(light.x, light.y)
   local lh = lightPosition * self.zheight
 
-  local height_diff = (self.zheight - light.z) 
+  local height_diff = (self.zheight - light.z)
   if height_diff == 0 then -- prevent inf
     height_diff = -0.001
   end
@@ -707,8 +711,8 @@ function body:drawPolyShadow(light)
     if vector(startToEnd.y, -startToEnd.x) * (vertex - lightPosition) > 0 then
       local point1 = (lh - (vertex * light.z))/height_diff
       local point2 = (lh - (nextVertex * light.z))/height_diff
-      love.graphics.polygon("fill", 
-        vertex.x, vertex.y, point1.x, point1.y, 
+      love.graphics.polygon("fill",
+        vertex.x, vertex.y, point1.x, point1.y,
         point2.x, point2.y, nextVertex.x, nextVertex.y)
     end
   end
@@ -720,7 +724,7 @@ function body:drawCircleShadow(light)
   local selfPos = vector(self.x - self.ox, self.y - self.oy)
   local lightPosition = vector(light.x, light.y)
   local lh = lightPosition * self.zheight
-  local height_diff = (self.zheight - light.z) 
+  local height_diff = (self.zheight - light.z)
   local radius = self.radius * self.scalex
   if height_diff == 0 then -- prevent inf
     height_diff = -0.001
@@ -733,15 +737,15 @@ function body:drawCircleShadow(light)
                         selfPos.y + math.cos(angle) * radius)
   local point3 = (lh - (point1 * light.z))/height_diff
   local point4 = (lh - (point2 * light.z))/height_diff
-  
+
   local shadow_radius = point3:dist(point4)/2
   local circleCenter = (point3 + point4)/2
 
   if lightPosition:dist(selfPos) <= radius then
     love.graphics.circle("fill", circleCenter.x, circleCenter.y, shadow_radius)
   else
-    love.graphics.polygon("fill", point1.x, point1.y, 
-                                  point2.x, point2.y, 
+    love.graphics.polygon("fill", point1.x, point1.y,
+                                  point2.x, point2.y,
                                   point4.x, point4.y,
                                   point3.x, point3.y)
     if lightPosition:dist(circleCenter) < light.range then -- dont draw circle if way off screen
@@ -757,7 +761,7 @@ function body:drawCircleShadow(light)
 end
 
 function body:drawImageShadow(light)
-  local height_diff = (light.z - self.zheight) 
+  local height_diff = (light.z - self.zheight)
   if height_diff <= 0.1 then -- prevent shadows from leaving thier person like peter pan.
     height_diff = 0.1
   end

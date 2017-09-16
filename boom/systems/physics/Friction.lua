@@ -7,6 +7,7 @@ function Friction:update(dt)
         self:updateFriction(entity:get("Physic").body)
         for _, b in pairs(entity:get("Physic").other_bodies) do
             self:updateFrictionForAngular(b)
+            --self:updateFriction(b)
         end
     end
 end
@@ -28,13 +29,19 @@ function Friction:updateFriction(body)
     local lx, ly = self:getLateralVelocity(body)
     local ix, iy = body:getMass() * -lx, body:getMass() * -ly
     local cx, cy = body:getWorldCenter()
+    local impulseLength = math.sqrt(ix*ix+iy*iy)
+    local maxLateralImpulse = 5
+    if impulseLength > maxLateralImpulse then
+      local h = maxLateralImpulse / impulseLength
+      ix, iy = ix * h, iy * h
+    end
     body:applyLinearImpulse(ix, iy, cx, cy)
     -- vanish angular speed
-    body:applyAngularImpulse(0.1 * body:getInertia() * -body:getAngularVelocity())
+    body:applyAngularImpulse(0.05 * body:getInertia() * -body:getAngularVelocity())
     -- vanish roll speed
     local nx, ny = self:getForwardVelocity(body)
     local forwardSpeed = math.sqrt(nx*nx+ny*ny)
-    local dragForceMagnitude = -0.1 * forwardSpeed
+    local dragForceMagnitude = -0.05 * forwardSpeed
     body:applyForce(dragForceMagnitude * nx, dragForceMagnitude * ny, cx, cy)
 end
 

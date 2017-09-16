@@ -1,35 +1,49 @@
 local physics = require "boom.systems.physics"
 local graphic = require "boom.systems.graphic"
 local event = require "boom.systems.event" -- event system's initialization is different
+local control = require "boom.systems.control"
+local network = require "boom.systems.network"
+local debug = require "boom.systems.debug"
 
-local system_manager = class("system_manager")
+local modules = {
+    physics = physics,
+    graphic = graphic,
+    event = event,
+    debug = debug,
+    network = network,
+    control = control,
+}
 
-function system_manager:initialize()
-    self.modules = {
-        physics = physics,
-        graphic = graphic,
-        event = event,
-    }
-end
+local system_manager = {
+  startModule = function(module_name)
+      for n, s in pairs(modules[module_name]) do
+          engine:startSystem(n)
+      end
+  end,
 
-function system_manager:startModule(module_name)
-    for _, s in pairs(self.systems[module_name]) do
-        engine:startSystem(s)
+  stopModule = function(module_name)
+      for n, s in pairs(modules[module_name]) do
+          engine:stopSystem(n)
+      end
+  end,
+
+  toggleModule = function(module_name)
+      for n, s in pairs(modules[module_name]) do
+          engine:toggleSystem(n)
+      end
+  end,
+
+  addAllSystemsToEngine = function()
+    for _, module in pairs(modules) do
+      for _, system in pairs(module) do
+        engine:addSystem(system)
+      end
     end
-end
-
-function system_manager:stopModule(module_name)
-    for _, s in pairs(self.systems[module_name]) do
-        engine:stopSystem(s)
+    -- disable debug system first
+    for n, s in pairs(modules["debug"]) do
+        engine:stopSystem(n)
     end
-end
-
-function system_manager:addAllSystemsToEngine()
-  for _, module in pairs(self.modules) do
-    for _, system in pairs(module) do
-      engine:addSystem(system)
-    end
-  end
-end
+  end,
+}
 
 return system_manager

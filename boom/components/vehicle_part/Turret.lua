@@ -21,7 +21,7 @@ function Turret:initialize(world, x, y)
 
     -- speed
     self.spin_speed = 1
-    self.spin_torque = 1000
+    self.spin_torque = 2000
 end
 
 function Turret:updateSpin(controlState)

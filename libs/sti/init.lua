@@ -594,7 +594,12 @@ function Map:setObjectSpriteBatches(layer)
 				x     = tileX,
 				y     = tileY,
 				r     = tileR,
-				oy    = oy
+				oy    = oy,
+				sx		= tile.sx,
+				sy		= tile.sy,
+				ox		= 0,
+				oy		= oy,
+				quad	= tile.quad
 			}
 
 			if batch then
@@ -605,6 +610,8 @@ function Map:setObjectSpriteBatches(layer)
 
 			self.tileInstances[tile.gid] = self.tileInstances[tile.gid] or {}
 			table.insert(self.tileInstances[tile.gid], tab)
+			-- add to object
+			object.tab = tab
 		end
 	end
 
