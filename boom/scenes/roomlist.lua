@@ -1,12 +1,12 @@
 --管理房间列表
 local roomlist = class("roomlist")
+local game_state = require("libs.hump.gamestate")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local lg = love.graphics
 
-local game_state = require("libs.hump.gamestate")
 local myId = nil   --当前玩家的id
 --前置声明
 local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update

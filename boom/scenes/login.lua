@@ -688,7 +688,7 @@ function login:keyreleased(key)
 end
 
 function login:textinput(text)
-    --gooi.textinput(text)
+  --gooi.textinput(text)
 end
 
 function login:gamepadpressed(joystick, button)
