@@ -4,6 +4,8 @@ local create_room = class("create_room")
 local game_state = require("libs.hump.gamestate")
 
 local gui = require("libs.Gspot")
+
+local cam = require("boom.camera")
 package.loaded["./libs/Gspot"] = nil
 require "./libs/gooi"
 local lg = love.graphics
@@ -33,7 +35,7 @@ local choose_table_w = 460
 local choose_table_h = 200
 --绘制当前选项的白框
 local table_item_x = 10
-local table_item_ys = {["mode"] = 80, ["people"] = 130, ["life"] = 180, ["map"] = 230} 
+local table_item_ys = {["mode"] = 80, ["people"] = 130, ["life"] = 180, ["map"] = 230}
 local table_item_w = 460
 local table_item_h = 50
 
@@ -60,8 +62,8 @@ local prev_select_class = {
   ["life"] = "people",
   ["map"] = "life"
 }
---当前在哪一个大项里 
-local current_select_class = "mode" 
+--当前在哪一个大项里
+local current_select_class = "mode"
 --选择的结果
 local results = {
   ["mode"] = 1,
@@ -110,7 +112,7 @@ end
 
 function create_room:enter(prev, init_table)
   myId = init_table and init_table["myId"]
-  
+
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -120,11 +122,11 @@ function create_room:enter(prev, init_table)
       innerRadius = 3,
       showBorder = true,
   }
-  
+
   gooi.setStyle(style)
   gooi.desktopMode()
   gooi.shadow()
-  
+
   --创建控件
   lbl_title = gooi.newLabel({text = "Create Room", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
   choose_table = gooi.newPanel({x = choose_table_x, y = choose_table_y , w = choose_table_w, h = choose_table_h, layout = "grid 4x3"})
@@ -134,7 +136,7 @@ function create_room:enter(prev, init_table)
     :setColspan(3, 2, 2)
     :setColspan(4, 2, 2)
   choose_table.layout.debug = true
-  
+
   style.font = font_small
   lbl_mode = gooi.newLabel({text = "mode:"}):left()
   lbl_people = gooi.newLabel({text = "people:"}):left()
@@ -144,7 +146,7 @@ function create_room:enter(prev, init_table)
   lbl_people_value = gooi.newLabel({text = ""}):left()
   lbl_life_value = gooi.newLabel({text = ""}):left()
   lbl_map_value = gooi.newLabel({text = ""}):left()
-  
+
   choose_table:add(lbl_mode, "1,1")
   choose_table:add(lbl_people, "2,1")
   choose_table:add(lbl_life, "3,1")
@@ -179,7 +181,7 @@ function create_room:update(dt)
         submit_line_shrink = true
       end
     end
-    
+
     --检查一下是否获取到了Server的返回值
     local succeed = true
     if succeed then
@@ -203,7 +205,7 @@ function create_room:update(dt)
       submitting = false
     end
   end
-  
+
   --
   local mode_value = selections["mode"][results["mode"]]
   local people_value = selections["people"][results["people"]]
@@ -218,6 +220,7 @@ function create_room:update(dt)
 end
 
 function create_room:draw()
+  cam:attach()
   if submitting then
     --绘制提交中的动画
     lg.line(submit_line_x1, window_h/2, submit_line_x2, window_h/2)
@@ -240,6 +243,7 @@ function create_room:draw()
   local confirm_string = "R1-confirm"
   lg.print(back_string, 20, window_h-font_current:getHeight() - 20)
   lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 20, window_h-font_current:getHeight() - 20)
+  cam:detach()
 end
 
 
@@ -275,7 +279,7 @@ function create_room:gamepadpressed(joystick, button)
     --remove_widgets()
     back_to_roomlist()
   end
-  
+
 end
 
 function create_room:leave()

@@ -29,7 +29,7 @@ local comps = {}
 
 local lg = love.graphics
 --所有的尺寸全都固定
-local window_w = 480   
+local window_w = 480
 local window_h = 320
 local driving_liscense_x = 20
 local driving_liscense_y = 80
@@ -64,13 +64,14 @@ local login_feedback2 = false
 local login_feedback3 = false
 local login_feedback4 = false
 local myId = nil
+local cam = require "boom.camera"
 
 --状态机
 local states = {
-  ["focous_id"] = {["dpdown"] = "focous_psw", ["b"] = "kb_id", ["exit_func"] = function() color = text_id.style.bgColor text_id:bg({color[1],color[2],color[3],0}) end}, 
-  ["focous_psw"] = {["dpup"] = "focous_id", ["b"] = "kb_psw", ["dpdown"] = "focous_login", ["exit_func"] = function() color = text_psw.style.bgColor text_psw:bg({color[1],color[2],color[3],0}) end}, 
-  ["focous_login"] = {["dpleft"] = "focous_exit", ["dpup"] = "focous_psw", ["b"] = "pressed_login", ["exit_func"] = function() btn_login:success() end}, 
-  ["focous_exit"] = {["dpright"] = "focous_login", ["dpup"] = "focous_psw", ["b"] = "pressed_exit", ["exit_func"] = function() btn_exit:danger() end}, 
+  ["focous_id"] = {["dpdown"] = "focous_psw", ["b"] = "kb_id", ["exit_func"] = function() color = text_id.style.bgColor text_id:bg({color[1],color[2],color[3],0}) end},
+  ["focous_psw"] = {["dpup"] = "focous_id", ["b"] = "kb_psw", ["dpdown"] = "focous_login", ["exit_func"] = function() color = text_psw.style.bgColor text_psw:bg({color[1],color[2],color[3],0}) end},
+  ["focous_login"] = {["dpleft"] = "focous_exit", ["dpup"] = "focous_psw", ["b"] = "pressed_login", ["exit_func"] = function() btn_login:success() end},
+  ["focous_exit"] = {["dpright"] = "focous_login", ["dpup"] = "focous_psw", ["b"] = "pressed_exit", ["exit_func"] = function() btn_exit:danger() end},
   ["kb_id"] = {["enter_func"] = function() enter_kb_id() end},
   ["kb_psw"] = {["enter_func"] = function() enter_kb_psw() end},
   ["pressed_login"] = {["enter_func"] = function() login_pressed() end},
@@ -90,9 +91,9 @@ current_kb_col = 1
 local current_edit_text = ""
 current_keyboard_state = "focous_text"
 local sm_keyboard = {
-  ["focous_text"] = {["dpdown"] = function() 
+  ["focous_text"] = {["dpdown"] = function()
                                     current_kb_row = 1
-                                    current_keyboard_state = "focous_keyboard" 
+                                    current_keyboard_state = "focous_keyboard"
                                     keyboard_text:bg({0,0,0,50})
                                   end,
                       ["dpleft"] = function()
@@ -180,17 +181,17 @@ local sm_keyboard = {
                                       current_edit_text = current_edit_text..v.char
                                     end
                                   end
-                          
+
                         },
-  ["focous_btn_cancel"] = {["dpright"] = function() 
-                                          current_keyboard_state = "focous_btn_delete" 
-                                          btn_cancel:danger()          
+  ["focous_btn_cancel"] = {["dpright"] = function()
+                                          current_keyboard_state = "focous_btn_delete"
+                                          btn_cancel:danger()
                                          end,
-                           ["dpup"] = function() 
-                                        current_keyboard_state = "focous_keyboard" 
+                           ["dpup"] = function()
+                                        current_keyboard_state = "focous_keyboard"
                                         btn_cancel:danger()
                                       end,
-                            ["dpdown"] = function() 
+                            ["dpdown"] = function()
                                           current_keyboard_state = "focous_text"
                                           btn_cancel:danger()
                                          end,
@@ -212,19 +213,19 @@ local sm_keyboard = {
                                       end
                                     end
                           },
-  ["focous_btn_delete"] = {["dpright"] = function() 
-                                          current_keyboard_state = "focous_btn_confirm" 
+  ["focous_btn_delete"] = {["dpright"] = function()
+                                          current_keyboard_state = "focous_btn_confirm"
                                           btn_delete:warning()
                                          end,
-                           ["dpleft"] = function() 
-                                          current_keyboard_state = "focous_btn_cancel" 
+                           ["dpleft"] = function()
+                                          current_keyboard_state = "focous_btn_cancel"
                                           btn_delete:warning()
                                         end,
-                           ["dpup"] = function() 
-                                        current_keyboard_state = "focous_keyboard" 
+                           ["dpup"] = function()
+                                        current_keyboard_state = "focous_keyboard"
                                         btn_delete:warning()
                                       end,
-                           ["dpdown"] = function() 
+                           ["dpdown"] = function()
                                           current_keyboard_state = "focous_text"
                                           btn_delete:warning()
                                          end,
@@ -244,17 +245,17 @@ local sm_keyboard = {
                                         current_edit_text = current_edit_text..v.char
                                       end
                                     end
-                          
+
                           },
-  ["focous_btn_confirm"] = {["dpleft"] = function() 
-                                          current_keyboard_state = "focous_btn_delete" 
+  ["focous_btn_confirm"] = {["dpleft"] = function()
+                                          current_keyboard_state = "focous_btn_delete"
                                           btn_confirm:success()
                                          end,
-                            ["dpup"] = function() 
-                                        current_keyboard_state = "focous_keyboard" 
+                            ["dpup"] = function()
+                                        current_keyboard_state = "focous_keyboard"
                                         btn_confirm:success()
                                        end,
-                            ["dpdown"] = function() 
+                            ["dpdown"] = function()
                                           current_keyboard_state = "focous_text"
                                           btn_confirm:success()
                                          end,
@@ -263,7 +264,7 @@ local sm_keyboard = {
                                       --直接返回driving license界面
                                       if current_state == "kb_id" then
                                         --current_edit_text中保存的即是需要设置到text_id上的内容
-                                        text_id.indexCursor = #text_id.letters 
+                                        text_id.indexCursor = #text_id.letters
                                         repeat
                                           text_id:deleteBack()
                                         until #text_id.letters == 0
@@ -271,7 +272,7 @@ local sm_keyboard = {
                                         current_state = "focous_id"
                                       elseif current_state == "kb_psw" then
                                         --current_edit_text中保存的即是需要设置到text_id上的内容
-                                        text_psw.indexCursor = #text_psw.letters 
+                                        text_psw.indexCursor = #text_psw.letters
                                         repeat
                                           text_psw:deleteBack()
                                         until #text_psw.letters == 0
@@ -299,9 +300,9 @@ login_pressed = function()
       gooi.removeComponent(v)
     end
     game_state.switch(roomlist)
-    
-    
-  --实现登陆的逻辑 
+
+
+  --实现登陆的逻辑
   local str_id = ""
   for k, v in ipairs(text_id.letters) do    --文本信息保存在了text_id的letters成员中，letters是个table，每一个项也是个table，其中char属性是真正的字符
     str_id = str_id..v.char
@@ -329,7 +330,7 @@ login_pressed = function()
   else
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
-    
+
     myId = str_id
     processbar_login:increaseAt(0.2)
     logining = true
@@ -453,7 +454,7 @@ states.update = function(dt)
       breath_sniff = true
     end
   end
-  
+
   if current_state == "focous_id" then
     local color = text_id.style.bgColor
     --text_id:bg({240, 173, 78,(breath_acc_time / breath_loop_time) * 180 + 75})
@@ -472,7 +473,7 @@ states.update = function(dt)
     elseif current_keyboard_state == "focous_keyboard" then
       -- 找出current_kb_row,current_kb_col对应的btn
       if keyboard_btns and keyboard_btns[current_kb_row] then
-        local keyboard_current_btn = keyboard_btns[current_kb_row][current_kb_col] 
+        local keyboard_current_btn = keyboard_btns[current_kb_row][current_kb_col]
         keyboard_current_btn:bg({0,0,0,(1-(breath_acc_time / breath_loop_time)) * 30})
       end
     elseif current_keyboard_state == "focous_btn_cancel" then
@@ -493,8 +494,8 @@ states.transfer = function(button)
     if btn_func then
       btn_func()
     end
-    
-     
+
+
   elseif states[current_state][button] then
     if states[current_state]["exit_func"] then
       states[current_state]["exit_func"]()
@@ -512,7 +513,7 @@ end
 
 
 function login:enter()
-  love.window.setMode(window_w, window_h)  --登陆窗口小小的
+  --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
   function width() return lg.getWidth() end
   function height() return lg.getHeight() end
@@ -525,16 +526,16 @@ function login:enter()
       innerRadius = 3,
       showBorder = true,
   }
-  
+
   gooi.setStyle(style)
   gooi.desktopMode()
-    
+
   gooi.shadow()
   --gooi.mode3d()
   --gooi.glass()
 
   lg.setDefaultFilter("nearest", "nearest")
-  
+
   style.font = font_big
   label_driving_license = gooi.newLabel({text = "Driving License", x = 10, y = 20, w = window_w-20, h = 60, group = group_dl}):center()
   style.font = font_small
@@ -567,7 +568,7 @@ function login:enter()
                         :setRadius(0, 5)
                         :bg({0,0,0,30})
                         :fg({255, 255, 255, 255})
-  
+
   ------------------
   --创建键盘控件
   pOneLine = gooi.newPanel({x = keyboard_text_x, y = keyboard_text_y, w = keyboard_text_w, h = keyboard_text_h, layout = "grid 1x6"})
@@ -584,7 +585,7 @@ function login:enter()
   keyboard_btns = {}
   for row_id, line_item in ipairs(keyboard_items) do
     keyboard_btns[row_id] = {}
-    for col_id, character_item in ipairs(line_item) do 
+    for col_id, character_item in ipairs(line_item) do
       -- character_item就是对应的字符
       local btn_ch = gooi.newButton({text = character_item, group = group_kb}):center():bg({0,0,0,10})
       keyboard_btns[row_id][col_id] = btn_ch
@@ -592,8 +593,8 @@ function login:enter()
       table.insert(comps, btn_ch)
     end
   end
-  
-  
+
+
   pKeyboard.layout.debug = true
   pBtnsLine = gooi.newPanel({x = keyboard_btns_x, y = keyboard_btns_y, w = keyboard_btns_w, h = keyboard_btns_h, layout = "grid 1x3"})
   -- 放弃输入/删除字符/确认输入
@@ -630,6 +631,11 @@ function login:enter()
   table.insert(comps, pOneLine)
   table.insert(comps, pBtnsLine)
   table.insert(comps, pGrid)
+
+  -- camera operations
+  cam:lookAt(window_w/2, window_h/2)
+  local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
+  cam:zoom(zm)
 end
 
 function login:update(dt)
@@ -658,6 +664,7 @@ function login:update(dt)
 end
 
 function login:draw()
+  cam:attach()
   --绘制一个矩形框将框内信息框住
   if current_state == "kb_id" or current_state == "kb_psw" then
     gooi.draw(group_kb)
@@ -674,7 +681,8 @@ function login:draw()
     gui:draw()
   end
   --
-  
+  cam:detach()
+
   if debug_on then lg.print(text) end
 end
 
@@ -697,7 +705,7 @@ function login:gamepadpressed(joystick, button)
 end
 
 function login:gamepadreleased(joystick, button)
-  
+
 end
 
 function quit()

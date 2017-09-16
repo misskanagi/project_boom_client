@@ -1,6 +1,7 @@
 --管理房间列表
 local roomlist = class("roomlist")
 local game_state = require("libs.hump.gamestate")
+local cam = require "boom.camera"
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
@@ -12,7 +13,7 @@ local myId = nil   --当前玩家的id
 --前置声明
 local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update
 --固定尺寸
-local window_w = 480   
+local window_w = 480
 local window_h = 320
 
 --lbl_title的各项参数
@@ -64,7 +65,7 @@ function roomlist:enter(prev, init_table)
   myId = init_table and init_table["myId"]
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
-  
+
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -74,7 +75,7 @@ function roomlist:enter(prev, init_table)
       innerRadius = 3,
       showBorder = true,
   }
-  
+
   gooi.setStyle(style)
   gooi.desktopMode()
   gooi.shadow()
@@ -117,7 +118,7 @@ refresh_update = function(dt)
         refresh_line_shrink = true
       end
     end
-    
+
     --检查Server最新response数据是否到来
     local hotdata = 1
     --hotdata中包含的是roomNumbers以及所有的RoomInfo的数组
@@ -130,7 +131,7 @@ refresh_update = function(dt)
       [5] = {["roomId"] = "hahaha", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
       [6] = {["roomId"] = "hehehe", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
       }
-    
+
     if hotdata then
       --hotdata中有最新的房间信息，添加到scrollgroup
       scrollgroup:removeAllChildren()
@@ -192,7 +193,7 @@ enter_update = function(dt)
     --弹框说明一下
     gui:feedback("sorry, you cannot enter the room")
   end
-  
+
 end
 
 
@@ -204,7 +205,7 @@ refresh = function()
     string playerId = 1;
   }
   ]]--
-  
+
   refreshing = true
 end
 
@@ -218,13 +219,13 @@ enter_room = function()
   --先检查一下是否被选中的房间的人数还未满，当人数未满的时候才可以加入
   local room_selected_index = scrollgroup:getSelectedIndex()
   local selected_room_item = RoomInfos[room_selected_index]
-  if not (selected_room_item and selected_room_item["playersInRoom"] ~= selected_room_item["playersPerGroup"] * 2) then 
+  if not (selected_room_item and selected_room_item["playersInRoom"] ~= selected_room_item["playersPerGroup"] * 2) then
     gui:feedback("sorry, the room is full!")
-    return 
+    return
   end
-  
+
   --将自己的id和要进入的房间id一同发送给Server，Server准入以后，切换场景
-  
+
   entering  = true
 end
 
@@ -236,16 +237,17 @@ end
 
 
 function roomlist:draw()
+  cam:attach()
   if refreshing then
     --绘制一个
     lg.line(refresh_line_x1, window_h/2, refresh_line_x2, window_h/2)
   end
-  
+
   local r,g,b,a = lg.getColor()
   --绘制lbl_title的底框
   lg.setColor(0, 0, 0, 100)
   lg.rectangle("fill", lbl_title_x, lbl_title_y, lbl_title_w, lbl_title_h)
-  
+
   lg.setColor(r,g,b,a)
   local fresh_string = "L1-refresh"
   local help_string = "R1-create a room"
@@ -253,6 +255,7 @@ function roomlist:draw()
   lg.print(help_string, window_w-font_current:getWidth(help_string) - 20, window_h-font_current:getHeight() - 20)
   gui:draw()
   gooi.draw()
+  cam:detach()
 end
 
 
@@ -299,7 +302,7 @@ function roomlist:keypressed(key, scancode, isrepeat)
     if not refreshing then begin_move_scrollgroup("down") end
   elseif key == 'r' then
     local init_table = {}
-    
+
     game_state.switch(create_room, init_table)
   end
 end

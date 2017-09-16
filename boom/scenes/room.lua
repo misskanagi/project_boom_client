@@ -7,6 +7,7 @@ local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
+local cam = require("boom.camera")
 
 --init_table中带入的数据
 local myId = nil   --玩家自己的Id
@@ -117,7 +118,7 @@ function room:enter(pre, init_table)
   gooi.setStyle(style)
   gooi.desktopMode()
   gooi.shadow()
-  
+
   --把从init_table带进来的数据拿出来
   myId = init_table and init_table["myId"]
   roomId = init_table and init_table["roomId"]
@@ -131,11 +132,11 @@ function room:enter(pre, init_table)
   PlayerInfos = init_table and init_table["PlayerInfos"]
   playersInRoom = init_table and init_table["playersInRoom"]
   --playersInfo = init_table and init_table["playersInfo"] or {}
-  
-  
+
+
   --init_table中有roomId,roomMasterId,groupId,playersInfo
   gridRoominfo = gooi.newPanel({x = gridRoominfo_x, y = gridRoominfo_y , w = gridRoominfo_w, h = gridRoominfo_h, layout = "grid 5x1"})
-  
+
   lbl_title = gooi.newLabel({text = roomId}):left()
   lbl_mode = gooi.newLabel({text = "mode:"..gameMode}):left()
   lbl_people = gooi.newLabel({text = "people:"..playersPerGroup.." vs "..playersPerGroup}):left()
@@ -152,9 +153,9 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, lbl_people)
   table.insert(gooi_widgets, lbl_life)
   table.insert(gooi_widgets, lbl_map)
-  
+
   --创建敌方的显示列表
-  
+
   --创建groupId==1的显示列表
   grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
   for i = 1, 8 do
@@ -187,7 +188,7 @@ function room:enter(pre, init_table)
     table.insert(gooi_widgets, lbl_1_item)
   end
   table.insert(gooi_widgets, grid_1)
-  
+
   --创建我方的显示列表
   grid_2 = gooi.newPanel({x = grid_2_x, y = grid_2_y, w = grid_2_w, h = grid_2_h, layout = "grid 4x2"})
   for i = 1, 8 do
@@ -221,7 +222,7 @@ function room:enter(pre, init_table)
     table.insert(gooi_widgets, lbl_2_item)
   end
   table.insert(gooi_widgets, grid_2)
-  
+
   --创建一个选择tank的列表
   --创建scollgroup
   sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
@@ -252,6 +253,7 @@ function room:update(dt)
 end
 
 function room:draw()
+  cam:attach()
   local r,g,b,a = lg.getColor()
   --绘制出两个玩家表格的格线
   --grid_1
@@ -261,7 +263,7 @@ function room:draw()
   for i = 1, 3 do
     lg.line(grid_1_x+(i-1)*grid_1_w/2, grid_1_y, grid_1_x+(i-1)*grid_1_w/2, grid_1_y+grid_1_h)
   end
-  
+
   --grid_2
   for i = 1, 5 do
     lg.line(grid_2_x, grid_2_y+(i-1)*grid_2_h/4, grid_2_x + grid_2_w, grid_2_y+(i-1)*grid_2_h/4)
@@ -282,6 +284,7 @@ function room:draw()
   lg.setColor(r,g,b,a)
   gui:draw()
   gooi.draw()
+  cam:detach()
 end
 
 --上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
@@ -342,7 +345,7 @@ get_quitroom_broadcast = function(isMaster, playerId, groupId)
   else
     local group_players = all_players_infos[groupId]
     local group_players_copy = {}
-    for i = 1, #group_players do 
+    for i = 1, #group_players do
       if group_players[i]["playerId"] ~= playerId then
         group_players_copy[#group_players_copy+1] = group_players[i]
       end
@@ -408,7 +411,7 @@ update_players_widgets = function()
       local f_widget = players_widgets[2][i]
       f_widget:setText("")
       f_widget:setIcon(nil)
-    else 
+    else
       break
     end
   end
@@ -429,7 +432,7 @@ update_players_widgets = function()
       local e_widget = players_widgets[1][i]
       e_widget:setText("")
       e_widget:setIcon(nil)
-    else 
+    else
       break
     end
   end
@@ -451,7 +454,7 @@ ready = function()
   local tank_selected_index = sv_tankbag.getSelectedIndex()
   gui:feedback("ready with the tank no."..tank_selected_index)
   --network args : myId, roomId,tank_selected_index
-  
+
 end
 
 --cancel_ready
@@ -464,7 +467,7 @@ cancel_ready = function()
   --发送
   gui:feedback("cancel ready")
   --network args : myId, roomId
-  
+
 end
 
 --离开时移除所有的组件
@@ -479,7 +482,7 @@ remove_widgets = function()
   players_widgets[2] = {}
   sv_tankbag:clean()
   scroll_items = {}
-end  
+end
 
 --离开房间
 quit_room = function()
@@ -488,7 +491,7 @@ quit_room = function()
     string playerId = 2;}]]--
   --返回到roomlist中
   --network args : roomId, myId
-  
+
   local roomlist = require("boom.scenes.roomlist")
   local init_table = {}
   init_table["myId"] = myId
