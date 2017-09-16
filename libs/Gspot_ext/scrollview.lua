@@ -1,3 +1,5 @@
+--liushenming，Gspot库的拓展
+
 local scrollview = {}
 
 local gui = nil   --需要在构造器中传入！
@@ -22,6 +24,7 @@ function scrollview.createObject(init_table, gui_obj)
   --sv_obj.scrollgroup.scrollv:update_focous(0, 1)
   
   --各种用于sv_obj的控制信息
+  local reset
   local scroll_window_index = 1   --目前是滑动窗口中的哪一个item，范围是1~sv_obj.item_num_per_page
   local selected_index = 1
   local scroll_focous_flag = false  --此时是否正聚焦于滑动（长按方向键）
@@ -188,6 +191,29 @@ function scrollview.createObject(init_table, gui_obj)
   
   sv_obj.clean = function(self)
     gui:rem(self.scrollgroup)
+    
+    reset()
+  end
+
+  sv_obj.removeAllChildren = function(self)
+    for i = #self.scroll_items, 1, -1 do
+      gui:rem(self.scroll_items[i])
+    end
+    self.scroll_items = {}  --scroll_items中啥都没有了
+    reset()
+  end
+  
+  sv_obj.scrollToTop = function(self)
+    self.scrollgroup.scrollv.values.current = self.scrollgroup.scrollv.values.min
+    reset()
+  end
+  
+  reset = function()
+    selected_index = 1
+    scroll_window_index = 1
+    scroll_focous_flag = false
+    scroll_focous_time_account = 0
+    scroll_frame_time_gap_account = 0
   end
   
   return sv_obj 

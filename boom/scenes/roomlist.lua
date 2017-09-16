@@ -24,22 +24,16 @@ local lbl_title_h = 60
 
 --滚动列表的各项参数
 local scrollgroup = nil
-local room_selected_index = 1 --当前被选中的房间的index
-local scroll_window_index = 1 --变化范围是1~room_item_num_per_page
+--local room_selected_index = 1 --当前被选中的房间的index
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
-local scroll_focous_time_account = 0
-local scroll_focous_flag = false
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
-local scroll_frame_time_gap_account = 0
 local room_item_num_per_page = 3 -- 一页显示几个room_item
 local room_scroll_x = 10
 local room_scroll_y = 70
-local room_scroll_w = 444   --scroll条占16pixel宽
-local room_scroll_h = 210
 local room_item_height = 70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
-local room_item_width = 460
-local scroll_items = {} --存放滑动列表中的所有的控件groupitem，与room_infos中的相同顺序一一对应的
+local room_item_width = 444
 local room_infos = {}  --存放从Server拿到的所有的房间item的数据
+
 --刷新相关值
 local refreshing = false --是否在刷新中
 local refresh_line_x1 = 240
@@ -87,140 +81,16 @@ function roomlist:enter(prev, init_table)
   --创建lbl_title
   lbl_title = gooi.newLabel({text = "Room List", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
   --创建scollgroup
-  scrollgroup = gui:scrollgroup(nil, {room_scroll_x, room_scroll_y, room_scroll_w, room_scroll_h}, nil, 'vertical', {255,255,255,20}) -- scrollgroup will create its own scrollbar
-  -- 设置scrollgroup的滑动监听函数
-  scrollgroup.scrollv.drop = function(self, direction) 
-    --参数的类型检查
-    if (direction ~= nil and type(direction) == "string") then
-      if direction == "up" then
-        if scroll_window_index > 1 then
-          --滑动窗口还没有到最底下
-          scroll_window_index = scroll_window_index - 1
-          room_selected_index = room_selected_index - 1
-          self:update_focous(room_selected_index+1, room_selected_index)
-        else
-          local scroll_old_position = self.values.current
-          local new_position = math.max(self.values.min, self.values.current - self.values.step) 
-          if new_position == scroll_old_position then
-            --无法在继续向上滑动了
-            if room_selected_index ~= 1 then
-              room_selected_index = room_selected_index - 1
-              self:update_focous(room_selected_index+1, room_selected_index)
-            end
-          else
-            --可以继续向上滑动
-            room_selected_index = room_selected_index - 1
-            self:update_focous(room_selected_index+1, room_selected_index)
-            if room_selected_index > #scroll_items - room_item_num_per_page then
-              --此时不更新滑动
-            else
-              self.values.current = new_position
-            end
-          end
-        end
-        gui:feedback(""..room_selected_index)
-      elseif direction == "down" then
-        if scroll_window_index < room_item_num_per_page then
-          --滑动窗口还没有到最底下
-          scroll_window_index = scroll_window_index + 1
-          room_selected_index = room_selected_index + 1
-          self:update_focous(room_selected_index-1, room_selected_index)
-        else
-          local scroll_old_position = self.values.current
-          local new_position = math.min(self.values.max, self.values.current + self.values.step) 
-          if new_position == scroll_old_position then
-            --无法在继续向下滑动了
-            if room_selected_index ~= #scroll_items then
-              room_selected_index = room_selected_index + 1
-              self:update_focous(room_selected_index-1, room_selected_index)
-            end
-          else
-            --可以继续向下滑动
-            room_selected_index = room_selected_index + 1
-            self:update_focous(room_selected_index-1, room_selected_index)
-            if room_selected_index <= room_item_num_per_page then
-              --此时不更新滑动
-            else
-              self.values.current = new_position
-            end
-          end
-        end
-        gui:feedback(""..room_selected_index)
-      end
-      -- 播放一个"咻"的音效
-    end
-    -- 播放一个"吥"的滑到底了的音效
-    --gui:feedback('current focous room '..room_selected_index)
-  end--scrollgroup的滑动监听函数结束
-  
-  scrollgroup.scrollv.update_focous = function(self, prev_index, current_index)
-    if not(prev_index < 1 or prev_index > #scroll_items) then
-      local old_item = scroll_items[prev_index]
-      old_item.bgcolor = {255,255,255,20}
-    end
-    if not(current_index < 1 or current_index > #scroll_items) then
-      local new_item = scroll_items[current_index]
-      new_item.bgcolor = {255,255,255,50}
-    end
-  end
-  scrollgroup.scrollv.values.step = room_item_height -- 滑动一次的距离是一个room_item的高度
-  
+  scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
   refresh()   --enter的最后就
 end
 
 function roomlist:update(dt)
   enter_update(dt)
   refresh_update(dt)
-  scroll_update(dt)
+  scrollgroup:update(dt)
   gui:update(dt)
   gooi.update(dt)
-end
-
-
---该函数可以实现长按快速滑动的功能
-scroll_update = function (dt)
-  -- 判断用户是否正在上下查看房间
-  local scroll = scrollgroup.scrollv
-  if scroll_focous_flag == true then
-    scroll_focous_time_account = scroll_focous_time_account + dt
-    if scroll_focous_time_account >= scroll_focous_time_bound then
-      --已经达到了可以开始飞速滑动的时间线
-      scroll_frame_time_gap_account = scroll_frame_time_gap_account + dt
-      if scroll_frame_time_gap_account >= scroll_frame_time_gap_bound then
-        scroll_frame_time_gap_account = 0
-        if love.keyboard.isDown("up") or (joystick and joystick:isGamepadDown("dpup")) then
-          scroll:drop("up")
-        end
-        if love.keyboard.isDown("down") or (joystick and joystick:isGamepadDown("dpdown")) then
-          scroll:drop("down")
-        end
-      end
-    end
-  end
-end
-
---用户使用键盘或者手柄操作scrollgroup,"up"/"down"
-begin_move_scrollgroup = function(direction)
-  if not (direction and type(direction) == "string") then
-    return
-  end
-  if direction == "up" then
-    scroll_focous_flag = true
-    scroll_focous_time_account = 0
-    local scroll = scrollgroup.scrollv
-    scroll:drop("up")
-  elseif direction == "down" then
-    scroll_focous_flag = true
-    scroll_focous_time_account = 0
-    local scroll = scrollgroup.scrollv
-    scroll:drop("down")
-  end
-end
-
---停止滑动scrollgroup
-stop_move_scrollgroup = function()
-  scroll_focous_time_account = 0
-  scroll_focous_flag = false
 end
 
 --处理refresh更新的逻辑
@@ -262,13 +132,8 @@ refresh_update = function(dt)
       }
     
     if hotdata then
-      --hotdata中有最新的房间信息，添加到scrollgroup中
-      --移除老的控件
-      for i = #scroll_items, 1, -1 do
-        gui:rem(scroll_items[i])
-        scroll_items[i] = nil
-      end
-      scroll_items = {}  --scroll_items中啥都没有了
+      --hotdata中有最新的房间信息，添加到scrollgroup
+      scrollgroup:removeAllChildren()
       --添加新的控件
       for i = 1, roomNumbers do
         --w一共是444
@@ -283,21 +148,16 @@ refresh_update = function(dt)
         3.mode
         4.人数情况:5/8
         ]]--
-        local gi = gui:collapsegroup('', {w = room_item_width, h = room_item_height})
-        gi.bgcolor = {255,255,255,10}
+        local gi = gui:group('', {w = room_item_width, h = room_item_height})
+        gi.bgcolor = {255,255,255,0}
         local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
         local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
         local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
         local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
-        scroll_items[#scroll_items+1] = gi
-    
-        scrollgroup:addchild(gi, 'vertical')
+        scrollgroup:addChild(gi)
       end
-      --恢复滑动列表的各项参数
-      room_selected_index = 1
-      scroll_window_index = 1
-      scrollgroup.scrollv.values.current = scrollgroup.scrollv.values.min
-      scrollgroup.scrollv:update_focous(0, room_selected_index)
+      scrollgroup:allChildAdded()
+      scrollgroup:scrollToTop()
       refreshing = false
     end
   end
@@ -312,6 +172,7 @@ enter_update = function(dt)
     --Server准许进入房间
     local roomMasterId_res = "lsm" --Server的response信息
     --把该带的东西带上进入room.lua
+    local room_selected_index = scrollgroup.getSelectedIndex()
     local selected_roominfo_item = RoomInfos[room_selected_index]
     local init_table = {}
     init_table["myId"] = myId
@@ -355,6 +216,7 @@ end
 --进入房间
 enter_room = function()
   --先检查一下是否被选中的房间的人数还未满，当人数未满的时候才可以加入
+  local room_selected_index = scrollgroup:getSelectedIndex()
   local selected_room_item = RoomInfos[room_selected_index]
   if not (selected_room_item and selected_room_item["playersInRoom"] ~= selected_room_item["playersPerGroup"] * 2) then 
     gui:feedback("sorry, the room is full!")
@@ -369,11 +231,7 @@ end
 --移除所有的控件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
-  --[[for i = #scroll_items, 1, -1 do
-    gui:rem(scroll_items[i])
-  end]]--
-  gui:rem(scrollgroup)
-  scroll_items = {}
+  scrollgroup:clean()
 end
 
 
@@ -409,9 +267,9 @@ function roomlist:gamepadpressed(joystick, button)
     --remove_widgets()
     enter_room()
   elseif button == 'dpup' then
-    if not refreshing then begin_move_scrollgroup("up") end
+    if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
   elseif button == 'dpdown' then
-    if not refreshing then begin_move_scrollgroup("down") end
+    if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
   elseif button == 'rightshoulder' then
     cancel_refresh()
     local init_table = {}
@@ -426,7 +284,8 @@ end
 function roomlist:gamepadreleased(joystick, button)
   if button == "dpup" or button == "dpdown" then
     if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
-      stop_move_scrollgroup()
+      --stop_move_scrollgroup()
+      scrollgroup:stop_move()
     end
   end
 end

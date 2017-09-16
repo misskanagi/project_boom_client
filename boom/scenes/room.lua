@@ -97,7 +97,7 @@ local all_players_infos = {
   }
 
 --前置声明
-local update_players_widgets, ready, cancel_ready, remove_widgets, scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, quit_room, begin_game,
+local update_players_widgets, ready, cancel_ready, remove_widgets, quit_room, begin_game,
 isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadcast,get_gamecancelready_broadcast, get_gamereadybroadcast, handle_broadcast
 
 --[[room的入口，有两种进入的可能：
