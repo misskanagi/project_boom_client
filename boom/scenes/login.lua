@@ -1,6 +1,7 @@
 -- 登陆游戏
 local login = class("login")
-
+local LoginResHandler = class("LoginResHandler", System)
+local loginres_handler = LoginResHandler()
 local game_state = require("libs.hump.gamestate")
 
 local gui = require("libs.Gspot")
@@ -65,7 +66,7 @@ local login_feedback3 = false
 local login_feedback4 = false
 local myId = nil
 local cam = require "boom.camera"
-
+local got_login_response = false  --是否接收到Server的输入
 --状态机
 local states = {
   ["focous_id"] = {["dpdown"] = "focous_psw", ["b"] = "kb_id", ["exit_func"] = function() color = text_id.style.bgColor text_id:bg({color[1],color[2],color[3],0}) end},
@@ -296,10 +297,10 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-    for k,v in pairs(comps) do
+    --[[for k,v in pairs(comps) do
       gooi.removeComponent(v)
     end
-    game_state.switch(roomlist)
+    game_state.switch(roomlist)]]--
 
 
   --实现登陆的逻辑
@@ -330,7 +331,7 @@ login_pressed = function()
   else
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
-
+    net:requestLogin(str_id, str_psw)
     myId = str_id
     processbar_login:increaseAt(0.2)
     logining = true
@@ -343,10 +344,10 @@ processbar_login_update = function()
   local info3 = "A country does not have permanent friends, or permanent enemies."
   local info4 = "Good luck."
   if processbar_login:getValue() >= 0.2 and not login_feedback1 then
-    if not login_success then
+    if not got_login_response then  --当没有获取到Server响应时先卡住
       --现在需要让进度条卡在0.2的位置，不再继续下去
       processbar_login:increaseAt(0)
-    else
+    elseif login_success then  --获取了响应且成功了以后
       gui:feedback(info1)
       login_feedback1 = true
     end
@@ -511,8 +512,12 @@ states.transfer = function(button)
   end
 end
 
-
+net:connect("192.168.1.101", 8080)
+net:startReceiving()
 function login:enter()
+  --注册事件监听函数
+  print("login:enter()")
+  eventmanager:addListener("LoginRes", loginres_handler, loginres_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
   function width() return lg.getWidth() end
@@ -641,26 +646,27 @@ end
 function login:update(dt)
   if logining then
     --检查channel是否有已经有了返回值，如果有，检查是否登陆成功
-    local succeed = true
-    if succeed then
-      login_success = true
-    else
-      --身份验证未通过
-      logining = false
-      login_succes = false
-      --log.debug("id:"..str_id..", psw:"..str_psw)
-      --此时说明登陆失败，提示玩家登陆信息有误
-      text_id:bg({255,0,0,100})
-      text_psw:bg({255,0,0,100})
-      current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
-      processbar_login.value = 0
-      processbar_login:increaseAt(0)
+    if got_login_response then  --已经获取到了Server的响应
+      if not login_success then
+        --身份验证未通过
+        logining = false
+        login_succes = false
+        got_login_response = false
+        --log.debug("id:"..str_id..", psw:"..str_psw)
+        --此时说明登陆失败，提示玩家登陆信息有误
+        text_id:bg({255,0,0,100})
+        text_psw:bg({255,0,0,100})
+        current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
+        processbar_login.value = 0
+        processbar_login:increaseAt(0)
+      end
     end
   end
   processbar_login_update(dt)
   states.update(dt)
   gooi.update(dt)
   gui:update(dt)
+  net:update(dt)
 end
 
 function login:draw()
@@ -707,6 +713,18 @@ end
 function login:gamepadreleased(joystick, button)
 
 end
+
+--处理接收到网络的LoginRes以后的事件
+function LoginResHandler:fireLoginResEvent(event)
+  got_login_response = true
+  if event.resultCode == 1 then
+    --登录成功
+    login_success = true
+  else
+    login_success = false
+  end
+end
+
 
 function quit()
   love.event.quit()

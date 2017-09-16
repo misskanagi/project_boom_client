@@ -5,6 +5,7 @@ local MouseReleased = require("boom.events.MouseReleased")
 local NetKeyPressed = require("boom.events.NetKeyPressed")
 local NetKeyReleased = require("boom.events.NetKeyReleased")
 local SnapshotReceived = require("boom.events.SnapshotReceived")
+local LoginRes = require("boom.events.LoginRes")
 
 local events = {
     KeyPressed = KeyPressed,
@@ -14,5 +15,6 @@ local events = {
     NetKeyPressed = NetKeyPressed,
     NetKeyReleased = NetKeyReleased,
     SnapshotReceived = SnapshotReceived,
+    LoginRes = LoginRes,
 }
 return events

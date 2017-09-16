@@ -71,6 +71,7 @@ function network:update(dt)
 end
 
 function network:updateReceive(dt)
+  --print("network:updateReceive")
   local msg = self:receive()
   if msg then
     for _, json_string in pairs(msg) do
@@ -97,6 +98,25 @@ function network:updateReceive(dt)
         --print("data:", data)
         --print("entities:", data.entities)
         eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
+      elseif data.cmdType == self.cmd_code.LOGIN_RES then
+        print("got LOGIN_RES!")
+        eventmanager:fireEvent(events.LoginRes(data.resultCode))
+      elseif data.cmdType == self.cmd_code.GET_ROOM_LIST_RES then
+        
+      elseif data.cmdType == self.cmd_code.CREATE_ROOM_RES then
+        
+      elseif data.cmdType == self.cmd_code.ENTER_ROOM_RES then
+        
+      elseif data.cmdType == self.cmd_code.ENTER_ROOM_BROADCAST then
+        
+      elseif data.cmdType == self.cmd_code.QUIT_ROOM_BROADCAST then
+        
+      elseif data.cmdType == self.cmd_code.GAME_READY_BROADCAST then
+        
+      elseif data.cmdType == self.cmd_code.GAME_CANCEL_READY_BROADCAST then
+        
+      elseif data.cmdType == self.cmd_code.GAME_BEGIN_BROADCAST then
+      
       end
     end
   end
@@ -108,6 +128,47 @@ function network:loginTest(id)
     --print(json.encode(data))
     local result = self:send(self.cmd_code.LOGIN_REQ, {playerId = id, password = "1234"})
 end
+
+--请求房间列表
+function network:requestGetRoomList(playerId)
+  local result = self:send(self.cmd_code.GET_ROOM_LIST_REQ, {playerId = playerId})
+end
+
+--请求创建房间
+function network:requestCreateRoom(playerId, gameMode, mapType, lifeNumber, playersPerGroup)
+  local result = self:send(self.cmd_code.CREATE_ROOM_REQ, {playerId = playerId, gameMode = gameMode, mapType = mapType, lifeNumber = lifeNumber, playersPerGroup = playersPerGroup})
+end
+
+--请求进入房间
+function network:requestEnterRoom(roomId, playerId)
+  local result = self:send(self.cmd_code.ENTER_ROOM_REQ, {roomId = roomId, playerId = playerId})
+end
+
+--请求退出房间
+function network:requestQuitRoom(roomId, playerId)
+  local result = self:send(self.cmd_code.QUIT_ROOM_REQ, {roomId = roomId, playerId = playerId})
+end
+
+--请求登录
+function network:requestLogin(name, password)
+  local result = self:send(self.cmd_code.LOGIN_REQ, {playerId = name, password = password})
+end
+
+--请求进入准备状态
+function network:requestGameReady(playerId, roomId, tankType)
+  local result = self:send(self.cmd_code.GAME_READY_REQ, {playerId = playerId, roomId = roomId, tankType = tankType})
+end
+
+--请求退出准备状态
+function network:requestGameCancelReady(playerId, roomId)
+  local result = self:send(self.cmd_code.GAME_CANCEL_READY, {playerId = playerId, roomId = roomId})
+end
+
+--请求开始游戏
+function network:requestGameBegin(roomId)
+  local result = self:send(self.cmd_code.GAME_BEGIN_REQ, {roomId = roomId})
+end
+
 
 function network:connect(address, port)
     self.fd = netLib.Lua_connect(address, port)
