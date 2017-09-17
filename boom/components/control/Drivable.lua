@@ -1,6 +1,6 @@
-local Controllable = Component.create("Controllable")
+local Drivable = Component.create("Drivable")
 
-function Controllable:initialize()
+function Drivable:initialize()
     self.cmd = {
       forward = false,
       backward = false,
@@ -8,7 +8,8 @@ function Controllable:initialize()
       turn_right = false,
       turret_spin_pos = false,
       turret_spin_neg = false,
+      toggle_light = false,
     }
 end
 
-return Controllable
+return Drivable

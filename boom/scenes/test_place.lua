@@ -28,6 +28,9 @@ local entity = require("boom.entities")
 --debug canvas
 local debug_canvas = require "boom.systems.debug.debug_canvas"
 
+--particle canvas
+local particle_canvas = require "boom.systems.graphic.particle_canvas"
+
 function test_place:enter()
     -- init physics module
     self.world = world_module()
@@ -93,6 +96,8 @@ function test_place:draw()
     end)
     -- draw debug
     debug_canvas:draw()
+    -- draw particle
+    particle_canvas:draw()
     -- camera detach
     self.camera:detach()
     -- draw HUD

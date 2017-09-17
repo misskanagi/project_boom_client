@@ -1,10 +1,10 @@
-local ControllableSync = class("ControllableSync", System)
+local DrivableSync = class("DrivableSync", System)
 
-function ControllableSync:update(dt)
+function DrivableSync:update(dt)
     for k, entity in pairs(self.targets) do
       local tire = entity:get("Tire")
       local turret = entity:get("Turret")
-      local cmd = entity:get("Controllable").cmd
+      local cmd = entity:get("Drivable").cmd
       if cmd.forward == true then
         tire:updateDrive(tire.CONTROLSTATE.forward)
       end
@@ -31,8 +31,8 @@ function ControllableSync:update(dt)
     end
 end
 
-function ControllableSync:requires()
-    return {"Controllable"}
+function DrivableSync:requires()
+    return {"Drivable"}
 end
 
-return ControllableSync
+return DrivableSync

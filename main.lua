@@ -64,9 +64,10 @@ map_gamepad_with_guid(osx_joystick_guid)
 map_gamepad_with_guid(win_joystick_guid)
 
 function love.load()
+    print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
-    game_state.switch(login)
+    --game_state.switch(login)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
-    --game_state.switch(test_place)
+    game_state.switch(test_place)
 end
