@@ -27,11 +27,11 @@ eventmanager = EventManager()
 local game_state = require("libs.hump.gamestate")
 
 -- test scene
-test_place = require("boom.scenes.test_place")
-login = require("boom.scenes.login")
-roomlist = require("boom.scenes.roomlist")
-room = require("boom.scenes.room")
-create_room = require("boom.scenes.create_room")
+local test_place = require("boom.scenes.test_place")
+--login = require("boom.scenes.login")
+--roomlist = require("boom.scenes.roomlist")
+--room = require("boom.scenes.room")
+--create_room = require("boom.scenes.create_room")
 
 -- test choice
 local test_choice = require("boom.scenes.test_choice")

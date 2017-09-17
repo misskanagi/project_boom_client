@@ -56,7 +56,8 @@ function test_place:enter()
     -- init camera
     self.camera = camera:instance()
     self.camera:lookAt(1280, 1664)
-    print(love.graphics.getWidth(), love.graphics.getHeight())
+    local w, h = love.graphics.getWidth(), love.graphics.getHeight()
+    self.camera:zoomTo(w/800)
 end
 
 function test_place:update(dt)
@@ -75,7 +76,6 @@ function test_place:update(dt)
       -self.camera.x + love.graphics.getWidth()/2,
       -self.camera.y + love.graphics.getHeight()/2,
       self.camera.scale)
-    --local c = love.thread.getChannel("fuck")
     --print(c:pop())
 end
 

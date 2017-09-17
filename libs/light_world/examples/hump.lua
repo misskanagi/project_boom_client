@@ -5,7 +5,7 @@ local LightWorld = require "lib"
 function love.load()
   x = 0
   y = 0
-  scale = 1
+  scale = 1.0
   cam = Camera(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 
 	image = love.graphics.newImage("examples/gfx/machine2.png")
