@@ -8,8 +8,11 @@ package.loaded["./libs/Gspot"] = nil
 local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local lg = love.graphics
+local events = require("boom.events")
 local RoomListNetHandler = class("RoomListNetHandler", System)
+local InputHandler = class("InputHandler", System)
 local roomlist_net_handler = RoomListNetHandler()   --具体的handler实例
+local input_handler = InputHandler()
 
 local myId = nil   --当前玩家的id
 --前置声明
@@ -66,6 +69,9 @@ end
 function roomlist:enter(prev, init_table)
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
+  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("InputReleased", input_handler, input_handler.fireReleasedEvent)
+  
   myId = init_table and init_table["myId"]
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
@@ -195,36 +201,69 @@ function roomlist:gamepadpressed(joystick, button)
   -- 此处直接处理所有的手柄操作
   if entering then return end   --如果正在进入房间，禁止按键操作，直到收到一个返回
   if button == "b" then
-    --remove_widgets()
-    enter_room()
+    --enter_room()
+    eventmanager:fireEvent(events.InputPressed("a"))
   elseif button == 'dpup' then
-    if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
+    --if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
+    eventmanager:fireEvent(events.InputPressed("up"))
   elseif button == 'dpdown' then
-    if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
+    --if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
+    eventmanager:fireEvent(events.InputPressed("down"))
   elseif button == 'rightshoulder' then
-    local init_table = {}
+    --[[local init_table = {}
     init_table["myId"] = myId
-    game_state.switch(create_room, init_table)
+    game_state.switch(create_room, init_table)]]--
+    eventmanager:fireEvent(events.InputPressed("r1"))
   elseif button == 'leftshoulder' then
-    refresh()
+    --refresh()
+    eventmanager:fireEvent(events.InputPressed("l1"))
   end
 end
 
 function roomlist:gamepadreleased(joystick, button)
-  if button == "dpup" or button == "dpdown" then
-    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
+  if button == "dpup" then
+    eventmanager:fireEvent(events.InputReleased("up"))
+  elseif button == "dpdown" then
+    --[[if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
       --stop_move_scrollgroup()
       scrollgroup:stop_move()
-    end
+    end]]--
+    eventmanager:fireEvent(events.InputReleased("down"))
   end
 end
 
 function roomlist:keypressed(key, scancode, isrepeat)
-  
+  if entering then return end   --如果正在进入房间，禁止按键操作，直到收到一个返回
+  if key == "a" then
+    --enter_room()
+    eventmanager:fireEvent(events.InputPressed("a"))
+  elseif key == 'up' then
+    --if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
+    eventmanager:fireEvent(events.InputPressed("up"))
+  elseif key == 'down' then
+    --if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
+    eventmanager:fireEvent(events.InputPressed("down"))
+  elseif key == 'r' then
+    --[[local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(create_room, init_table)]]--
+    eventmanager:fireEvent(events.InputPressed("r1"))
+  elseif key == 'l' then
+    --refresh()
+    eventmanager:fireEvent(events.InputPressed("l1"))
+  end
 end
 
 function roomlist:keyreleased(key)
-  
+  if key == "up" then
+    eventmanager:fireEvent(events.InputReleased("up"))
+  elseif key == "down" then
+    --[[if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
+      --stop_move_scrollgroup()
+      scrollgroup:stop_move()
+    end]]--
+    eventmanager:fireEvent(events.InputReleased("down"))
+  end
 end
 
 
@@ -301,5 +340,54 @@ function RoomListNetHandler:fireEnterRoomResEvent(event)
   else
   end
 end
+
+function InputHandler:firePressedEvent(event)
+  local cmd = event.cmd
+  if cmd == "up" then
+    if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
+  elseif cmd == "down" then
+    if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
+  elseif cmd == "left" then
+    
+  elseif cmd == "right" then
+    
+  elseif cmd == "a" then
+    --remove_widgets()
+    enter_room()
+  elseif cmd == "b" then
+    
+  elseif cmd == "x" then
+    
+  elseif cmd == "y" then
+    
+  elseif cmd == "l1" then
+    refresh()
+  elseif cmd == "l2" then
+    
+  elseif cmd == "r1" then
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(create_room, init_table)
+  elseif cmd == "r2" then
+    
+  end
+end
+
+function InputHandler:fireReleasedEvent(event)
+  local cmd = event.cmd
+  if cmd == "up" then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
+      --stop_move_scrollgroup()
+      sv_tankbag:stop_move()
+    end
+  elseif cmd == "down" then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown")))  and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
+      --stop_move_scrollgroup()
+      sv_tankbag:stop_move()
+    end
+  end
+end
+end
+
 
 return roomlist

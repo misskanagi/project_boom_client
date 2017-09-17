@@ -233,6 +233,19 @@ function create_room:draw()
   cam:detach()
 end
 
+function create_room:leave()
+  for k,v in pairs(results) do
+    results[k] = 1
+  end
+  submitting = false
+  remove_widgets()
+  --将各种数值还原成1
+  results["mode"] = 1
+  results["people"] = 1
+  results["life"] = 1
+  results["map"] = 1
+  current_select_class = "mode"
+end
 
 function create_room:gamepadpressed(joystick, button)
   if submitting then return end --提交中的时候禁止任何输入
@@ -252,36 +265,22 @@ function create_room:gamepadpressed(joystick, button)
   end
 end
 
-function create_room:leave()
-  for k,v in pairs(results) do
-    results[k] = 1
-  end
-  submitting = false
-  remove_widgets()
-  --将各种数值还原成1
-  results["mode"] = 1
-  results["people"] = 1
-  results["life"] = 1
-  results["map"] = 1
-  current_select_class = "mode"
-end
-
 function create_room:gamepadreleased(joystick, button)end
 
 function create_room:keypressed(key, scancode, isrepeat)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
-  if button == "up" then
+  if key == "up" then
     eventmanager:fireEvent(events.InputPressed("up"))
-  elseif button == "down" then
+  elseif key == "down" then
     eventmanager:fireEvent(events.InputPressed("down"))
-  elseif button == "left" then
+  elseif key == "left" then
     eventmanager:fireEvent(events.InputPressed("left"))
-  elseif button == "right" then
+  elseif key == "right" then
     eventmanager:fireEvent(events.InputPressed("right"))
-  elseif button == "r" then  --确认创建房间
+  elseif key == "r" then  --确认创建房间
     eventmanager:fireEvent(events.InputPressed("r1"))
-  elseif button == "l" then --取消创建房间，退回到roomlist
+  elseif key == "l" then --取消创建房间，退回到roomlist
     eventmanager:fireEvent(events.InputPressed("l1"))
   end
 end

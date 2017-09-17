@@ -117,6 +117,8 @@ function room:enter(pre, init_table)
   eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
   eventmanager:addListener("GameReadyBroadcast", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
   eventmanager:addListener("QuitBroadcast", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
+  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("InputReleased", input_handler, input_handler.fireReleasedEvent)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -296,37 +298,60 @@ end
 --上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
 function room:gamepadpressed(joystick, button)
   if button == "dpup" then
-    if isready then return end
+    --[[if isready then return end
     --begin_move_scrollgroup("up")
-    sv_tankbag:scrollUp()
+    sv_tankbag:scrollUp()]]--
+    eventmanager:fireEvent(events.InputPressed("up"))
   elseif button == "dpdown" then
-    if isready then return end
+    --[[if isready then return end
     --begin_move_scrollgroup("down")
-    sv_tankbag:scrollDown()
+    sv_tankbag:scrollDown()]]--
+    eventmanager:fireEvent(events.InputPressed("down"))
   elseif button == "b" then  --O键
-    ready()
+    --ready()
+    eventmanager:fireEvent(events.InputPressed("a"))
   elseif button == "a" then  --X键
-    cancel_ready()
+    --cancel_ready()
+    eventmanager:fireEvent(events.InputPressed("b"))
   elseif button == "leftshoulder" then
-    quit_room()
+    --quit_room()
+    eventmanager:fireEvent(events.InputPressed("l1"))
   elseif button == "rightshoulder" then
-    begin_game()
+    --begin_game()
+    eventmanager:fireEvent(events.InputPressed("r1"))
   end
 end
 
 function room:gamepadreleased(joystick, button)
-  if button == "dpup" or button == "dpdown" then
-    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
-      --stop_move_scrollgroup()
-      sv_tankbag:stop_move()
-    end
+  if button == "dpup" then
+    eventmanager:fireEvent(events.InputReleased("up"))
+  elseif button == "dpdown" then
+    eventmanager:fireEvent(events.InputReleased("down"))
   end
 end
 
 function room:keypressed(key, scancode, isrepeat)
+  if key == "up" then
+    eventmanager:fireEvent(events.InputPressed("up"))
+  elseif key == "down" then
+    eventmanager:fireEvent(events.InputPressed("down"))
+  elseif key == "a" then  --O键
+    eventmanager:fireEvent(events.InputPressed("a"))
+  elseif key == "b" then  --X键
+    eventmanager:fireEvent(events.InputPressed("b"))
+  elseif key == "l" then
+    eventmanager:fireEvent(events.InputPressed("l1"))
+  elseif key == "r" then
+    eventmanager:fireEvent(events.InputPressed("r1"))
+  end
 end
 
 function room:keyreleased(key)
+  if key == "up" then
+    eventmanager:fireEvent(events.InputReleased("up"))
+  elseif key == "down" then
+    eventmanager:fireEvent(events.InputReleased("down"))
+  end
 end
 
 --本地函数
@@ -518,6 +543,45 @@ begin_game = function()
   end
   net:requestGameBegin(roomId)
 end
+
+
+--针对所有的pressed输入的事件处理函数
+function InputHandler:firePressedEvent(event)
+  local cmd = event.cmd
+  if cmd == "up" then
+    if isready then return end
+    --begin_move_scrollgroup("up")
+    sv_tankbag:scrollUp()
+  elseif cmd == "down" then
+    if isready then return end
+    --begin_move_scrollgroup("down")
+    sv_tankbag:scrollDown()
+  elseif cmd == "a" then
+    ready()
+  elseif cmd == "b" then
+    cancel_ready()
+  elseif cmd == "l1" then
+    quit_room()
+  elseif cmd == "r1" then
+    begin_game()
+  end
+end
+
+function InputHandler:fireReleasedEvent(event)
+  local cmd = event.cmd
+  if cmd == "up" then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
+      --stop_move_scrollgroup()
+      sv_tankbag:stop_move()
+    end
+  elseif cmd == "down" then
+    if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown")))  and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
+      --stop_move_scrollgroup()
+      sv_tankbag:stop_move()
+    end
+  end
+end
+
 
 --处理网络事件
 --收到有人进入房间的广播
