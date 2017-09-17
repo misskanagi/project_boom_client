@@ -9,8 +9,11 @@ local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
 local cam = require("boom.camera")
 
+local events = require("boom.events")
 local RoomNetHandler = class("RoomNetHandler", System)
 local room_net_handler = RoomNetHandler()
+local InputHandler = class("InputHandler", System)
+local input_handler = InputHandler()
 
 --init_table中带入的数据
 local myId = nil   --玩家自己的Id
@@ -88,15 +91,15 @@ local tankbag = {
 --存放所有的玩家的信息，groupId作key
 local all_players_infos = {
   [1] = {
-    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
+    --[[[1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
     [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
     [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
-    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
+    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}]]--
     },--groupId为1的所有players
   [2] = {
-    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
+    --[[[1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
     [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 1},
-    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},
+    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},]]--
     }--groupId为2的所有players
   }
 
@@ -252,6 +255,7 @@ function room:update(dt)
   sv_tankbag:update(dt)
   gui:update(dt)
   gooi.update()
+  net:update(dt)
 end
 
 function room:draw()
@@ -518,26 +522,31 @@ end
 --处理网络事件
 --收到有人进入房间的广播
 function RoomNetHandler:fireEnterRoomBroadcastEvent(event)
+  print("RoomNetHandler:fireEnterRoomBroadcastEvent")
   get_enterroom_broadcast(event.playerId, event.groupId)
 end
 
 --收到游戏开始的广播
 function RoomNetHandler:fireGameBeginBroadcastEvent(event)
+  print("RoomNetHandler:fireGameBeginBroadcastEvent")
   get_gamebegin_broadcast()
 end
 
 --收到有玩家取消准备的广播
 function RoomNetHandler:fireGameCancelReadyBroadcastEvent(event)
+  print("RoomNetHandler:fireGameCancelReadyBroadcastEvent")
   get_gamecancelready_broadcast(event.playerId)
 end
 
 --收到有玩家进入准备状态的广播
 function RoomNetHandler:fireGameReadyBroadcastEvent(event)
+  print("RoomNetHandler:fireGameReadyBroadcastEvent")
   get_gamereadybroadcast(event.playerId, event.tankType)
 end
 
 --收到有人退出房间的广播
 function RoomNetHandler:fireQuitBroadcastEvent(event)
+  print("RoomNetHandler:fireQuitBroadcastEvent")
   get_quitroom_broadcast(event.isMaster,event.playerId)
 end
 

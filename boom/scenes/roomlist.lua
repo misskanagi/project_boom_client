@@ -96,6 +96,7 @@ function roomlist:update(dt)
   scrollgroup:update(dt)
   gui:update(dt)
   gooi.update(dt)
+  net:update(dt)
 end
 
 --处理refresh更新的逻辑
@@ -233,11 +234,18 @@ function RoomListNetHandler:fireGetRoomListResEvent(event)
   print("RoomListNetHandler:fireGetRoomListResEvent")
   scrollgroup:removeAllChildren()
   roomNumbers = event.roomNumbers
+  if roomNumbers == -1 then
+    --没有任何房间数据
+    RoomInfos = {}
+    roomNumbers = 0
+    refreshing = false
+    return
+  end
+  
   RoomInfos = {}
   for k,v in pairs(event.roomsInfo) do
     RoomInfos[#RoomInfos + 1] = v
   end
-
   --更新显示房间列表
   --添加新的控件
   for i = 1, roomNumbers do

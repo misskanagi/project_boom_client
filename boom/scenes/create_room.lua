@@ -8,8 +8,11 @@ local gui = require("libs.Gspot")
 local cam = require("boom.camera")
 --package.loaded["./libs/Gspot"] = nil
 
+local events = require("boom.events")
 local CreateRoomNetHandler = class("CreateRoomNetHandler", System)
+local InputHandler = class("InputHandler", System)
 local create_room_net_handler = CreateRoomNetHandler()
+local input_handler = InputHandler()
 
 require "./libs/gooi"
 local lg = love.graphics
@@ -116,6 +119,7 @@ end
 
 function create_room:enter(prev, init_table)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
+  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
@@ -199,6 +203,7 @@ function create_room:update(dt)
   lbl_map_value:setText(map_value)
   gooi.update(dt)
   gui:update(dt)
+  net:update(dt)
 end
 
 function create_room:draw()
@@ -233,35 +238,18 @@ function create_room:gamepadpressed(joystick, button)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
   if button == "dpup" then
-    --切换到上一个选项
-    current_select_class = prev_select_class[current_select_class]
+    eventmanager:fireEvent(events.InputPressed("up"))
   elseif button == "dpdown" then
-    current_select_class = next_select_class[current_select_class]
+    eventmanager:fireEvent(events.InputPressed("down"))
   elseif button == "dpleft" then
-    local select_item = selections[current_select_class]
-    local result = results[current_select_class]
-    result = result - 1
-    if result < 1 then
-      results[current_select_class] = #select_item
-    else
-      results[current_select_class] = result
-    end
+    eventmanager:fireEvent(events.InputPressed("left"))
   elseif button == "dpright" then
-    local select_item = selections[current_select_class]
-    local result = results[current_select_class]
-    result = result + 1
-    if result > #select_item then
-      results[current_select_class] = 1
-    else
-      results[current_select_class] = result
-    end
+    eventmanager:fireEvent(events.InputPressed("right"))
   elseif button == "rightshoulder" then  --确认创建房间
-    submit_request()
+    eventmanager:fireEvent(events.InputPressed("r1"))
   elseif button == "leftshoulder" then --取消创建房间，退回到roomlist
-    --remove_widgets()
-    back_to_roomlist()
+    eventmanager:fireEvent(events.InputPressed("l1"))
   end
-
 end
 
 function create_room:leave()
@@ -278,15 +266,71 @@ function create_room:leave()
   current_select_class = "mode"
 end
 
-
-function create_room:gamepadreleased(joystick, button)
-end
-
+function create_room:gamepadreleased(joystick, button)end
 
 function create_room:keypressed(key, scancode, isrepeat)
+  if submitting then return end --提交中的时候禁止任何输入
+  --上下且选项类，左右切选项值
+  if button == "up" then
+    eventmanager:fireEvent(events.InputPressed("up"))
+  elseif button == "down" then
+    eventmanager:fireEvent(events.InputPressed("down"))
+  elseif button == "left" then
+    eventmanager:fireEvent(events.InputPressed("left"))
+  elseif button == "right" then
+    eventmanager:fireEvent(events.InputPressed("right"))
+  elseif button == "r" then  --确认创建房间
+    eventmanager:fireEvent(events.InputPressed("r1"))
+  elseif button == "l" then --取消创建房间，退回到roomlist
+    eventmanager:fireEvent(events.InputPressed("l1"))
+  end
 end
 
-function create_room:keyreleased(key)
+function create_room:keyreleased(key)end
+
+--针对所有的pressed输入的事件处理函数
+function InputHandler:firePressedEvent(event)
+  local cmd = event.cmd
+  if cmd == "up" then
+    --切换到上一个选项
+    current_select_class = prev_select_class[current_select_class]
+  elseif cmd == "down" then
+    current_select_class = next_select_class[current_select_class]
+  elseif cmd == "left" then
+    local select_item = selections[current_select_class]
+    local result = results[current_select_class]
+    result = result - 1
+    if result < 1 then
+      results[current_select_class] = #select_item
+    else
+      results[current_select_class] = result
+    end
+  elseif cmd == "right" then
+    local select_item = selections[current_select_class]
+    local result = results[current_select_class]
+    result = result + 1
+    if result > #select_item then
+      results[current_select_class] = 1
+    else
+      results[current_select_class] = result
+    end
+  elseif cmd == "a" then
+    
+  elseif cmd == "b" then
+    
+  elseif cmd == "x" then
+    
+  elseif cmd == "y" then
+    
+  elseif cmd == "l1" then
+    back_to_roomlist()
+  elseif cmd == "l2" then
+    
+  elseif cmd == "r1" then
+    submit_request()
+  elseif cmd == "r2" then
+    
+  end
 end
 
 function CreateRoomNetHandler:fireCreateRoomResEvent(event)
