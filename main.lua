@@ -34,7 +34,7 @@ room = require("boom.scenes.room")
 create_room = require("boom.scenes.create_room")
 
 -- test choice
--- local test_choice = require("boom.scenes.test_choice")
+local test_choice = require("boom.scenes.test_choice")
 
 --将guid对应的手柄映射到xbox键位
 local function map_gamepad_with_guid(joystick_guid)
@@ -64,9 +64,10 @@ map_gamepad_with_guid(osx_joystick_guid)
 map_gamepad_with_guid(win_joystick_guid)
 
 function love.load()
+    print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
-    game_state.switch(login)
+    --game_state.switch(login)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
-    --game_state.switch(test_place)
+    game_state.switch(test_place)
 end

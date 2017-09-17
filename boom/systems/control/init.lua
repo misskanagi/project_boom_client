@@ -1,7 +1,9 @@
-local ControllableSync = require "boom.systems.control.ControllableSync"
+local DrivableSync = require "boom.systems.control.DrivableSync"
+local GunFireSync = require "boom.systems.control.GunFireSync"
 
 local control = {
-  ControllableSync = ControllableSync()
+  DrivableSync = DrivableSync(),
+  GunFireSync = GunFireSync(),
 }
 
 return control

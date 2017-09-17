@@ -1,3 +1,4 @@
+--local netLib = require "library"
 local netLib = require "libtcp"
 local json = require "libs.json"
 --events
@@ -53,7 +54,8 @@ local network = {
 
     --UPLOAD_GAME_ACHIEVEMENT = 701,
     --UPLOAD_GAME_ACHIEVEMENT_RES = 702,
-  }
+  },
+  is_connected = false
 }
 
 function network:new(o)
@@ -65,18 +67,15 @@ end
 
 -- 分发网络事件
 function network:update(dt)
-    if self.fd then
+    if self.is_connected then
       self:updateReceive(dt)
     end
 end
 
 function network:updateReceive(dt)
-  --print("network:updateReceive")
   local msg = self:receive()
   if msg then
     for _, json_string in pairs(msg) do
-      print("receive:")
-      print("!"..json_string)
       data = json.decode(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         local playerId = data.playerId
@@ -180,18 +179,19 @@ end
 
 
 function network:connect(address, port)
-    self.fd = netLib.Lua_connect(address, port)
+    self.is_connected = netLib.Lua_connect(address, port)
 end
 
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
-    if self.fd == nil or self.playerId == nil then return end
+    if not self.is_connected or self.playerId == nil then return end
     data = {playerId=self.playerId, roomId = "test",
             playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
+
 local i = 0
 function network:sendSnapshot(snapshot_entities)
-    if self.fd == nil or self.roomId == nil then return end
+    if not self.is_connected or self.roomId == nil then return end
     data = {roomId = self.roomId, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
@@ -200,43 +200,62 @@ function network:sendSnapshot(snapshot_entities)
 end
 
 function network:send(type, data)
-    local result = netLib.Lua_send(self.fd, type, json.encode(data))
-    --print("send:")
-    --print(json.encode(data))
-    return result
+    assert(self.is_connected==true)
+    if self.is_connected then
+        local result = netLib.Lua_send(type, json.encode(data))
+        --print("send:")
+        --print(json.encode(data))
+        return result
+    end
+    return nil
 end
 -- 阻塞的receive
 function network:blockingReceive()
-    local data = {netLib.Lua_receive(self.fd)}
-    return data
+    assert(self.is_connected==true)
+    if self.is_connected then
+        local data = {netLib.Lua_receive()}
+        return data
+    end
+    return nil
 end
 -- 非阻塞的receive，首先得运行startReceiving
 function network:receive()
-    local data = love.thread.getChannel("network"):pop()
-    return data
+    assert(self.is_connected==true)
+    if self.is_connected then
+        if self.receive_thread == nil then
+            self:startReceiving()
+        end
+        local data = love.thread.getChannel("network"):pop()
+        return data
+    end
+    return nil
 end
 -- 无限循环receive，另开一个线程
 function network:startReceiving()
-    if self.receive_thread == nil then
-      self.receive_thread = love.thread.newThread("boom/network/endless_receiving_thread.lua")
-      self.receive_thread:start()
-      -- give network thread fd
-      local c = love.thread.getChannel("network")
-      c:push(self.fd)
+    assert(self.is_connected==true)
+    if self.is_connected then
+        if self.receive_thread == nil then
+          self.receive_thread = love.thread.newThread("boom/network/endless_receiving_thread.lua")
+          self.receive_thread:start()
+          -- give network thread fd
+          self.network_channel = love.thread.getChannel("network")
+        end
     end
 end
 -- 发送关闭信息给“无限循环receive”线程
 function network:stopReceiving()
-    if not (self.receive_thread == nil) then
+    assert(self.is_connected==true)
+    if self.receive_thread ~= nil then
       local c = love.thread.getChannel("network")
       c:push("stop")
     end
 end
 
 function network:close()
-    if self.fd then
-      netLib.Lua_close(self.fd)
-      self.fd = nil
+    assert(self.is_connected==true)
+    if self.is_connected then
+      netLib.Lua_close()
+      self.is_connected = false
     end
 end
 

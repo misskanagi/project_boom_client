@@ -1,8 +1,9 @@
 local Physic = require "boom.components.physic.Physic"
 local IsPlayer = require "boom.components.identifier.IsPlayer"
-local Controllable = require "boom.components.control.Controllable"
-local Tire = require "boom.components.vehicle_part.Tire"
-local Turret = require "boom.components.vehicle_part.Turret"
+local Drivable = require "boom.components.control.Drivable"
+local Firable = require "boom.components.control.Firable"
+local Tire = require "boom.components.vehicle.Tire"
+local Turret = require "boom.components.vehicle.Turret"
 local ShaderCircle = require("boom.components.graphic.ShaderCircle")
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
@@ -28,7 +29,8 @@ local createPlayer = function(object, world, light_world, player_id, is_myself)
     e:get("Light").light:setAngle(math.pi/4)
     e:get("Light").light:setGlowStrength(1.0)
     e:add(IsPlayer())
-    e:add(Controllable())
+    e:add(Drivable())
+    e:add(Firable(light_world))
     e:add(PlayerName(player_id or "unname"))
     if is_myself then
       e:add(IsMyself())
