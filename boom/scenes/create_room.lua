@@ -119,7 +119,7 @@ end
 
 function create_room:enter(prev, init_table)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
-  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
@@ -251,17 +251,17 @@ function create_room:gamepadpressed(joystick, button)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
   if button == "dpup" then
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("up"))
   elseif button == "dpdown" then
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("down"))
   elseif button == "dpleft" then
-    eventmanager:fireEvent(events.InputPressed("left"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("left"))
   elseif button == "dpright" then
-    eventmanager:fireEvent(events.InputPressed("right"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("right"))
   elseif button == "rightshoulder" then  --确认创建房间
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif button == "leftshoulder" then --取消创建房间，退回到roomlist
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
   end
 end
 
@@ -326,6 +326,7 @@ function InputHandler:firePressedEvent(event)
   elseif cmd == "l2" then
     
   elseif cmd == "r1" then
+    print("create_room input_handler r1")
     submit_request()
   elseif cmd == "r2" then
     

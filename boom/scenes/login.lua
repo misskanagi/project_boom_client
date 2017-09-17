@@ -297,10 +297,10 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-    --[[for k,v in pairs(comps) do
+    for k,v in pairs(comps) do
       gooi.removeComponent(v)
     end
-    game_state.switch(roomlist)]]--
+    game_state.switch(roomlist,{["myId"] = "lsm"})
 
 
   --实现登陆的逻辑
@@ -513,10 +513,10 @@ states.transfer = function(button)
   end
 end
 
-net:connect("172.28.37.19", 8080)
---net:connect("192.168.1.101")
-net:startReceiving()
 function login:enter()
+  --net:connect("192.168.1.101")
+  --net:connect("172.28.37.19", 8080)
+  --net:startReceiving() 
   --注册事件监听函数
   print("login:enter()")
   eventmanager:addListener("LoginRes", login_net_handler, login_net_handler.fireLoginResEvent)

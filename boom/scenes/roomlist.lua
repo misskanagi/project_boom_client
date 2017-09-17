@@ -378,15 +378,14 @@ function InputHandler:fireReleasedEvent(event)
   if cmd == "up" then
     if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
       --stop_move_scrollgroup()
-      sv_tankbag:stop_move()
+      scrollgroup:stop_move()
     end
   elseif cmd == "down" then
     if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown")))  and not(love.keyboard.isDown("down") or love.keyboard.isDown("up")) then
       --stop_move_scrollgroup()
-      sv_tankbag:stop_move()
+      scrollgroup:stop_move()
     end
   end
-end
 end
 
 
