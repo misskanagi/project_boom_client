@@ -115,7 +115,7 @@ submit_request = function()
 end
 
 function create_room:enter(prev, init_table)
-  eventmanager:addListener("CreateRoomNetHandler", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
+  eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   myId = init_table and init_table["myId"]
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)

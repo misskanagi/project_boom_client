@@ -109,11 +109,11 @@ isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadca
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
-  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
-  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
-  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
-  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
-  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
+  eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
+  eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
+  eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
+  eventmanager:addListener("GameReadyBroadcast", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
+  eventmanager:addListener("QuitBroadcast", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -352,19 +352,19 @@ get_quitroom_broadcast = function(isMaster, playerId)
         end
       end
     end
-    
-    ::delete_player:: do
-      --执行删除玩家的操作
-      local group_players = all_players_infos[groupId]
-      local group_players_copy = {}
-      for i = 1, #group_players do
-        if group_players[i]["playerId"] ~= playerId then
-          group_players_copy[#group_players_copy+1] = group_players[i]
-        end
+   end 
+  ::delete_player:: do
+    --执行删除玩家的操作
+    local group_players = all_players_infos[groupId]
+    local group_players_copy = {}
+    for i = 1, #group_players do
+      if group_players[i]["playerId"] ~= playerId then
+        group_players_copy[#group_players_copy+1] = group_players[i]
       end
-      --此时group_players_copy是新的table
-      group_players = group_players_copy
     end
+    --此时group_players_copy是新的table
+    group_players = group_players_copy
+  end
 end
 
 --获取一个游戏开始的广播
@@ -540,6 +540,5 @@ end
 function RoomNetHandler:fireQuitBroadcastEvent(event)
   get_quitroom_broadcast(event.isMaster,event.playerId)
 end
-
 
 return room

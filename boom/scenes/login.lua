@@ -350,6 +350,7 @@ processbar_login_update = function()
     elseif login_success then  --获取了响应且成功了以后
       gui:feedback(info1)
       login_feedback1 = true
+      processbar_login:increaseAt(0.2)
     end
   elseif processbar_login:getValue() >= 0.4 and not login_feedback2 then
     gui:feedback(info2)
@@ -512,12 +513,13 @@ states.transfer = function(button)
   end
 end
 
-net:connect("192.168.1.101", 8080)
+net:connect("172.28.37.19", 8080)
+--net:connect("192.168.1.101")
 net:startReceiving()
 function login:enter()
   --注册事件监听函数
   print("login:enter()")
-  eventmanager:addListener("LoginNetHandler", login_net_handler, login_net_handler.fireLoginResEvent)
+  eventmanager:addListener("LoginRes", login_net_handler, login_net_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
   function width() return lg.getWidth() end
@@ -650,7 +652,7 @@ function login:update(dt)
       if not login_success then
         --身份验证未通过
         logining = false
-        login_succes = false
+        login_success = false
         got_login_response = false
         --log.debug("id:"..str_id..", psw:"..str_psw)
         --此时说明登陆失败，提示玩家登陆信息有误
@@ -716,11 +718,20 @@ end
 
 --处理接收到网络的LoginRes以后的事件
 function LoginNetHandler:fireLoginResEvent(event)
+  print("LoginNetHandler:fireLoginResEvent")
   got_login_response = true
   if event.resultCode == 1 then
     --登录成功
+    print("LoginNetHandler success")
     login_success = true
+    
+    ----------
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(roomlist, init_table)
+    --------
   else
+    print("LoginNetHandler fail")
     login_success = false
   end
 end

@@ -76,7 +76,7 @@ function network:updateReceive(dt)
   if msg then
     for _, json_string in pairs(msg) do
       --print("receive:")
-      --print(json_string)
+      print(json_string)
       data = json.decode(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         local playerId = data.playerId
@@ -101,7 +101,7 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
-      elseif data.cmdType == self.cmd_code.GET_ROOM_LIST_RES then
+      elseif data.cmdType == self.cmd_code.GET_ROOM_LIST_RES   then
         print("got GET_ROOM_LIST_RES")
         eventmanager:fireEvent(events.GetRoomListRes(data.roomNumbers, data.roomsInfo))
       elseif data.cmdType == self.cmd_code.CREATE_ROOM_RES then
@@ -159,6 +159,7 @@ end
 
 --请求登录
 function network:requestLogin(name, password)
+  self.playerId = name
   local result = self:send(self.cmd_code.LOGIN_REQ, {playerId = name, password = password})
 end
 

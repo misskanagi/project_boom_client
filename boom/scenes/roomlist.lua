@@ -64,8 +64,8 @@ end
 
 
 function roomlist:enter(prev, init_table)
-  eventmanager:addListener("RoomListNetHandler", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
-  eventmanager:addListener("RoomListNetHandler", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
+  eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
+  eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
   myId = init_table and init_table["myId"]
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
@@ -137,6 +137,7 @@ end
 refresh = function()
   scrollgroup:removeAllChildren()
   --向server发送获取房间列表的请求
+  print("refresh:"..myId)
   net:requestGetRoomList(myId)
   refreshing = true
 end
@@ -229,6 +230,7 @@ end
 --网络事件处理
 --收到服务器对获取房间列表请求的响应
 function RoomListNetHandler:fireGetRoomListResEvent(event)
+  print("RoomListNetHandler:fireGetRoomListResEvent")
   scrollgroup:removeAllChildren()
   roomNumbers = event.roomNumbers
   RoomInfos = {}
@@ -266,6 +268,7 @@ end
 
 --收到服务器对进入房间请求的响应
 function RoomListNetHandler:fireEnterRoomResEvent(event)
+  print("RoomListNetHandler:fireEnterRoomResEvent")
   local responseCode = event.responseCode
   local groupId = event.groupId
   local roomMasterId = event.roomMasterId
