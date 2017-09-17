@@ -54,7 +54,7 @@ function test_place:enter()
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
-    self.camera = camera
+    self.camera = camera:instance()
     self.camera:lookAt(1280, 1664)
     print(love.graphics.getWidth(), love.graphics.getHeight())
 end
@@ -80,6 +80,7 @@ function test_place:update(dt)
 end
 
 function test_place:draw()
+    self.camera:apply()
     -- camera attach
     self.camera:attach()
     self.shader:draw(function()

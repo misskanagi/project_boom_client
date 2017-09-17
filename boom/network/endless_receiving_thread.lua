@@ -1,4 +1,5 @@
-local netLib = require "library"
+--local netLib = require "library"
+local netLib = require "libtcp"
 local json = require "libs.json"
 --[[load some tool modules
 log = require("libs.log")
@@ -6,9 +7,8 @@ log = require("libs.log")
 log.newfreshlog("logfile_receive.txt")
 log.logswitch(true)  --关闭log开关]]
 local c = love.thread.getChannel("network")
-local fd = c:demand()
 while true do
-  local data = {netLib.Lua_receive(fd)}
+  local data = {netLib.Lua_receive()}
   --log.debug(data)
   --合并data
   c:supply(data)

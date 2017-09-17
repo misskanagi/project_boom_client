@@ -16,7 +16,7 @@ function Firable:initialize(light_world)
     --hit specific
     self.all_hit_ps = {}
     self.all_hit_pos = {}
-    self.hit_max = 10
+    self.hit_max = 7
     for i=1, self.hit_max, 1 do
         self.all_hit_ps[i] = PSM:createParticleSystem("gun_hit")
         self.all_hit_pos[i] = {x = nil, y = nil, r = nil}

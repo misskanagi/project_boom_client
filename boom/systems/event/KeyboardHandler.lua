@@ -1,3 +1,4 @@
+local camera = require "boom.camera"
 local KeyboardHandler = class("KeyboardHandler", System)
 
 -- locally pressed
@@ -27,6 +28,7 @@ function KeyboardHandler:firePressedEvent(event)
             dcmd.turret_spin_pos = true
         elseif event.key == "space" and fcmd then
             fcmd.fire = true
+            camera:instance():shake(10)
         end
         break
     end
@@ -60,6 +62,7 @@ function KeyboardHandler:fireReleasedEvent(event)
             dcmd.turret_spin_pos = false
         elseif event.key == "space" and fcmd then
             fcmd.fire = false
+            camera:instance():dontPanic()
         end
         break
     end
