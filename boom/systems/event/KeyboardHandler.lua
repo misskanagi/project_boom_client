@@ -28,7 +28,7 @@ function KeyboardHandler:firePressedEvent(event)
             dcmd.turret_spin_pos = true
         elseif event.key == "space" and fcmd then
             fcmd.fire = true
-            camera:instance():shake(10)
+            camera:instance():shake(5)
         end
         break
     end
