@@ -76,8 +76,6 @@ function network:updateReceive(dt)
   local msg = self:receive()
   if msg then
     for _, json_string in pairs(msg) do
-      --print("receive:")
-      --print(json_string)
       data = json.decode(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         local playerId = data.playerId

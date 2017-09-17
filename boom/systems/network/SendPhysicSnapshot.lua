@@ -10,7 +10,7 @@ function SendPhysicSnapshot:update(dt)
     if elapsed > every then
       elapsed = 0.0
       if my_name == "yuge" then
-        self:sendSnapshot()
+        --self:sendSnapshot()
       end
     end
 end

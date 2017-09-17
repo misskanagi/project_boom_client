@@ -2,7 +2,7 @@ local NetKeyboardHandler = class("NetKeyboardHandler", System)
 
 function NetKeyboardHandler:fireNetPressedEvent(event)
     for index, entity in pairs(engine:getEntitiesWithComponent("PlayerName")) do
-        if entity:get("PlayerName") == event.name then
+        if entity:get("PlayerName").name == event.name then
             local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
             local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
             if event.key == "w" and dcmd then
@@ -28,7 +28,7 @@ end
 
 function NetKeyboardHandler:fireNetReleasedEvent(event)
   for index, entity in pairs(engine:getEntitiesWithComponent("PlayerName")) do
-      if entity:get("PlayerName") == event.name then
+      if entity:get("PlayerName").name == event.name then
           local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
           local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
           if event.key == "w" and dcmd then
