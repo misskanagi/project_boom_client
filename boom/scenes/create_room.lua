@@ -6,7 +6,11 @@ local game_state = require("libs.hump.gamestate")
 local gui = require("libs.Gspot")
 
 local cam = require("boom.camera")
-package.loaded["./libs/Gspot"] = nil
+--package.loaded["./libs/Gspot"] = nil
+
+local CreateRoomNetHandler = class("CreateRoomNetHandler", System)
+local create_room_net_handler = CreateRoomNetHandler()
+
 require "./libs/gooi"
 local lg = love.graphics
 local myId = nil
@@ -91,26 +95,27 @@ remove_widgets = function()
   gooi.removeComponent(lbl_life_value)
   gooi.removeComponent(lbl_map_value)
 end
+
 --返回roomlist
 back_to_roomlist = function()
   local init_table = {}
   init_table["myId"] = myId
   game_state.switch(roomlist, init_table)
 end
+
 --提交当前的选择表给Server
 submit_request = function()
   --将results中的内容组织一下发送给Server
-  --[[message CreateRoomReq {
-    string playerId = 1;
-    int32 gameMode = 2;
-    int32 mapType = 3;
-    int32 lifeNumber = 4;
-    int32 playersPerGroup = 5;
-  }]]--
-  submitting = true  --当前状态变成了提交中...
+  local chosen_mode = selections["mode"][results["mode"]]
+  local chosen_map = selections["mode"][results["mode"]]
+  local chosen_life = selections["mode"][results["mode"]]
+  local chosen_people = selections["mode"][results["mode"]]
+  net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
+  submitting = true  --当前状态变成了提交中
 end
 
 function create_room:enter(prev, init_table)
+  eventmanager:addListener("CreateRoomNetHandler", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   myId = init_table and init_table["myId"]
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
@@ -180,29 +185,6 @@ function create_room:update(dt)
         submit_line_x2 = 240 + submit_line_length_bound/2
         submit_line_shrink = true
       end
-    end
-
-    --检查一下是否获取到了Server的返回值
-    local succeed = true
-    if succeed then
-      --房间创建成功了
-      --此时可以进入room.lua了，把该带的带进入
-      --检查Server返回的roomId
-      local roomId_res = "createxxxxxx"
-      local init_table = {}
-      init_table["myId"] = myId
-      init_table["roomId"] = roomId_res
-      init_table["groupId"] = 1  --房主默认在1号队
-      init_table["roomMasterId"] = myId
-      init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
-      init_table["mapType"] = selections["map"][results["map"]]  --"as_snow"
-      init_table["lifeNumber"] = selections["life"][results["life"]]
-      init_table["playersPerGroup"] = selections["people"][results["people"]]
-      init_table["playersInRoom"] = 1
-      game_state.switch(room, init_table)
-    else
-      --房间创建失败，弹框提示
-      submitting = false
     end
   end
 
@@ -288,6 +270,12 @@ function create_room:leave()
   end
   submitting = false
   remove_widgets()
+  --将各种数值还原成1
+  results["mode"] = 1
+  results["people"] = 1
+  results["life"] = 1
+  results["map"] = 1
+  current_select_class = "mode"
 end
 
 
@@ -301,5 +289,28 @@ end
 function create_room:keyreleased(key)
 end
 
+function CreateRoomNetHandler:fireCreateRoomResEvent(event)
+  --检查Server返回的roomId
+  if event.roomId == "-1" then
+    --创建房间失败
+    submitting = false
+  else
+    --房间创建成功了
+    --此时可以进入room.lua了，把该带的带进入
+    local roomId = event.roomId
+    local groupId = event.groupId
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = roomId
+    init_table["groupId"] = groupId  --房主默认在1号队
+    init_table["roomMasterId"] = myId
+    init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
+    init_table["mapType"] = selections["map"][results["map"]]  --"as_snow"
+    init_table["lifeNumber"] = selections["life"][results["life"]]
+    init_table["playersPerGroup"] = selections["people"][results["people"]]
+    init_table["playersInRoom"] = 1
+    game_state.switch(room, init_table)
+  end
+end
 
 return create_room

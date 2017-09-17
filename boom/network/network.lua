@@ -99,24 +99,32 @@ function network:updateReceive(dt)
         --print("entities:", data.entities)
         eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
-        print("got LOGIN_RES!")
+        print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
       elseif data.cmdType == self.cmd_code.GET_ROOM_LIST_RES then
-        
+        print("got GET_ROOM_LIST_RES")
+        eventmanager:fireEvent(events.GetRoomListRes(data.roomNumbers, data.roomsInfo))
       elseif data.cmdType == self.cmd_code.CREATE_ROOM_RES then
-        
+        print("got CREATE_ROOM_RES")
+        eventmanager:fireEvent(events.CreateRoomRes(data.roomId, data.groupId))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_RES then
-        
+        print("got ENTER_ROOM_RES")
+        eventmanager:fireEvent(events.EnterRoomRes(data.responseCode, data.groupId, data.roomMasterId, data.playersInfo))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_BROADCAST then
-        
+        print("got ENTER_ROOM_BROADCAST")
+        eventmanager:fireEvent(events.EnterRoomBroadcast(data.roomId, data.playerId, data.groupId))
       elseif data.cmdType == self.cmd_code.QUIT_ROOM_BROADCAST then
-        
+        print("got QUIT_ROOM_BROADCAST")
+        eventmanager:fireEvent(events.QuitRoomBroadcast(data.isMaster, data.roomId, data.playerId))
       elseif data.cmdType == self.cmd_code.GAME_READY_BROADCAST then
-        
+        print("got GAME_READY_BROADCAST")
+        eventmanager:fireEvent(events.GameReadyBroadcast(data.playerId, data.roomId, data.tankType))
       elseif data.cmdType == self.cmd_code.GAME_CANCEL_READY_BROADCAST then
-        
+        print("got GAME_CANCEL_READY_BROADCAST")
+        eventmanager:fireEvent(events.GameCancelReadyBroadcast(data.playerId, data.roomId))
       elseif data.cmdType == self.cmd_code.GAME_BEGIN_BROADCAST then
-      
+        print("got GAME_BEGIN_BROADCAST")
+        eventmanager:fireEvent(events.GameBeginBroadcast(data.roomId))
       end
     end
   end

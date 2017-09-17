@@ -1,7 +1,7 @@
 -- 登陆游戏
 local login = class("login")
-local LoginResHandler = class("LoginResHandler", System)
-local loginres_handler = LoginResHandler()
+local LoginNetHandler = class("LoginNetHandler", System)
+local login_net_handler = LoginNetHandler()
 local game_state = require("libs.hump.gamestate")
 
 local gui = require("libs.Gspot")
@@ -517,7 +517,7 @@ net:startReceiving()
 function login:enter()
   --注册事件监听函数
   print("login:enter()")
-  eventmanager:addListener("LoginRes", loginres_handler, loginres_handler.fireLoginResEvent)
+  eventmanager:addListener("LoginNetHandler", login_net_handler, login_net_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
   function width() return lg.getWidth() end
@@ -715,7 +715,7 @@ function login:gamepadreleased(joystick, button)
 end
 
 --处理接收到网络的LoginRes以后的事件
-function LoginResHandler:fireLoginResEvent(event)
+function LoginNetHandler:fireLoginResEvent(event)
   got_login_response = true
   if event.resultCode == 1 then
     --登录成功

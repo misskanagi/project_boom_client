@@ -8,6 +8,8 @@ package.loaded["./libs/Gspot"] = nil
 local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local lg = love.graphics
+local RoomListNetHandler = class("RoomListNetHandler", System)
+local roomlist_net_handler = RoomListNetHandler()   --具体的handler实例
 
 local myId = nil   --当前玩家的id
 --前置声明
@@ -62,6 +64,8 @@ end
 
 
 function roomlist:enter(prev, init_table)
+  eventmanager:addListener("RoomListNetHandler", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
+  eventmanager:addListener("RoomListNetHandler", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
   myId = init_table and init_table["myId"]
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
@@ -118,100 +122,23 @@ refresh_update = function(dt)
         refresh_line_shrink = true
       end
     end
-
-    --检查Server最新response数据是否到来
-    local hotdata = 1
-    --hotdata中包含的是roomNumbers以及所有的RoomInfo的数组
-    roomNumbers = 6
-    RoomInfos = {
-      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      [2] = {["roomId"] = "hackhaoxxx", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 8, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      [3] = {["roomId"] = "yuge123", ["gameMode"] = "chaos", ["roomState"] = -1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      [4] = {["roomId"] = "james0909", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 3, ["playersInRoom"] = 6, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      [5] = {["roomId"] = "hahaha", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 2, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      [6] = {["roomId"] = "hehehe", ["gameMode"] = "chaos", ["roomState"] = 1, ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1, ["roomState"] = 1},
-      }
-
-    if hotdata then
-      --hotdata中有最新的房间信息，添加到scrollgroup
-      scrollgroup:removeAllChildren()
-      --添加新的控件
-      for i = 1, roomNumbers do
-        --w一共是444
-        local roomInfo_item = RoomInfos[i]
-        local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
-        local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
-        local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
-        local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
-        --[[一个item需要显示的内容：
-        1.room image
-        2.room id
-        3.mode
-        4.人数情况:5/8
-        ]]--
-        local gi = gui:group('', {w = room_item_width, h = room_item_height})
-        gi.bgcolor = {255,255,255,0}
-        local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-        local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
-        local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
-        local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
-        scrollgroup:addChild(gi)
-      end
-      scrollgroup:allChildAdded()
-      scrollgroup:scrollToTop()
-      refreshing = false
-    end
   end
 end
 
 --正在进入房间的状态下的update函数
 enter_update = function(dt)
-  if not entering then return end
-  --首先，检查Server是否发回了准许进入房间的response
-  local enter_succeed = true
-  if enter_succeed then
-    --Server准许进入房间
-    local roomMasterId_res = "lsm" --Server的response信息
-    --把该带的东西带上进入room.lua
-    local room_selected_index = scrollgroup.getSelectedIndex()
-    local selected_roominfo_item = RoomInfos[room_selected_index]
-    local init_table = {}
-    init_table["myId"] = myId
-    init_table["roomId"] = selected_roominfo_item["roomId"]
-    init_table["groupId"] = 1  --房主默认在1号队
-    init_table["roomMasterId"] = roomMasterId_res
-    init_table["gameMode"] = selected_roominfo_item["gameMode"]  --"chaos"
-    init_table["mapType"] = selected_roominfo_item["mapType"]  --"as_snow"
-    init_table["lifeNumber"] = selected_roominfo_item["lifeNumber"]
-    init_table["playersPerGroup"] = selected_roominfo_item["playersPerGroup"]
-    init_table["playersInRoom"] = selected_roominfo_item["playersInRoom"]
-    local room = require("boom.scenes.room")
-    game_state.switch(room, init_table)
-  else
-    --未准许
-    entering = false
-    --弹框说明一下
-    gui:feedback("sorry, you cannot enter the room")
+  if entering then
+    --正在进入中，更新等待动画
   end
-
 end
 
 
 --刷新房间列表
 refresh = function()
+  scrollgroup:removeAllChildren()
   --向server发送获取房间列表的请求
-  --[[
-  message GetRoomListReq {
-    string playerId = 1;
-  }
-  ]]--
-
+  net:requestGetRoomList(myId)
   refreshing = true
-end
-
---取消刷新房间列表的操作
-cancel_refresh = function()
-  refreshing = false
 end
 
 --进入房间
@@ -223,9 +150,8 @@ enter_room = function()
     gui:feedback("sorry, the room is full!")
     return
   end
-
-  --将自己的id和要进入的房间id一同发送给Server，Server准入以后，切换场景
-
+  --将自己的id和要进入的房间id一同发送给Server
+  net:requestEnterRoom(selected_room_item["roomId"], myId)
   entering  = true
 end
 
@@ -274,13 +200,11 @@ function roomlist:gamepadpressed(joystick, button)
   elseif button == 'dpdown' then
     if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
   elseif button == 'rightshoulder' then
-    cancel_refresh()
     local init_table = {}
+    init_table["myId"] = myId
     game_state.switch(create_room, init_table)
   elseif button == 'leftshoulder' then
     refresh()
-  elseif button == "a" then
-    cancel_refresh()
   end
 end
 
@@ -294,24 +218,76 @@ function roomlist:gamepadreleased(joystick, button)
 end
 
 function roomlist:keypressed(key, scancode, isrepeat)
-  if key == "b" then
-    --game_state.switch(test_place)
-  elseif key == 'up' then
-    if not refreshing then begin_move_scrollgroup("up") end
-  elseif key == 'down' then
-    if not refreshing then begin_move_scrollgroup("down") end
-  elseif key == 'r' then
-    local init_table = {}
-
-    game_state.switch(create_room, init_table)
-  end
+  
 end
 
 function roomlist:keyreleased(key)
-  if key == "up" or key == "down" then
-    if not(love.keyboard.isDown("up") or love.keyboard.isDown("down")) then
-      stop_move_scrollgroup()
-    end
+  
+end
+
+
+--网络事件处理
+--收到服务器对获取房间列表请求的响应
+function RoomListNetHandler:fireGetRoomListResEvent(event)
+  scrollgroup:removeAllChildren()
+  roomNumbers = event.roomNumbers
+  RoomInfos = {}
+  for k,v in pairs(event.roomsInfo) do
+    RoomInfos[#RoomInfos + 1] = v
+  end
+
+  --更新显示房间列表
+  --添加新的控件
+  for i = 1, roomNumbers do
+    --w一共是444
+    local roomInfo_item = RoomInfos[i]
+    local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
+    local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
+    local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
+    local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
+    --[[一个item需要显示的内容：
+      1.room image
+      2.room id
+      3.mode
+      4.人数情况:5/8
+    ]]--
+    local gi = gui:group('', {w = room_item_width, h = room_item_height})
+    gi.bgcolor = {255,255,255,0}
+    local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
+    local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
+    local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
+    local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
+    scrollgroup:addChild(gi)
+  end
+  scrollgroup:allChildAdded()
+  scrollgroup:scrollToTop()
+  refreshing = false
+end
+
+--收到服务器对进入房间请求的响应
+function RoomListNetHandler:fireEnterRoomResEvent(event)
+  local responseCode = event.responseCode
+  local groupId = event.groupId
+  local roomMasterId = event.roomMasterId
+  local playersInfo = event.playersInfo
+  local room_selected_index = scrollgroup:getSelectedIndex()
+  local selected_room_item = RoomInfos[room_selected_index]
+  if responseCode == 1 then
+    --成功进入房间，带着myId,roomId,groupId,roomMasterId,playersInfo,gameMode,mapType,lifeNumber,playersPerGroup,进入room.lua
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = selected_room_item["roomId"]   --
+    init_table["groupId"] = groupId
+    init_table["roomMasterId"] = roomMasterId
+    init_table["playersInfo"] = playersInfo
+    init_table["gameMode"] =selected_room_item["gameMode"]   --
+    init_table["mapType"] = selected_room_item["mapType"]   --
+    init_table["lifeNumber"] = selected_room_item["lifeNumber"]  --
+    init_table["playersPerGroup"] = selected_room_item["playersPerGroup"]  --
+    --init_table[""] = 
+    local room = require("boom.scenes.room")
+    game_state.switch(room, init_table)
+  else
   end
 end
 

@@ -9,6 +9,9 @@ local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
 local cam = require("boom.camera")
 
+local RoomNetHandler = class("RoomNetHandler", System)
+local room_net_handler = RoomNetHandler()
+
 --init_table中带入的数据
 local myId = nil   --玩家自己的Id
 local roomId = ""
@@ -72,15 +75,15 @@ local isready = false  --玩家已经ready
 
 --存放所有的tank
 local tankbag = {
-  [1] = "tank1",
-  [2] = "tank2",
-  [3] = "tank3",
-  [4] = "tank4",
-  [5] = "tank5",
-  [6] = "tank6",
-  [7] = "tank7",
-  [8] = "tank8",
-  [9] = "tank9",
+  [1] = {["tankType"] = 1},
+  [2] = {["tankType"] = 2},
+  [3] = {["tankType"] = 3},
+  [4] = {["tankType"] = 4},
+  [5] = {["tankType"] = 5},
+  [6] = {["tankType"] = 6},
+  [7] = {["tankType"] = 7},
+  [8] = {["tankType"] = 8},
+  [9] = {["tankType"] = 9},
 }
 --存放所有的玩家的信息，groupId作key
 local all_players_infos = {
@@ -99,13 +102,18 @@ local all_players_infos = {
 
 --前置声明
 local update_players_widgets, ready, cancel_ready, remove_widgets, quit_room, begin_game,
-isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadcast,get_gamecancelready_broadcast, get_gamereadybroadcast, handle_broadcast
+isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadcast,get_gamecancelready_broadcast, get_gamereadybroadcast
 
 --[[room的入口，有两种进入的可能：
 1.roomlist:带入除了create_room带入的内容以外，还有所有PlayerInfo的集合
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
+  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
+  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
+  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
+  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
+  eventmanager:addListener("RoomNetHandler", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -128,7 +136,6 @@ function room:enter(pre, init_table)
   mapType = init_table and init_table["mapType"]
   lifeNumber = init_table and init_table["lifeNumber"]
   playersPerGroup = init_table and init_table["playersPerGroup"]
-  roomState = init_table and init_table["roomState"]
   PlayerInfos = init_table and init_table["PlayerInfos"]
   playersInRoom = init_table and init_table["playersInRoom"]
   --playersInfo = init_table and init_table["playersInfo"] or {}
@@ -241,11 +248,6 @@ function room:leave()
 end
 
 function room:update(dt)
-  --判断此时是否有服务器的broadcast
-  --如果有的话，那么更新一下
-  --GameCancelReadyBroadcast/EnterRoomBroadcast/QuitRoomBroadcast/EnterRoomBroadcast
-  local broadcast = 1
-  handle_broadcast(broadcast)
   update_players_widgets()  --根据最新的all_players_infos[1],all_players_infos[2]的内容更新所有的控件
   sv_tankbag:update(dt)
   gui:update(dt)
@@ -324,10 +326,6 @@ function room:keyreleased(key)
 end
 
 --本地函数
---将获取到的广播内容直接传入handle_broadcast进行解析，调用相应的broadcast处理函数
-handle_broadcast = function(broadcast)
-end
-
 --获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
 get_enterroom_broadcast = function(playerId, groupId)
   local group_players = all_players_infos[groupId]
@@ -339,20 +337,34 @@ get_enterroom_broadcast = function(playerId, groupId)
 end
 
 --获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
-get_quitroom_broadcast = function(isMaster, playerId, groupId)
+get_quitroom_broadcast = function(isMaster, playerId)
+  local groupId = 1
   if isMaster then
     game_state.switch(roomlist)  --散了散了
   else
-    local group_players = all_players_infos[groupId]
-    local group_players_copy = {}
-    for i = 1, #group_players do
-      if group_players[i]["playerId"] ~= playerId then
-        group_players_copy[#group_players_copy+1] = group_players[i]
+    for i = 1, 2 do
+      local group_players = all_players_infos[i]
+      for j = 1, #group_players do
+        if group_players[j]["playerId"] == playerId then
+          --found!
+          groupId = i
+          goto delete_player
+        end
       end
     end
-    --此时group_players_copy是新的table
-    group_players = group_players_copy
-  end
+    
+    ::delete_player:: do
+      --执行删除玩家的操作
+      local group_players = all_players_infos[groupId]
+      local group_players_copy = {}
+      for i = 1, #group_players do
+        if group_players[i]["playerId"] ~= playerId then
+          group_players_copy[#group_players_copy+1] = group_players[i]
+        end
+      end
+      --此时group_players_copy是新的table
+      group_players = group_players_copy
+    end
 end
 
 --获取一个游戏开始的广播
@@ -446,33 +458,19 @@ end
 --ready
 ready = function()
   isready = true
-  --[[message GameReadyReq {
-    string playerId = 1;
-    string roomId = 2;
-    int32 tankType = 3;}]]--
---发送
   local tank_selected_index = sv_tankbag.getSelectedIndex()
-  gui:feedback("ready with the tank no."..tank_selected_index)
-  --network args : myId, roomId,tank_selected_index
-
+  local tankType = tankbag[tank_selected_index]["tankType"]
+  net:requestGameReady(myId, roomId, tankType)
 end
 
 --cancel_ready
 cancel_ready = function()
   isready = false
-  --[[message GameCancelReady {
-    string playerId = 1;
-    string roomId = 2;
-}]]--
-  --发送
-  gui:feedback("cancel ready")
-  --network args : myId, roomId
-
+  net:requestGameCancelReady(myId, roomId)
 end
 
 --离开时移除所有的组件
 remove_widgets = function()
-  gui:feedback("remove_widgets")
   for k,v in pairs(gooi_widgets) do
     gooi.removeComponent(v)
     --gooi_widgets[k] = nil
@@ -486,12 +484,7 @@ end
 
 --离开房间
 quit_room = function()
-  --[[message QuitRoomReq {
-    string roomId = 1;
-    string playerId = 2;}]]--
-  --返回到roomlist中
-  --network args : roomId, myId
-
+  net:requestQuitRoom(roomId, myId)
   local roomlist = require("boom.scenes.roomlist")
   local init_table = {}
   init_table["myId"] = myId
@@ -519,12 +512,34 @@ begin_game = function()
   else
     return
   end
-  --此时已经通过了全员到齐且ready的检查
-  --向Server发送GameBeginReq的请求
-  --[[message GameBeginReq {
-    string roomId = 1;   //"-fail"
-  }]]--
-  --network args : roomId
+  net:requestGameBegin(roomId)
 end
+
+--处理网络事件
+--收到有人进入房间的广播
+function RoomNetHandler:fireEnterRoomBroadcastEvent(event)
+  get_enterroom_broadcast(event.playerId, event.groupId)
+end
+
+--收到游戏开始的广播
+function RoomNetHandler:fireGameBeginBroadcastEvent(event)
+  get_gamebegin_broadcast()
+end
+
+--收到有玩家取消准备的广播
+function RoomNetHandler:fireGameCancelReadyBroadcastEvent(event)
+  get_gamecancelready_broadcast(event.playerId)
+end
+
+--收到有玩家进入准备状态的广播
+function RoomNetHandler:fireGameReadyBroadcastEvent(event)
+  get_gamereadybroadcast(event.playerId, event.tankType)
+end
+
+--收到有人退出房间的广播
+function RoomNetHandler:fireQuitBroadcastEvent(event)
+  get_quitroom_broadcast(event.isMaster,event.playerId)
+end
+
 
 return room
