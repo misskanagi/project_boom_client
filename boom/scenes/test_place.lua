@@ -80,7 +80,6 @@ function test_place:update(dt)
 end
 
 function test_place:draw()
-    self.camera:apply()
     -- camera attach
     self.camera:attach()
     self.shader:draw(function()

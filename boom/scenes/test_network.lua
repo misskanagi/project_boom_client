@@ -28,8 +28,12 @@ local entity = require("boom.entities")
 --debug canvas
 local debug_canvas = require "boom.systems.debug.debug_canvas"
 
+--particle canvas
+local particle_canvas = require "boom.systems.graphic.particle_canvas"
+
 --network
-net:connect("192.168.1.101", 8080)
+net:connect("172.28.37.19", 8080)
+--net:connect("192.168.1.104", 8080)
 net:startReceiving()
 
 function test_network:enter()
@@ -77,7 +81,7 @@ function test_network:enter()
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
-    self.camera = camera
+    self.camera = camera:instance()
     self.camera:lookAt(1280, 1664)
 end
 
@@ -114,6 +118,8 @@ function test_network:draw()
         -- draw ECS engine
         engine:draw()
     end)
+    -- draw particle system
+    particle_canvas:draw()
     -- draw debug canvas
     debug_canvas:draw()
     -- camera detach

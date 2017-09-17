@@ -53,6 +53,7 @@ function boom_camera:update(dt)
     if not self.calm then
         self.currShaking = self.shaking
     end
+    self:apply()
 end
 
 function boom_camera:apply()
