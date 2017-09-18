@@ -604,7 +604,7 @@ function gooi.newText(params)
 
     function f:drawSpecifics(fg)
         local mC = self.h / 8
-        love.graphics.setColor(0, 0, 0)
+        love.graphics.setColor(0, 0, 0, 100)
         love.graphics.rectangle("fill",
             self.x + mC,
             self.y + mC,
@@ -663,7 +663,7 @@ function gooi.newText(params)
             self:drawCursor(self.mt, mC)
         end
 
-        love.graphics.setColor(0, 0, 0)
+        love.graphics.setColor(0, 0, 0, 100)
         love.graphics.rectangle("line",
             self.x + mC,
             self.y + mC,

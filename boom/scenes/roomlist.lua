@@ -18,33 +18,32 @@ local myId = nil   --当前玩家的id
 --前置声明
 local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update
 --固定尺寸
-local window_w = 480
-local window_h = 320
+local window_w = 960 --480
+local window_h = 640 --320
 
 --lbl_title的各项参数
 local lbl_title = nil
-local lbl_title_x = 10
-local lbl_title_y = 10
-local lbl_title_w = 460
-local lbl_title_h = 60
+local lbl_title_x = 20 --10
+local lbl_title_y = 20 --10
+local lbl_title_w = 920 --460
+local lbl_title_h = 120 --60
 
 --滚动列表的各项参数
 local scrollgroup = nil
---local room_selected_index = 1 --当前被选中的房间的index
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
-local room_item_num_per_page = 3 -- 一页显示几个room_item
-local room_scroll_x = 10
-local room_scroll_y = 70
-local room_item_height = 70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
-local room_item_width = 444
+local room_item_num_per_page = 6 -- 一页显示几个room_item
+local room_scroll_x = 20 --10
+local room_scroll_y = 140 --70
+local room_item_height = 70 --70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
+local room_item_width = 904 --444
 local room_infos = {}  --存放从Server拿到的所有的房间item的数据
 
 --刷新相关值
 local refreshing = false --是否在刷新中
-local refresh_line_x1 = 240
-local refresh_line_x2 = 240
-local refresh_line_length_bound = 200
+local refresh_line_x1 = 480 --240
+local refresh_line_x2 = 480 --240
+local refresh_line_length_bound = 400 --200
 local refresh_line_shrink = false
 --申请进入房间的相关值
 local entering = false
@@ -66,6 +65,7 @@ end
 
 
 function roomlist:enter(prev, init_table)
+  gui:setOriginSize(window_w, window_h)
   cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
@@ -76,9 +76,9 @@ function roomlist:enter(prev, init_table)
   local joysticks = love.joystick.getJoysticks()
   joystick = joysticks[1]
 
-  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
-  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
+  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 26)
+  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 20)
   style = {
       font = font_big,
       radius = 5,
@@ -114,20 +114,20 @@ refresh_update = function(dt)
     if refresh_line_shrink then
       --收缩中
       if refresh_line_x2 - refresh_line_x1 > 0 then
-        refresh_line_x2 = refresh_line_x2 - 3
-        refresh_line_x1 = refresh_line_x1 + 3
+        refresh_line_x2 = refresh_line_x2 - 12 --6
+        refresh_line_x1 = refresh_line_x1 + 12 --6
       else
-        refresh_line_x1 = 240
-        refresh_line_x2 = 240
+        refresh_line_x1 = 480 --240
+        refresh_line_x2 = 480 --240
         refresh_line_shrink = false
       end
     else
       if refresh_line_x2 - refresh_line_x1 < refresh_line_length_bound then
-        refresh_line_x1 = refresh_line_x1 - 6
-        refresh_line_x2 = refresh_line_x2 + 6
+        refresh_line_x1 = refresh_line_x1 - 24 --12
+        refresh_line_x2 = refresh_line_x2 + 24 --12
       else
-        refresh_line_x1 = 240 - refresh_line_length_bound/2
-        refresh_line_x2 = 240 + refresh_line_length_bound/2
+        refresh_line_x1 = -refresh_line_length_bound/2 + 480 --240 
+        refresh_line_x2 = refresh_line_length_bound/2 + 480 --240
         refresh_line_shrink = true
       end
     end
@@ -177,10 +177,17 @@ refresh = function()
       local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
       gi.lsm = true
       gi.bgcolor = {255,255,255,0}
-      local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-      local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
-      local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
-      local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
+      --local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
+      --local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
+      --local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
+      --local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
+      local widget_room_image = gui:image("", {10, 5, 120, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
+      local widget_room_id = gui:text(room_id, {140, 5, 340, 60}, gi, false)
+      local widget_room_mode = gui:text(room_mode, {480, 5, 200, 60}, gi, false)--, {255,255,255,20})
+      local widget_room_people = gui:text(room_people, {680, 5, 200, 60}, gi, false)--, {255,255,255,20})
+      widget_room_id:setfont(font_small)
+      widget_room_mode:setfont(font_small)
+      widget_room_people:setfont(font_small)
       scrollgroup:addChild(gi)
     end
     scrollgroup:allChildAdded()
@@ -240,7 +247,7 @@ function roomlist:draw()
   end
 
   local r,g,b,a = lg.getColor()
-  lg.setColor(0, 0, 0, 127)
+  lg.setColor(0, 0, 0, 100)
   lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制lbl_title的底框
   lg.setColor(0, 0, 0, 100)
@@ -249,8 +256,8 @@ function roomlist:draw()
   lg.setColor(r,g,b,a)
   local fresh_string = "L1-refresh"
   local help_string = "R1-create a room"
-  lg.print(fresh_string, 20, window_h-font_current:getHeight() - 20)
-  lg.print(help_string, window_w-font_current:getWidth(help_string) - 20, window_h-font_current:getHeight() - 20)
+  lg.print(fresh_string, 40, window_h-font_current:getHeight() - 40)  --origin:20
+  lg.print(help_string, window_w-font_current:getWidth(help_string) - 40, window_h-font_current:getHeight() - 40) --origin:20
   gui:draw()
   gooi.draw()
   cam:detach()

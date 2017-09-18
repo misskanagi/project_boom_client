@@ -95,7 +95,8 @@ local sm_keyboard = {
   ["focous_text"] = {["dpdown"] = function()
       current_kb_row = 1
       current_keyboard_state = "focous_keyboard"
-      keyboard_text:bg({0,0,0,50})
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1],color[2],color[3],50})
     end,
     ["dpleft"] = function()
       keyboard_text:moveLeft()
@@ -112,7 +113,8 @@ local sm_keyboard = {
       else
         current_keyboard_state = "focous_btn_confirm"
       end
-      keyboard_text:bg({0,0,0,50})
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1], color[2], color[3], 50})
     end,
     ["a"] = function() --删除
       keyboard_text:deleteBack()
@@ -125,7 +127,8 @@ local sm_keyboard = {
   },
   ["focous_keyboard"] = {["dpleft"] = function()
       --消去当前的btn的呼吸灯效果
-      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
+      local color = keyboard_btns[current_kb_row][current_kb_col].style.bgColor
+      keyboard_btns[current_kb_row][current_kb_col]:bg({color[1],color[2],color[3],50})
       current_kb_col = current_kb_col - 1
       if current_kb_col == 0 then
         current_kb_col = 10
@@ -395,8 +398,9 @@ open_kb = function(init_string)
   gooi.focused = keyboard_text   --设置焦点为keyboard_text
   keyboard_text.hasFocus = true  --让keyboard_text的光标能够update起来
   -- 恢复两个text_id和text_psw的外框颜色
-  text_id:bg({240, 173, 78,0})
-  text_psw:bg({240, 173, 78,0})
+  local color = text_id.style.bgColor
+  text_id:bg({color[1],color[2],color[3],0})
+  text_psw:bg({color[1],color[2],color[3],0})
 end
 
 --在退出键盘，返回时，需要将键盘的各种状态置回初始值
@@ -406,7 +410,8 @@ close_kb = function()
   current_kb_col = 1
   current_kb_row = 1
   --关闭所有呼吸灯
-  keyboard_text:bg({0,0,0,50})
+  local color = keyboard_text.style.bgColor
+  keyboard_text:bg({color[1],color[2],color[3],100})
   keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
   btn_cancel:danger()
   btn_delete:warning()
@@ -476,7 +481,8 @@ states.update = function(dt)
   elseif current_state == "kb_id" or current_state == "kb_psw" then
     --
     if current_keyboard_state == "focous_text" then
-      keyboard_text:bg({240, 173, 78,(breath_acc_time / breath_loop_time) * 180 + 75})
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1], color[2], color[3], (breath_acc_time / breath_loop_time) * 180 + 75})
     elseif current_keyboard_state == "focous_keyboard" then
       -- 找出current_kb_row,current_kb_col对应的btn
       if keyboard_btns and keyboard_btns[current_kb_row] then
@@ -561,8 +567,8 @@ function login:enter()
   --pGrid:fg(component.colors.blue)
   local img_bullet = lg.newImage("assets/sign_bullet.png")
   local img_head = lg.newImage("assets/halou.png")
-  text_id = gooi.newText({w = 300, group = group_dl}):bg({240, 173, 78,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
-  text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({240, 173, 78,0}):setText(""):setTooltip("please enter your powerful password :o") -- 输入password的文本框
+  text_id = gooi.newText({w = 300, group = group_dl}):bg({209,209,209,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
+  text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({209,209,209,0}):setText(""):setTooltip("please enter your powerful password :o"):fg({255,255,255,255}) -- 输入password的文本框
   label_id = gooi.newLabel({text = "enter your id:", group = group_dl}):left():setIcon(img_bullet)
   label_psw = gooi.newLabel({text = "enter your password:", group = group_dl}):left():setIcon(img_bullet)
   btn_exit = gooi.newButton({text = "Exit", group = group_dl}):center():inverted():danger():onRelease(exit_pressed)
@@ -587,7 +593,7 @@ function login:enter()
   pOneLine = gooi.newPanel({x = keyboard_text_x, y = keyboard_text_y, w = keyboard_text_w, h = keyboard_text_h, layout = "grid 1x11"})
   pOneLine:setColspan(1, 1, 2)
   pOneLine:setColspan(1, 3, 9)
-  keyboard_text = gooi.newText({group = group_kb}):bg({0,0,0,0})
+  keyboard_text = gooi.newText({group = group_kb}):bg({209,209,209,50})
   --style.font = font_big
   keyboard_label = gooi.newLabel({text = "Enter:", group = group_kb}):left()
   --style.font = font_small

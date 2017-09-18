@@ -84,9 +84,9 @@ local results = {
   ["map"] = 1
 }
 local submitting = false --是否正在提交中
-local submit_line_x1 = 240
-local submit_line_x2 = 240
-local submit_line_length_bound = 200
+local submit_line_x1 = 480--240
+local submit_line_x2 = 480--240
+local submit_line_length_bound = 400--200
 local submit_line_shrink = false
 
 
@@ -143,8 +143,8 @@ function create_room:enter(prev, init_table)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
 
-  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
-  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
+  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 26)
+  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 20)
   font_current = lg.getFont()
   style = {
       font = font_big,
@@ -194,20 +194,20 @@ function create_room:update(dt)
     if submit_line_shrink then
       --收缩中
       if submit_line_x2 - submit_line_x1 > 0 then
-        submit_line_x2 = submit_line_x2 - 3
-        submit_line_x1 = submit_line_x1 + 3
+        submit_line_x2 = submit_line_x2 - 6--3
+        submit_line_x1 = submit_line_x1 + 6--3
       else
-        submit_line_x1 = 240
-        submit_line_x2 = 240
+        submit_line_x1 = 480--240
+        submit_line_x2 = 480--240
         submit_line_shrink = false
       end
     else
       if submit_line_x2 - submit_line_x1 < submit_line_length_bound then
-        submit_line_x1 = submit_line_x1 - 6
-        submit_line_x2 = submit_line_x2 + 6
+        submit_line_x1 = submit_line_x1 - 12--6
+        submit_line_x2 = submit_line_x2 + 12--6
       else
-        submit_line_x1 = 240 - submit_line_length_bound/2
-        submit_line_x2 = 240 + submit_line_length_bound/2
+        submit_line_x1 = -submit_line_length_bound/2 + 480--240
+        submit_line_x2 = submit_line_length_bound/2 + 480--240
         submit_line_shrink = true
       end
     end
@@ -255,8 +255,8 @@ function create_room:draw()
   local font_current = lg.getFont()
   local back_string = "L1-back"
   local confirm_string = "R1-confirm"
-  lg.print(back_string, 20, window_h-font_current:getHeight() - 20)
-  lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 20, window_h-font_current:getHeight() - 20)
+  lg.print(back_string, 40, window_h-font_current:getHeight() - 40)   --origin:20
+  lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 40, window_h-font_current:getHeight() - 40)  --origin:20
   cam:detach()
 end
 

@@ -1059,6 +1059,7 @@ Gspot.scroll = {
 			end
 		end
 		local handlepos = this.Gspot:pos({x = (this.values.axis == 'horizontal' and math.min(pos.x + (pos.w - hs), math.max(pos.x, pos.x + ((pos.w - hs) * (this.values.current / (this.values.max - this.values.min)))))) or pos.x, y = (this.values.axis == 'vertical' and math.min(pos.y + (pos.h - hs), math.max(pos.y, pos.y + ((pos.h - hs) * (this.values.current / (this.values.max - this.values.min)))))) or pos.y, w = this.values.axis == 'horizontal' and hs or this.style.unit, h = this.values.axis == 'vertical' and hs or this.style.unit, r = pos.r})
+    --handlepos.h = this.lsm_spec_h or handlepos.h --lsm
 		this:drawshape(handlepos)
 		if this.label then
 			love.graphics.setColor(this.style.labelfg or this.style.fg)
