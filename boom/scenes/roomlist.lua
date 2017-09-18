@@ -66,6 +66,7 @@ end
 
 
 function roomlist:enter(prev, init_table)
+  cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
   eventmanager:addListener("RoomListInputPressed", input_handler, input_handler.firePressedEvent)

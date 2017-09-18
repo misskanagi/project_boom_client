@@ -30,21 +30,26 @@ local lbl_life_value = nil
 local lbl_map_value = nil
 
 --固定尺寸
-local window_w = 480
-local window_h = 320
-local lbl_title_x = 10
-local lbl_title_y = 10
-local lbl_title_w = 460
-local lbl_title_h = 60
-local choose_table_x = 10
-local choose_table_y = 80
-local choose_table_w = 460
-local choose_table_h = 200
+local window_w = 960--480
+local window_h = 640--320
+local lbl_title_x = 20--10
+local lbl_title_y = 20--10
+local lbl_title_w = 920--460
+local lbl_title_h = 120--60
+local choose_table_x = 20--10
+local choose_table_y = 160--80
+local choose_table_w = 920--460
+local choose_table_h = 400--200
 --绘制当前选项的白框
-local table_item_x = 10
-local table_item_ys = {["mode"] = 80, ["people"] = 130, ["life"] = 180, ["map"] = 230}
-local table_item_w = 460
-local table_item_h = 50
+local table_item_x = 20--10
+local table_item_ys = {
+  ["mode"] = 160,--80, 
+  ["people"] = 260,--130, 
+  ["life"] = 360,--180, 
+  ["map"] = 460--230
+  }
+local table_item_w = 920--460
+local table_item_h = 100--50
 
 --前置声明
 local submit_request, remove_widgets, back_to_roomlist
@@ -114,6 +119,7 @@ submit_request = function()
   local chosen_life = selections["mode"][results["mode"]]
   local chosen_people = selections["mode"][results["mode"]]
   if not test_on_windows then
+    submitting = true  --当前状态变成了提交中
     net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
   else
     --windows上模拟已经创建房间成功的效果
@@ -129,10 +135,10 @@ submit_request = function()
     init_table["playersInRoom"] = 1
     game_state.switch(room, init_table)
   end
-  submitting = true  --当前状态变成了提交中
 end
 
 function create_room:enter(prev, init_table)
+  cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
