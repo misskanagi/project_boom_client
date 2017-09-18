@@ -528,6 +528,7 @@ function login:enter()
   eventmanager:addListener("LoginRes", login_net_handler, login_net_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
+  --lg.setBackgroundColor()
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
@@ -679,7 +680,13 @@ function login:update(dt)
 end
 
 function login:draw()
+  --设置一个背景图片
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
+  
+  --lg.setColor(0, 0, 0, 255)
+  lg.rectangle("line", 0, 0, window_w, window_h)
   --绘制一个矩形框将框内信息框住
   if current_state == "kb_id" or current_state == "kb_psw" then
     gooi.draw(group_kb)
