@@ -16,7 +16,7 @@ local keyboard_to_gamepad = {
   ["right"] = "dpright",
   ["a"] = "b",
   ["b"] = "a"
-  }
+}
 --函数前置声明
 local login_pressed, exit_pressed, enter_kb_psw, enter_kb_id, open_kb, close_kb, delete_char, processbar_login_update
 --键盘控件
@@ -77,14 +77,14 @@ local states = {
   ["kb_psw"] = {["enter_func"] = function() enter_kb_psw() end},
   ["pressed_login"] = {["enter_func"] = function() login_pressed() end},
   ["pressed_exit"] = {["enter_func"] = function() exit_pressed() end}
-  }
+}
 local current_state = "focous_id"
 
 
 local keyboard_items = {[1] = {"0","1","2","3","4","5","6","7","8","9"},
-                        [2] = {"q","w","e","r","t","y","u","i","o","p"},
-                        [3] = {"a","s","d","f","g","h","j","k","l","."},
-                        [4] = {"z","x","c","v","b","n","m","_","?","!"}}
+  [2] = {"q","w","e","r","t","y","u","i","o","p"},
+  [3] = {"a","s","d","f","g","h","j","k","l","."},
+  [4] = {"z","x","c","v","b","n","m","_","?","!"}}
 local keyboard_btns
 --keyboard的光标时钟都要是闪烁着的！
 current_kb_row = 1
@@ -93,214 +93,217 @@ local current_edit_text = ""
 current_keyboard_state = "focous_text"
 local sm_keyboard = {
   ["focous_text"] = {["dpdown"] = function()
-                                    current_kb_row = 1
-                                    current_keyboard_state = "focous_keyboard"
-                                    keyboard_text:bg({0,0,0,50})
-                                  end,
-                      ["dpleft"] = function()
-                                     keyboard_text:moveLeft()
-                                   end,
-                      ["dpright"] = function()
-                                      keyboard_text:moveRight()
-                                    end,
-                      ["dpup"] = function()
-                                   current_kb_row = 4
-                                   if current_kb_col < 4 then
-                                      current_keyboard_state = "focous_btn_cancel"
-                                   elseif current_kb_col < 8 then
-                                      current_keyboard_state = "focous_btn_delete"
-                                   else
-                                      current_keyboard_state = "focous_btn_confirm"
-                                   end
-                                   keyboard_text:bg({0,0,0,50})
-                                 end,
-                      ["a"] = function() --删除
-                                keyboard_text:deleteBack()
-                                --current_edit_text的值从keyboard中重新扒
-                                current_edit_text = ""
-                                for k, v in ipairs(keyboard_text.letters) do
-                                  current_edit_text = current_edit_text..v.char
-                                end
-                              end
-                    },
+      current_kb_row = 1
+      current_keyboard_state = "focous_keyboard"
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1],color[2],color[3],50})
+    end,
+    ["dpleft"] = function()
+      keyboard_text:moveLeft()
+    end,
+    ["dpright"] = function()
+      keyboard_text:moveRight()
+    end,
+    ["dpup"] = function()
+      current_kb_row = 4
+      if current_kb_col < 4 then
+        current_keyboard_state = "focous_btn_cancel"
+      elseif current_kb_col < 8 then
+        current_keyboard_state = "focous_btn_delete"
+      else
+        current_keyboard_state = "focous_btn_confirm"
+      end
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1], color[2], color[3], 50})
+    end,
+    ["a"] = function() --删除
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end
+  },
   ["focous_keyboard"] = {["dpleft"] = function()
-                                        --消去当前的btn的呼吸灯效果
-                                        keyboard_btns[current_kb_row][current_kb_col]:bg({0,0,0,10})
-                                        current_kb_col = current_kb_col - 1
-                                        if current_kb_col == 0 then
-                                          current_kb_col = 10
-                                        end
-                                      end,
-                          ["dpright"] = function()
-                                          --消去当前的btn的呼吸灯效果
-                                          keyboard_btns[current_kb_row][current_kb_col]:bg({0,0,0,10})
-                                          current_kb_col = current_kb_col + 1
-                                          if current_kb_col > 10 then
-                                            current_kb_col = 1
-                                          end
-                                        end,
-                          ["dpup"] = function()
-                                      --消去当前的btn的呼吸灯效果
-                                      keyboard_btns[current_kb_row][current_kb_col]:bg({0,0,0,10})
-                                      if current_kb_row == 1 then
-                                        current_keyboard_state = "focous_text"
-                                      else
-                                        current_kb_row = current_kb_row - 1
-                                      end
-                                     end,
-                          ["dpdown"] = function()
-                                        --消去当前的btn的呼吸灯效果
-                                        keyboard_btns[current_kb_row][current_kb_col]:bg({0,0,0,10})
-                                        if current_kb_row == 4 then
-                                          if current_kb_col < 4 then
-                                            current_keyboard_state = "focous_btn_cancel"
-                                          elseif current_kb_col < 8 then
-                                            current_keyboard_state = "focous_btn_delete"
-                                          else
-                                            current_keyboard_state = "focous_btn_confirm"
-                                          end
-                                        else
-                                          current_kb_row = current_kb_row + 1
-                                        end
-                                       end,
-                          ["b"] = function()
-                                    --选中了一个字符，
-                                    local ch_got = keyboard_items[current_kb_row][current_kb_col]
-                                    --设置到keyboard_text上
-                                    keyboard_text:setText(ch_got)
-                                    --更新current_edit_text的数据，从keyboard_text中扒
-                                    current_edit_text = ""
-                                    for k, v in ipairs(keyboard_text.letters) do
-                                      current_edit_text = current_edit_text..v.char
-                                    end
-                                  end,
-                          ["a"] = function() --删除
-                                    keyboard_text:deleteBack()
-                                    --current_edit_text的值从keyboard中重新扒
-                                    current_edit_text = ""
-                                    for k, v in ipairs(keyboard_text.letters) do
-                                      current_edit_text = current_edit_text..v.char
-                                    end
-                                  end
+      --消去当前的btn的呼吸灯效果
+      local color = keyboard_btns[current_kb_row][current_kb_col].style.bgColor
+      keyboard_btns[current_kb_row][current_kb_col]:bg({color[1],color[2],color[3],20})
+      current_kb_col = current_kb_col - 1
+      if current_kb_col == 0 then
+        current_kb_col = 10
+      end
+    end,
+    ["dpright"] = function()
+      --消去当前的btn的呼吸灯效果
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
+      current_kb_col = current_kb_col + 1
+      if current_kb_col > 10 then
+        current_kb_col = 1
+      end
+    end,
+    ["dpup"] = function()
+      --消去当前的btn的呼吸灯效果
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
+      if current_kb_row == 1 then
+        current_keyboard_state = "focous_text"
+      else
+        current_kb_row = current_kb_row - 1
+      end
+    end,
+    ["dpdown"] = function()
+      --消去当前的btn的呼吸灯效果
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
+      if current_kb_row == 4 then
+        if current_kb_col < 4 then
+          current_keyboard_state = "focous_btn_cancel"
+        elseif current_kb_col < 8 then
+          current_keyboard_state = "focous_btn_delete"
+        else
+          current_keyboard_state = "focous_btn_confirm"
+        end
+      else
+        current_kb_row = current_kb_row + 1
+      end
+    end,
+    ["b"] = function()
+      --选中了一个字符，
+      local ch_got = keyboard_items[current_kb_row][current_kb_col]
+      --设置到keyboard_text上
+      keyboard_text:setText(ch_got)
+      --更新current_edit_text的数据，从keyboard_text中扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end,
+    ["a"] = function() --删除
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end
 
-                        },
+  },
   ["focous_btn_cancel"] = {["dpright"] = function()
-                                          current_keyboard_state = "focous_btn_delete"
-                                          btn_cancel:danger()
-                                         end,
-                           ["dpup"] = function()
-                                        current_keyboard_state = "focous_keyboard"
-                                        btn_cancel:danger()
-                                      end,
-                            ["dpdown"] = function()
-                                          current_keyboard_state = "focous_text"
-                                          btn_cancel:danger()
-                                         end,
-                            ["b"] = function()
-                                      --返回driving license界面
-                                      close_kb()
-                                      if current_state == "kb_id" then
-                                        current_state = "focous_id"
-                                      elseif current_state == "kb_psw" then
-                                        current_state = "focous_psw"
-                                      end
-                                    end,
-                            ["a"] = function()
-                                      keyboard_text:deleteBack()
-                                      --current_edit_text的值从keyboard中重新扒
-                                      current_edit_text = ""
-                                      for k, v in ipairs(keyboard_text.letters) do
-                                        current_edit_text = current_edit_text..v.char
-                                      end
-                                    end
-                          },
+      current_keyboard_state = "focous_btn_delete"
+      btn_cancel:danger()
+    end,
+    ["dpup"] = function()
+      current_keyboard_state = "focous_keyboard"
+      btn_cancel:danger()
+    end,
+    ["dpdown"] = function()
+      current_keyboard_state = "focous_text"
+      btn_cancel:danger()
+    end,
+    ["b"] = function()
+      --返回driving license界面
+      close_kb()
+      if current_state == "kb_id" then
+        current_state = "focous_id"
+      elseif current_state == "kb_psw" then
+        current_state = "focous_psw"
+      end
+    end,
+    ["a"] = function()
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end
+  },
   ["focous_btn_delete"] = {["dpright"] = function()
-                                          current_keyboard_state = "focous_btn_confirm"
-                                          btn_delete:warning()
-                                         end,
-                           ["dpleft"] = function()
-                                          current_keyboard_state = "focous_btn_cancel"
-                                          btn_delete:warning()
-                                        end,
-                           ["dpup"] = function()
-                                        current_keyboard_state = "focous_keyboard"
-                                        btn_delete:warning()
-                                      end,
-                           ["dpdown"] = function()
-                                          current_keyboard_state = "focous_text"
-                                          btn_delete:warning()
-                                         end,
-                            ["b"] = function() --删除
-                                      keyboard_text:deleteBack()
-                                      --current_edit_text的值从keyboard中重新扒
-                                      current_edit_text = ""
-                                      for k, v in ipairs(keyboard_text.letters) do
-                                        current_edit_text = current_edit_text..v.char
-                                      end
-                                    end,
-                            ["a"] = function() --删除
-                                      keyboard_text:deleteBack()
-                                      --current_edit_text的值从keyboard中重新扒
-                                      current_edit_text = ""
-                                      for k, v in ipairs(keyboard_text.letters) do
-                                        current_edit_text = current_edit_text..v.char
-                                      end
-                                    end
+      current_keyboard_state = "focous_btn_confirm"
+      btn_delete:warning()
+    end,
+    ["dpleft"] = function()
+      current_keyboard_state = "focous_btn_cancel"
+      btn_delete:warning()
+    end,
+    ["dpup"] = function()
+      current_keyboard_state = "focous_keyboard"
+      btn_delete:warning()
+    end,
+    ["dpdown"] = function()
+      current_keyboard_state = "focous_text"
+      btn_delete:warning()
+    end,
+    ["b"] = function() --删除
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end,
+    ["a"] = function() --删除
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end
 
-                          },
+  },
   ["focous_btn_confirm"] = {["dpleft"] = function()
-                                          current_keyboard_state = "focous_btn_delete"
-                                          btn_confirm:success()
-                                         end,
-                            ["dpup"] = function()
-                                        current_keyboard_state = "focous_keyboard"
-                                        btn_confirm:success()
-                                       end,
-                            ["dpdown"] = function()
-                                          current_keyboard_state = "focous_text"
-                                          btn_confirm:success()
-                                         end,
-                            ["b"] = function()
-                                      --确认输入的内容
-                                      --直接返回driving license界面
-                                      if current_state == "kb_id" then
-                                        --current_edit_text中保存的即是需要设置到text_id上的内容
-                                        text_id.indexCursor = #text_id.letters
-                                        repeat
-                                          text_id:deleteBack()
-                                        until #text_id.letters == 0
-                                        text_id:setText(current_edit_text)
-                                        current_state = "focous_id"
-                                      elseif current_state == "kb_psw" then
-                                        --current_edit_text中保存的即是需要设置到text_id上的内容
-                                        text_psw.indexCursor = #text_psw.letters
-                                        repeat
-                                          text_psw:deleteBack()
-                                        until #text_psw.letters == 0
-                                        text_psw:setText(current_edit_text)
-                                        current_state = "focous_psw"
-                                      end
-                                      close_kb()
-                                    end,
-                            ["a"] = function() --删除
-                                      keyboard_text:deleteBack()
-                                      --current_edit_text的值从keyboard中重新扒
-                                      current_edit_text = ""
-                                      for k, v in ipairs(keyboard_text.letters) do
-                                        current_edit_text = current_edit_text..v.char
-                                      end
-                                    end
-                           }
+      current_keyboard_state = "focous_btn_delete"
+      btn_confirm:success()
+    end,
+    ["dpup"] = function()
+      current_keyboard_state = "focous_keyboard"
+      btn_confirm:success()
+    end,
+    ["dpdown"] = function()
+      current_keyboard_state = "focous_text"
+      btn_confirm:success()
+    end,
+    ["b"] = function()
+      --确认输入的内容
+      --直接返回driving license界面
+      if current_state == "kb_id" then
+        --current_edit_text中保存的即是需要设置到text_id上的内容
+        text_id.indexCursor = #text_id.letters
+        repeat
+          text_id:deleteBack()
+        until #text_id.letters == 0
+        text_id:setText(current_edit_text)
+        current_state = "focous_id"
+      elseif current_state == "kb_psw" then
+        --current_edit_text中保存的即是需要设置到text_id上的内容
+        text_psw.indexCursor = #text_psw.letters
+        repeat
+          text_psw:deleteBack()
+        until #text_psw.letters == 0
+        text_psw:setText(current_edit_text)
+        current_state = "focous_psw"
+      end
+      close_kb()
+    end,
+    ["a"] = function() --删除
+      keyboard_text:deleteBack()
+      --current_edit_text的值从keyboard中重新扒
+      current_edit_text = ""
+      for k, v in ipairs(keyboard_text.letters) do
+        current_edit_text = current_edit_text..v.char
+      end
+    end
+  }
 }
 
 
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-    --[[for k,v in pairs(comps) do
-      gooi.removeComponent(v)
-    end
-    game_state.switch(roomlist)]]--
+  for k,v in pairs(comps) do
+    gooi.removeComponent(v)
+  end
+  game_state.switch(roomlist,{["myId"] = "lsm"})
 
 
   --实现登陆的逻辑
@@ -331,7 +334,12 @@ login_pressed = function()
   else
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
-    net:requestLogin(str_id, str_psw)
+    if not test_on_windows then
+      net:requestLogin(str_id, str_psw)
+    else
+      --模拟一个通过情况
+      game_state.switch(roomlist,{["myId"] = "lsm"})
+    end
     myId = str_id
     processbar_login:increaseAt(0.2)
     logining = true
@@ -390,8 +398,9 @@ open_kb = function(init_string)
   gooi.focused = keyboard_text   --设置焦点为keyboard_text
   keyboard_text.hasFocus = true  --让keyboard_text的光标能够update起来
   -- 恢复两个text_id和text_psw的外框颜色
-  text_id:bg({240, 173, 78,0})
-  text_psw:bg({240, 173, 78,0})
+  local color = text_id.style.bgColor
+  text_id:bg({color[1],color[2],color[3],0})
+  text_psw:bg({color[1],color[2],color[3],0})
 end
 
 --在退出键盘，返回时，需要将键盘的各种状态置回初始值
@@ -401,8 +410,9 @@ close_kb = function()
   current_kb_col = 1
   current_kb_row = 1
   --关闭所有呼吸灯
-  keyboard_text:bg({0,0,0,50})
-  keyboard_btns[current_kb_row][current_kb_col]:bg({0,0,0,10})
+  local color = keyboard_text.style.bgColor
+  keyboard_text:bg({color[1],color[2],color[3],100})
+  keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
   btn_cancel:danger()
   btn_delete:warning()
   btn_confirm:success()
@@ -423,7 +433,7 @@ enter_kb_id = function()
   end
   --text = str
   keyboard_text.inputtype = "cleartext"
-  keyboard_label:setText("id:")
+  keyboard_label:setText("Id:")
   open_kb(current_edit_text)
 end
 
@@ -436,7 +446,7 @@ enter_kb_psw = function()
   end
   --text = str
   keyboard_text.inputtype = "ciphertext"
-  keyboard_label:setText("password:")
+  keyboard_label:setText("Pd:")
   open_kb(current_edit_text)
 end
 
@@ -471,12 +481,14 @@ states.update = function(dt)
   elseif current_state == "kb_id" or current_state == "kb_psw" then
     --
     if current_keyboard_state == "focous_text" then
-      keyboard_text:bg({240, 173, 78,(breath_acc_time / breath_loop_time) * 180 + 75})
+      local color = keyboard_text.style.bgColor
+      keyboard_text:bg({color[1], color[2], color[3], (breath_acc_time / breath_loop_time) * 180 + 75})
     elseif current_keyboard_state == "focous_keyboard" then
       -- 找出current_kb_row,current_kb_col对应的btn
       if keyboard_btns and keyboard_btns[current_kb_row] then
         local keyboard_current_btn = keyboard_btns[current_kb_row][current_kb_col]
-        keyboard_current_btn:bg({0,0,0,(1-(breath_acc_time / breath_loop_time)) * 30})
+        local color = keyboard_current_btn.style.bgColor
+        keyboard_current_btn:bg({color[1],color[2],color[3],20 + (breath_acc_time / breath_loop_time) * 50})
       end
     elseif current_keyboard_state == "focous_btn_cancel" then
       btn_cancel:bg({217, 83, 79, (breath_acc_time / breath_loop_time) * 180 + 75})
@@ -513,25 +525,25 @@ states.transfer = function(button)
   end
 end
 
-net:connect("172.28.37.19", 8080)
---net:connect("192.168.1.101")
-net:startReceiving()
 function login:enter()
+  --net:connect("192.168.1.101")
+  --net:connect("172.28.37.19", 8080)
+  --net:startReceiving() 
   --注册事件监听函数
   print("login:enter()")
+  gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
   eventmanager:addListener("LoginRes", login_net_handler, login_net_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
-  lg.setBackgroundColor(95, 158, 160) --skyblue
-  function width() return lg.getWidth() end
-  function height() return lg.getHeight() end
+  --lg.setBackgroundColor(95, 158, 160) --skyblue
+  --lg.setBackgroundColor()
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   style = {
-      font = font_small,
-      radius = 5,
-      innerRadius = 3,
-      showBorder = true,
+    font = font_small,
+    radius = 5,
+    innerRadius = 3,
+    showBorder = true,
   }
 
   gooi.setStyle(style)
@@ -549,14 +561,14 @@ function login:enter()
   -- grid layout
   pGrid = gooi.newPanel({x = driving_liscense_x, y = driving_liscense_y , w = driving_license_w, h = driving_license_h, layout = "grid 5x3"})
   pGrid
-    :setRowspan(1, 1, 5) --头像
-    :setColspan(2, 2, 2)
-    :setColspan(4, 2, 2)
+  :setRowspan(1, 1, 5) --头像
+  :setColspan(2, 2, 2)
+  :setColspan(4, 2, 2)
   --pGrid:fg(component.colors.blue)
   local img_bullet = lg.newImage("assets/sign_bullet.png")
   local img_head = lg.newImage("assets/halou.png")
-  text_id = gooi.newText({w = 300, group = group_dl}):bg({240, 173, 78,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
-  text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({240, 173, 78,0}):setText(""):setTooltip("please enter your powerful password :o") -- 输入password的文本框
+  text_id = gooi.newText({w = 300, group = group_dl}):bg({209,209,209,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
+  text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({209,209,209,0}):setText(""):setTooltip("please enter your powerful password :o"):fg({255,255,255,255}) -- 输入password的文本框
   label_id = gooi.newLabel({text = "enter your id:", group = group_dl}):left():setIcon(img_bullet)
   label_psw = gooi.newLabel({text = "enter your password:", group = group_dl}):left():setIcon(img_bullet)
   btn_exit = gooi.newButton({text = "Exit", group = group_dl}):center():inverted():danger():onRelease(exit_pressed)
@@ -572,21 +584,21 @@ function login:enter()
   pGrid.layout.debug = false
   --login的进度条
   processbar_login = gooi.newBar({x = processbar_x, y = processbar_y, w = processbar_w, h = processbar_h, value = 0, group = group_dl})
-                        :setRadius(0, 5)
-                        :bg({0,0,0,30})
-                        :fg({255, 255, 255, 255})
+  :setRadius(0, 5)
+  :bg({0,0,0,30})
+  :fg({255, 255, 255, 255})
 
   ------------------
   --创建键盘控件
-  pOneLine = gooi.newPanel({x = keyboard_text_x, y = keyboard_text_y, w = keyboard_text_w, h = keyboard_text_h, layout = "grid 1x6"})
+  pOneLine = gooi.newPanel({x = keyboard_text_x, y = keyboard_text_y, w = keyboard_text_w, h = keyboard_text_h, layout = "grid 1x11"})
   pOneLine:setColspan(1, 1, 2)
-  pOneLine:setColspan(1, 3, 4)
-  keyboard_text = gooi.newText({group = group_kb}):bg({0,0,0,0})
+  pOneLine:setColspan(1, 3, 9)
+  keyboard_text = gooi.newText({group = group_kb}):bg({209,209,209,50})
   --style.font = font_big
   keyboard_label = gooi.newLabel({text = "Enter:", group = group_kb}):left()
   --style.font = font_small
   pOneLine:add(keyboard_label, "1,1")
-          :add(keyboard_text, "1,3")
+  :add(keyboard_text, "1,3")
   pKeyboard = gooi.newPanel({x = keyboard_x, y = keyboard_y , w = keyboard_w, h = keyboard_h, layout = "grid 4x10"})
   --创建10个数字，26个字母和4个特殊字符
   keyboard_btns = {}
@@ -594,7 +606,7 @@ function login:enter()
     keyboard_btns[row_id] = {}
     for col_id, character_item in ipairs(line_item) do
       -- character_item就是对应的字符
-      local btn_ch = gooi.newButton({text = character_item, group = group_kb}):center():bg({0,0,0,10})
+      local btn_ch = gooi.newButton({text = character_item, group = group_kb}):center():bg({255,255,255,20})
       keyboard_btns[row_id][col_id] = btn_ch
       pKeyboard:add(btn_ch, row_id..","..col_id)
       table.insert(comps, btn_ch)
@@ -609,8 +621,8 @@ function login:enter()
   btn_delete = gooi.newButton({text = "delete", group = group_kb}):center():warning()
   btn_confirm = gooi.newButton({text = "confirm", group = group_kb}):center():success()
   pBtnsLine:add(btn_cancel, "1,1")
-           :add(btn_delete, "1,2")
-           :add(btn_confirm, "1,3")
+  :add(btn_delete, "1,2")
+  :add(btn_confirm, "1,3")
 
 
   --所有的控件添加到comps中，以方便以后切换到另一个场景的时候移除。
@@ -640,9 +652,10 @@ function login:enter()
   table.insert(comps, pGrid)
 
   -- camera operations
-  cam:lookAt(window_w/2, window_h/2)
+
   local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-  cam:zoom(zm)
+  --cam:zoom(zm)
+  cam:lookAt(window_w/2, window_h/2)
 end
 
 function login:update(dt)
@@ -668,16 +681,29 @@ function login:update(dt)
   states.update(dt)
   gooi.update(dt)
   gui:update(dt)
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 function login:draw()
+  --设置一个背景图片
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
+
+
   --绘制一个矩形框将框内信息框住
   if current_state == "kb_id" or current_state == "kb_psw" then
+    local r,g,b,a = lg.getColor()
+    lg.setColor(0, 0, 0, 127)
+    lg.rectangle("fill", 0, 0, window_w, window_h)
     gooi.draw(group_kb)
+    lg.setColor(r,g,b,a)
   else
     local r,g,b,a = lg.getColor()
+    lg.setColor(0, 0, 0, 127)
+    lg.rectangle("fill", 0, 0, window_w, window_h)
     lg.setColor(0, 0, 0, 127)
     lg.rectangle("fill", 10, 20, window_w-20, 60)
     lg.setColor(0, 0, 0, 60)
@@ -724,7 +750,7 @@ function LoginNetHandler:fireLoginResEvent(event)
     --登录成功
     print("LoginNetHandler success")
     login_success = true
-    
+
     ----------
     local init_table = {}
     init_table["myId"] = myId

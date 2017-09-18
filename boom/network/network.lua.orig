@@ -1,9 +1,14 @@
+<<<<<<< HEAD
+--local netLib = require "library"
+local netLib = require "libtcp"
+=======
 local netLib = nil
 if not test_on_windows then
   netLib = require "libtcp"
 end
 
 
+>>>>>>> lsm
 local json = require "libs.json"
 --events
 local events = require("boom.events")

@@ -112,13 +112,14 @@ isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadca
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
+  cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
   eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
   eventmanager:addListener("GameReadyBroadcast", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
   eventmanager:addListener("QuitBroadcast", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
-  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
-  eventmanager:addListener("InputReleased", input_handler, input_handler.fireReleasedEvent)
+  eventmanager:addListener("RoomInputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("RoomInputReleased", input_handler, input_handler.fireReleasedEvent)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
   font_current = lg.getFont()
@@ -237,10 +238,10 @@ function room:enter(pre, init_table)
 
   --创建一个选择tank的列表
   --创建scollgroup
-  sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
+  sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,50}}, gui)
   --sv_tankbag:setDataSource(tankbag)
   for i = 1, #tankbag do
-    local tank_text = gui:text(tankbag[i], {0, 0, 140, 50}, nil, false, {255,255,255,20})
+    local tank_text = gui:text(tankbag[i]["tankType"], {0, 0, 140, 50}, nil, false, {255,255,255,20})
     sv_tankbag:addChild(tank_text, 'vertical')
   end
   sv_tankbag:allChildAdded()
@@ -257,12 +258,18 @@ function room:update(dt)
   sv_tankbag:update(dt)
   gui:update(dt)
   gooi.update()
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 function room:draw()
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
   local r,g,b,a = lg.getColor()
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制出两个玩家表格的格线
   --grid_1
   for i = 1, 5 do
@@ -301,56 +308,60 @@ function room:gamepadpressed(joystick, button)
     --[[if isready then return end
     --begin_move_scrollgroup("up")
     sv_tankbag:scrollUp()]]--
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.RoomInputPressed("up"))
   elseif button == "dpdown" then
     --[[if isready then return end
     --begin_move_scrollgroup("down")
     sv_tankbag:scrollDown()]]--
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.RoomInputPressed("down"))
   elseif button == "b" then  --O键
     --ready()
-    eventmanager:fireEvent(events.InputPressed("a"))
+    eventmanager:fireEvent(events.RoomInputPressed("a"))
   elseif button == "a" then  --X键
     --cancel_ready()
-    eventmanager:fireEvent(events.InputPressed("b"))
+    eventmanager:fireEvent(events.RoomInputPressed("b"))
   elseif button == "leftshoulder" then
     --quit_room()
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.RoomInputPressed("l1"))
   elseif button == "rightshoulder" then
     --begin_game()
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.RoomInputPressed("r1"))
+  elseif button == "guide" then
+    eventmanager:fireEvent(events.RoomInputPressed("esc"))
   end
 end
 
 function room:gamepadreleased(joystick, button)
   if button == "dpup" then
-    eventmanager:fireEvent(events.InputReleased("up"))
+    eventmanager:fireEvent(events.RoomInputReleased("up"))
   elseif button == "dpdown" then
-    eventmanager:fireEvent(events.InputReleased("down"))
+    eventmanager:fireEvent(events.RoomInputReleased("down"))
   end
 end
 
 function room:keypressed(key, scancode, isrepeat)
   if key == "up" then
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.RoomInputPressed("up"))
   elseif key == "down" then
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.RoomInputPressed("down"))
   elseif key == "a" then  --O键
-    eventmanager:fireEvent(events.InputPressed("a"))
+    eventmanager:fireEvent(events.RoomInputPressed("a"))
   elseif key == "b" then  --X键
-    eventmanager:fireEvent(events.InputPressed("b"))
+    eventmanager:fireEvent(events.RoomInputPressed("b"))
   elseif key == "l" then
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.RoomInputPressed("l1"))
   elseif key == "r" then
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.RoomInputPressed("r1"))
+  elseif key == "escape" then
+    eventmanager:fireEvent(events.RoomInputPressed("esc"))
   end
 end
 
 function room:keyreleased(key)
   if key == "up" then
-    eventmanager:fireEvent(events.InputReleased("up"))
+    eventmanager:fireEvent(events.RoomInputReleased("up"))
   elseif key == "down" then
-    eventmanager:fireEvent(events.InputReleased("down"))
+    eventmanager:fireEvent(events.RoomInputReleased("down"))
   end
 end
 
@@ -489,13 +500,17 @@ ready = function()
   isready = true
   local tank_selected_index = sv_tankbag.getSelectedIndex()
   local tankType = tankbag[tank_selected_index]["tankType"]
-  net:requestGameReady(myId, roomId, tankType)
+  if not test_on_windows then
+    net:requestGameReady(myId, roomId, tankType)
+  end
 end
 
 --cancel_ready
 cancel_ready = function()
   isready = false
-  net:requestGameCancelReady(myId, roomId)
+  if not test_on_windows then
+    net:requestGameCancelReady(myId, roomId)
+  end
 end
 
 --离开时移除所有的组件
@@ -513,7 +528,9 @@ end
 
 --离开房间
 quit_room = function()
-  net:requestQuitRoom(roomId, myId)
+  if not test_on_windows then
+    net:requestQuitRoom(roomId, myId)
+  end
   local roomlist = require("boom.scenes.roomlist")
   local init_table = {}
   init_table["myId"] = myId
@@ -541,7 +558,9 @@ begin_game = function()
   else
     return
   end
-  net:requestGameBegin(roomId)
+  if not test_on_windows then
+    net:requestGameBegin(roomId)
+  end
 end
 
 
@@ -564,6 +583,8 @@ function InputHandler:firePressedEvent(event)
     quit_room()
   elseif cmd == "r1" then
     begin_game()
+  elseif cmd == "esc" then
+    love.event.quit()
   end
 end
 
