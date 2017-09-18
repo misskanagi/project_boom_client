@@ -297,7 +297,7 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-    for k,v in pairs(comps) do
+   for k,v in pairs(comps) do
       gooi.removeComponent(v)
     end
     game_state.switch(roomlist,{["myId"] = "lsm"})
@@ -331,7 +331,12 @@ login_pressed = function()
   else
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
-    net:requestLogin(str_id, str_psw)
+    if not test_on_windows then
+      net:requestLogin(str_id, str_psw)
+    else
+      --模拟一个通过情况
+      game_state.switch(roomlist,{["myId"] = "lsm"})
+    end
     myId = str_id
     processbar_login:increaseAt(0.2)
     logining = true
@@ -519,11 +524,10 @@ function login:enter()
   --net:startReceiving() 
   --注册事件监听函数
   print("login:enter()")
+  gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
   eventmanager:addListener("LoginRes", login_net_handler, login_net_handler.fireLoginResEvent)
   --love.window.setMode(window_w, window_h)  --登陆窗口小小的
   lg.setBackgroundColor(95, 158, 160) --skyblue
-  function width() return lg.getWidth() end
-  function height() return lg.getHeight() end
 
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
@@ -640,9 +644,10 @@ function login:enter()
   table.insert(comps, pGrid)
 
   -- camera operations
-  cam:lookAt(window_w/2, window_h/2)
+  
   local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-  cam:zoom(zm)
+  --cam:zoom(zm)
+  cam:lookAt(window_w/2, window_h/2)
 end
 
 function login:update(dt)
@@ -668,7 +673,9 @@ function login:update(dt)
   states.update(dt)
   gooi.update(dt)
   gui:update(dt)
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 function login:draw()

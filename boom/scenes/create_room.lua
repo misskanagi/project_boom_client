@@ -113,7 +113,22 @@ submit_request = function()
   local chosen_map = selections["mode"][results["mode"]]
   local chosen_life = selections["mode"][results["mode"]]
   local chosen_people = selections["mode"][results["mode"]]
-  net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
+  if not test_on_windows then
+    net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
+  else
+    --windows上模拟已经创建房间成功的效果
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = "fake_room_id"
+    init_table["groupId"] = 1  --房主默认在1号队
+    init_table["roomMasterId"] = myId
+    init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
+    init_table["mapType"] = selections["map"][results["map"]]  --"as_snow"
+    init_table["lifeNumber"] = selections["life"][results["life"]]
+    init_table["playersPerGroup"] = selections["people"][results["people"]]
+    init_table["playersInRoom"] = 1
+    game_state.switch(room, init_table)
+  end
   submitting = true  --当前状态变成了提交中
 end
 
@@ -203,7 +218,9 @@ function create_room:update(dt)
   lbl_map_value:setText(map_value)
   gooi.update(dt)
   gui:update(dt)
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 function create_room:draw()
@@ -271,17 +288,17 @@ function create_room:keypressed(key, scancode, isrepeat)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
   if key == "up" then
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("up"))
   elseif key == "down" then
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("down"))
   elseif key == "left" then
-    eventmanager:fireEvent(events.InputPressed("left"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("left"))
   elseif key == "right" then
-    eventmanager:fireEvent(events.InputPressed("right"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("right"))
   elseif key == "r" then  --确认创建房间
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif key == "l" then --取消创建房间，退回到roomlist
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
   end
 end
 

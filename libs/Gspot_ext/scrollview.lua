@@ -21,6 +21,9 @@ function scrollview.createObject(init_table, gui_obj)
   
   sv_obj.scrollgroup = gui:scrollgroup(nil, {sv_obj.x, sv_obj.y, sv_obj.item_width, sv_obj.item_height*sv_obj.item_num_per_page}, sv_obj.parent, 'vertical', sv_obj.bgcolor)
   sv_obj.scrollgroup.scrollv.values.step = sv_obj.item_height -- 设置滑动步长
+  --sv_obj.scrollgroup.is_fixed_scissor = true
+  --sv_obj.scrollgroup.spec_scissor = {x=0,y=0,w=200,h=400}
+  --sv_obj.scrollgroup.scissor = {sv_obj.x, sv_obj.y, sv_obj.item_width, sv_obj.item_height*sv_obj.item_num_per_page}
   --sv_obj.scrollgroup.scrollv:update_focous(0, 1)
   
   --各种用于sv_obj的控制信息

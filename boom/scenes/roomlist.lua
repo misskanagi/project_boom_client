@@ -62,15 +62,14 @@ function roomlist:leave()
   entering = false
   remove_widgets()
   room_infos = {}
-  scroll_items = {}
 end
 
 
 function roomlist:enter(prev, init_table)
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
-  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
-  eventmanager:addListener("InputReleased", input_handler, input_handler.fireReleasedEvent)
+  eventmanager:addListener("RoomListInputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("RoomListInputReleased", input_handler, input_handler.fireReleasedEvent)
   
   myId = init_table and init_table["myId"]
   local joysticks = love.joystick.getJoysticks()
@@ -91,18 +90,20 @@ function roomlist:enter(prev, init_table)
   gooi.shadow()
   --创建lbl_title
   lbl_title = gooi.newLabel({text = "Room List", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
-  --创建scollgroup
-  scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
-  refresh()   --enter的最后就
+  refresh()   --刷新房间列表
 end
 
 function roomlist:update(dt)
   enter_update(dt)
   refresh_update(dt)
-  scrollgroup:update(dt)
+  if scrollgroup then
+    scrollgroup:update(dt)
+  end
   gui:update(dt)
   gooi.update(dt)
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 --处理refresh更新的逻辑
@@ -142,11 +143,49 @@ end
 
 --刷新房间列表
 refresh = function()
-  scrollgroup:removeAllChildren()
+  if scrollgroup then
+    scrollgroup:clean()
+  end
   --向server发送获取房间列表的请求
   print("refresh:"..myId)
-  net:requestGetRoomList(myId)
   refreshing = true
+  if not test_on_windows then
+    net:requestGetRoomList(myId)
+  else
+    --模拟已经获取到了最新的数据
+    --更新显示房间列表
+    --添加新的控件
+    roomNumbers = 6
+    RoomInfos = {
+      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 3},
+      [2] = {["roomId"] = "james_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 5},
+      [3] = {["roomId"] = "hackhao_www", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 9},
+      [4] = {["roomId"] = "yuge_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 16},
+      [5] = {["roomId"] = "kingdom", ["gameMode"] = "chaos", ["playersPerGroup"] = 3, ["playersInRoom"] = 2},
+      [6] = {["roomId"] = "heheheh", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 8},
+    }
+    --创建scollgroup
+    scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
+    for i = 1, roomNumbers do
+    --w一共是444
+      local roomInfo_item = RoomInfos[i]
+      local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
+      local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
+      local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
+      local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
+      local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
+      gi.lsm = true
+      gi.bgcolor = {255,255,255,0}
+      local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
+      local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
+      local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
+      local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
+      scrollgroup:addChild(gi)
+    end
+    scrollgroup:allChildAdded()
+    scrollgroup:scrollToTop()
+    refreshing = false
+  end
 end
 
 --进入房间
@@ -159,14 +198,34 @@ enter_room = function()
     return
   end
   --将自己的id和要进入的房间id一同发送给Server
-  net:requestEnterRoom(selected_room_item["roomId"], myId)
   entering  = true
+  if not test_on_windows then
+    net:requestEnterRoom(selected_room_item["roomId"], myId)
+  else
+    --模拟成功进入了房间
+    --成功进入房间，带着myId,roomId,groupId,roomMasterId,playersInfo,gameMode,mapType,lifeNumber,playersPerGroup,进入room.lua
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = selected_room_item["roomId"]   --
+    init_table["groupId"] = 2
+    init_table["roomMasterId"] = "root"
+    init_table["playersInfo"] = {}
+    init_table["gameMode"] = selected_room_item["gameMode"]   --
+    init_table["mapType"] = 2
+    init_table["lifeNumber"] = 5
+    init_table["playersPerGroup"] = selected_room_item["playersPerGroup"]  --
+    --init_table[""] = 
+    local room = require("boom.scenes.room")
+    game_state.switch(room, init_table)
+  end
 end
 
 --移除所有的控件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
-  scrollgroup:clean()
+  if scrollgroup then
+    scrollgroup:clean()
+  end
 end
 
 
@@ -202,33 +261,33 @@ function roomlist:gamepadpressed(joystick, button)
   if entering then return end   --如果正在进入房间，禁止按键操作，直到收到一个返回
   if button == "b" then
     --enter_room()
-    eventmanager:fireEvent(events.InputPressed("a"))
+    eventmanager:fireEvent(events.RoomListInputPressed("a"))
   elseif button == 'dpup' then
     --if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.RoomListInputPressed("up"))
   elseif button == 'dpdown' then
     --if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.RoomListInputPressed("down"))
   elseif button == 'rightshoulder' then
     --[[local init_table = {}
     init_table["myId"] = myId
     game_state.switch(create_room, init_table)]]--
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.RoomListInputPressed("r1"))
   elseif button == 'leftshoulder' then
     --refresh()
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.RoomListInputPressed("l1"))
   end
 end
 
 function roomlist:gamepadreleased(joystick, button)
   if button == "dpup" then
-    eventmanager:fireEvent(events.InputReleased("up"))
+    eventmanager:fireEvent(events.RoomListInputReleased("up"))
   elseif button == "dpdown" then
     --[[if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
       --stop_move_scrollgroup()
       scrollgroup:stop_move()
     end]]--
-    eventmanager:fireEvent(events.InputReleased("down"))
+    eventmanager:fireEvent(events.RoomListInputReleased("down"))
   end
 end
 
@@ -236,33 +295,33 @@ function roomlist:keypressed(key, scancode, isrepeat)
   if entering then return end   --如果正在进入房间，禁止按键操作，直到收到一个返回
   if key == "a" then
     --enter_room()
-    eventmanager:fireEvent(events.InputPressed("a"))
+    eventmanager:fireEvent(events.RoomListInputPressed("a"))
   elseif key == 'up' then
     --if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.RoomListInputPressed("up"))
   elseif key == 'down' then
     --if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.RoomListInputPressed("down"))
   elseif key == 'r' then
     --[[local init_table = {}
     init_table["myId"] = myId
     game_state.switch(create_room, init_table)]]--
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.RoomListInputPressed("r1"))
   elseif key == 'l' then
     --refresh()
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.RoomListInputPressed("l1"))
   end
 end
 
 function roomlist:keyreleased(key)
   if key == "up" then
-    eventmanager:fireEvent(events.InputReleased("up"))
+    eventmanager:fireEvent(events.RoomListInputReleased("up"))
   elseif key == "down" then
     --[[if not(joystick and (joystick:isGamepadDown("dpup") or joystick:isGamepadDown("dpdown"))) then
       --stop_move_scrollgroup()
       scrollgroup:stop_move()
     end]]--
-    eventmanager:fireEvent(events.InputReleased("down"))
+    eventmanager:fireEvent(events.RoomListInputReleased("down"))
   end
 end
 
@@ -271,7 +330,9 @@ end
 --收到服务器对获取房间列表请求的响应
 function RoomListNetHandler:fireGetRoomListResEvent(event)
   print("RoomListNetHandler:fireGetRoomListResEvent")
-  scrollgroup:removeAllChildren()
+  if scrollgroup then
+    scrollgroup:clean()
+  end
   roomNumbers = event.roomNumbers
   if roomNumbers == -1 then
     --没有任何房间数据

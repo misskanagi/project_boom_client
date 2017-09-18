@@ -15,8 +15,13 @@ log.logswitch(false)  --关闭log开关
 engine = Engine()
 
 --network
-local network = require("boom.network")
-net = network:instance()
+test_on_windows = true
+local network = nil
+if not test_on_windows then
+  network = require("boom.network")
+  net = network:instance()
+end
+
 
 --event manager
 eventmanager = EventManager()

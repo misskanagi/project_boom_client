@@ -1,4 +1,9 @@
-local netLib = require "libtcp"
+local netLib = nil
+if not test_on_windows then
+  netLib = require "libtcp"
+end
+
+
 local json = require "libs.json"
 --events
 local events = require("boom.events")

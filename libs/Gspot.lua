@@ -192,14 +192,25 @@ Gspot.update = function(this, dt)
 	end
 end
 
+--lsm添加的函数
+Gspot.setOriginSize = function(this, w, h)
+  this.origin_width = w
+  this.origin_height = h
+end
+
+
 Gspot.draw = function(this)
 	local ostyle_font = love.graphics.getFont()
 	local ostyle_r, ostyle_g, ostyle_b, ostyle_a = love.graphics.getColor()
 	local ostyle_scissor_x, ostyle_scissor_y, ostyle_scissor_w, ostyle_scissor_h = love.graphics.getScissor()
 	for i, element in ipairs(this.elements) do
+    
 		if element.display then
 			local pos, scissor = element:getpos()
-			if scissor then clipScissor(scissor.x, scissor.y, scissor.w, scissor.h) end
+      --if element.lsm then print("lsm : pos.x="..pos.x..", pos.y="..pos.y) end
+      local window_w = love.graphics.getWidth()
+      local window_h = love.graphics.getHeight()
+			if scissor then clipScissor(scissor.x+(window_w-this.origin_width)/2, scissor.y+(window_h-this.origin_height)/2, scissor.w, scissor.h) end
 			love.graphics.setFont(element.style.font)
 			element:draw(pos)
 			love.graphics.setScissor(ostyle_scissor_x, ostyle_scissor_y, ostyle_scissor_w, ostyle_scissor_h)
