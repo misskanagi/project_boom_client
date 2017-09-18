@@ -3,6 +3,7 @@ local login = class("login")
 local LoginNetHandler = class("LoginNetHandler", System)
 local login_net_handler = LoginNetHandler()
 local game_state = require("libs.hump.gamestate")
+local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
@@ -300,10 +301,10 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-  for k,v in pairs(comps) do
+  --[[for k,v in pairs(comps) do
     gooi.removeComponent(v)
   end
-  game_state.switch(roomlist,{["myId"] = "lsm"})
+  game_state.switch(roomlist,{["myId"] = "lsm"})]]--
 
 
   --实现登陆的逻辑
@@ -527,8 +528,8 @@ end
 
 function login:enter()
   --net:connect("192.168.1.101")
-  --net:connect("172.28.37.19", 8080)
-  --net:startReceiving() 
+  net:connect("172.28.37.19", 8080)
+  net:startReceiving() 
   --注册事件监听函数
   print("login:enter()")
   gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
@@ -655,7 +656,7 @@ function login:enter()
 
   local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
   --cam:zoom(zm)
-  cam:lookAt(window_w/2, window_h/2)
+  --cam:lookAt(window_w/2, window_h/2)
 end
 
 function login:update(dt)
@@ -688,9 +689,9 @@ end
 
 function login:draw()
   --设置一个背景图片
-  local bgimg = lg.newImage("assets/bgimg.jpg")
+  
   lg.draw(bgimg,0,0)
-  cam:attach()
+  --cam:attach()
 
 
   --绘制一个矩形框将框内信息框住
@@ -715,7 +716,7 @@ function login:draw()
     gui:draw()
   end
   --
-  cam:detach()
+  --cam:detach()
 
   if debug_on then lg.print(text) end
 end

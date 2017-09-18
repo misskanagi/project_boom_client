@@ -206,6 +206,7 @@ end
 function network:send(type, data)
     assert(self.is_connected==true)
     if self.is_connected then
+      print(json.encode(data))
         local result = netLib.Lua_send(type, json.encode(data))
         --print("send:")
         --print(json.encode(data))

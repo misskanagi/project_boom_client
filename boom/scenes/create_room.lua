@@ -13,6 +13,7 @@ local CreateRoomNetHandler = class("CreateRoomNetHandler", System)
 local InputHandler = class("InputHandler", System)
 local create_room_net_handler = CreateRoomNetHandler()
 local input_handler = InputHandler()
+local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 require "./libs/gooi"
 local lg = love.graphics
@@ -55,10 +56,10 @@ local table_item_h = 100--50
 local submit_request, remove_widgets, back_to_roomlist
 --所有的选项值
 local selections = {
-  ["mode"] = {"chaos"},
+  ["mode"] = {1},
   ["people"] = {1,2,3,4,5,6,7,8},   --每队人数
   ["life"] = {1,3,5,10},
-  ["map"] = {"as_snow"}
+  ["map"] = {1}
 }
 --按了键以后的下一个选项类是什么
 local next_select_class = {
@@ -115,9 +116,9 @@ end
 submit_request = function()
   --将results中的内容组织一下发送给Server
   local chosen_mode = selections["mode"][results["mode"]]
-  local chosen_map = selections["mode"][results["mode"]]
-  local chosen_life = selections["mode"][results["mode"]]
-  local chosen_people = selections["mode"][results["mode"]]
+  local chosen_map = selections["map"][results["map"]]
+  local chosen_life = selections["life"][results["life"]]
+  local chosen_people = selections["people"][results["people"]]
   if not test_on_windows then
     submitting = true  --当前状态变成了提交中
     net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
@@ -138,7 +139,7 @@ submit_request = function()
 end
 
 function create_room:enter(prev, init_table)
-  cam:lookAt(window_w/2, window_h/2)
+  --cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
@@ -230,9 +231,9 @@ function create_room:update(dt)
 end
 
 function create_room:draw()
-  local bgimg = lg.newImage("assets/bgimg.jpg")
+  --local bgimg = lg.newImage("assets/bgimg.jpg")
   lg.draw(bgimg,0,0)
-  cam:attach()
+  --cam:attach()
   if submitting then
     --绘制提交中的动画
     lg.line(submit_line_x1, window_h/2, submit_line_x2, window_h/2)
@@ -257,7 +258,7 @@ function create_room:draw()
   local confirm_string = "R1-confirm"
   lg.print(back_string, 40, window_h-font_current:getHeight() - 40)   --origin:20
   lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 40, window_h-font_current:getHeight() - 40)  --origin:20
-  cam:detach()
+  --cam:detach()
 end
 
 function create_room:leave()

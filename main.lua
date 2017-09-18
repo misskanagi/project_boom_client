@@ -15,7 +15,7 @@ log.logswitch(false)  --关闭log开关
 engine = Engine()
 
 --network
-test_on_windows = true
+test_on_windows = false
 local network = nil
 if not test_on_windows then
   network = require("boom.network")
@@ -33,10 +33,10 @@ local game_state = require("libs.hump.gamestate")
 
 -- test scene
 local test_place = require("boom.scenes.test_place")
---login = require("boom.scenes.login")
---roomlist = require("boom.scenes.roomlist")
---room = require("boom.scenes.room")
---create_room = require("boom.scenes.create_room")
+login = require("boom.scenes.login")
+roomlist = require("boom.scenes.roomlist")
+room = require("boom.scenes.room")
+create_room = require("boom.scenes.create_room")
 
 -- test choice
 local test_choice = require("boom.scenes.test_choice")
@@ -71,8 +71,8 @@ map_gamepad_with_guid(win_joystick_guid)
 function love.load()
     print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
-    --game_state.switch(login)
-    game_state.switch(test_choice)
+    game_state.switch(login)
+    --game_state.switch(test_choice)
     --game_state.switch(test_network)
     --game_state.switch(test_place)
 end

@@ -8,6 +8,7 @@ require "./libs/gooi"
 local game_state = require("libs.hump.gamestate")
 local lg = love.graphics
 local cam = require("boom.camera")
+local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 local events = require("boom.events")
 local RoomNetHandler = class("RoomNetHandler", System)
@@ -112,7 +113,7 @@ isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadca
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
-  cam:lookAt(window_w/2, window_h/2)
+  --cam:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
   eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
@@ -264,9 +265,9 @@ function room:update(dt)
 end
 
 function room:draw()
-  local bgimg = lg.newImage("assets/bgimg.jpg")
+  --local bgimg = lg.newImage("assets/bgimg.jpg")
   lg.draw(bgimg,0,0)
-  cam:attach()
+  --cam:attach()
   local r,g,b,a = lg.getColor()
   lg.setColor(0, 0, 0, 127)
   lg.rectangle("fill", 0, 0, window_w, window_h)
@@ -299,7 +300,7 @@ function room:draw()
   lg.setColor(r,g,b,a)
   gui:draw()
   gooi.draw()
-  cam:detach()
+  --cam:detach()
 end
 
 --上下键翻阅坦克背包，O键选中tank并ready，X键取消ready，L键退房间，房主R键开始游戏！
