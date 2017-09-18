@@ -195,14 +195,16 @@ function network:sendSnapshot(snapshot_entities)
     data = {roomId = self.roomId, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
-    --print(("snapshot: %d"):format(i))
+    print(("snapshot: %d"):format(i))
     --print(json.encode(data))
 end
 
 function network:send(type, data)
     assert(self.is_connected==true)
     if self.is_connected then
+        print("lua send")
         local result = netLib.Lua_send(type, json.encode(data))
+        print("lua send end")
         --print("send:")
         --print(json.encode(data))
         return result
