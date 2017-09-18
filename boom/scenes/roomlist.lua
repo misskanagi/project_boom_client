@@ -230,6 +230,8 @@ end
 
 
 function roomlist:draw()
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
   if refreshing then
     --绘制一个
@@ -237,6 +239,8 @@ function roomlist:draw()
   end
 
   local r,g,b,a = lg.getColor()
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制lbl_title的底框
   lg.setColor(0, 0, 0, 100)
   lg.rectangle("fill", lbl_title_x, lbl_title_y, lbl_title_w, lbl_title_h)

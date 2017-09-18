@@ -224,12 +224,16 @@ function create_room:update(dt)
 end
 
 function create_room:draw()
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
   if submitting then
     --绘制提交中的动画
     lg.line(submit_line_x1, window_h/2, submit_line_x2, window_h/2)
   end
   local r,g,b,a = lg.getColor()
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制lbl_title的底框
   lg.setColor(0, 0, 0, 100)
   lg.rectangle("fill", lbl_title_x, lbl_title_y, lbl_title_w, lbl_title_h)

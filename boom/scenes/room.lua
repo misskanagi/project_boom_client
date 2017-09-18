@@ -263,8 +263,12 @@ function room:update(dt)
 end
 
 function room:draw()
+  local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
   cam:attach()
   local r,g,b,a = lg.getColor()
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制出两个玩家表格的格线
   --grid_1
   for i = 1, 5 do

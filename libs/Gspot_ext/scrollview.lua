@@ -78,7 +78,6 @@ function scrollview.createObject(init_table, gui_obj)
             end
           end
         end
-        --gui:feedback(""..selected_index)
       elseif direction == "down" then
         if scroll_window_index < sv_obj.item_num_per_page then
           --滑动窗口还没有到最底下
@@ -116,7 +115,6 @@ function scrollview.createObject(init_table, gui_obj)
   
   --该函数可以实现长按快速滑动的功能
   sv_obj.update = function(self, dt)
-    --gui:feedback("!!!")
     -- 判断用户是否正在上下查看房间
     local scroll = self.scrollgroup.scrollv
     if scroll_focous_flag == true then
@@ -139,7 +137,6 @@ function scrollview.createObject(init_table, gui_obj)
 
   --用户使用键盘或者手柄操作scrollgroup,"up"/"down"
   sv_obj.begin_move = function(self, direction)
-    gui:feedback("begin_move")
     if not (direction and type(direction) == "string") then
       return
     end
@@ -157,7 +154,6 @@ function scrollview.createObject(init_table, gui_obj)
   
   
   sv_obj.stop_move = function(self)
-    gui:feedback("stop_move")
     scroll_focous_time_account = 0
     scroll_focous_flag = false
   end
