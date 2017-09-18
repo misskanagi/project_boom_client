@@ -289,6 +289,8 @@ function create_room:gamepadpressed(joystick, button)
     eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif button == "leftshoulder" then --取消创建房间，退回到roomlist
     eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
+  elseif button == "guide" then
+    eventmanager:fireEvent(events.CreateRoomInputPressed("esc"))
   end
 end
 
@@ -309,6 +311,8 @@ function create_room:keypressed(key, scancode, isrepeat)
     eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif key == "l" then --取消创建房间，退回到roomlist
     eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
+  elseif key == "escape" then
+    eventmanager:fireEvent(events.CreateRoomInputPressed("esc"))
   end
 end
 
@@ -357,6 +361,8 @@ function InputHandler:firePressedEvent(event)
     submit_request()
   elseif cmd == "r2" then
     
+  elseif cmd == "esc" then
+    love.event.quit()
   end
 end
 

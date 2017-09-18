@@ -326,6 +326,8 @@ function room:gamepadpressed(joystick, button)
   elseif button == "rightshoulder" then
     --begin_game()
     eventmanager:fireEvent(events.RoomInputPressed("r1"))
+  elseif button == "guide" then
+    eventmanager:fireEvent(events.RoomInputPressed("esc"))
   end
 end
 
@@ -350,6 +352,8 @@ function room:keypressed(key, scancode, isrepeat)
     eventmanager:fireEvent(events.RoomInputPressed("l1"))
   elseif key == "r" then
     eventmanager:fireEvent(events.RoomInputPressed("r1"))
+  elseif key == "escape" then
+    eventmanager:fireEvent(events.RoomInputPressed("esc"))
   end
 end
 
@@ -579,6 +583,8 @@ function InputHandler:firePressedEvent(event)
     quit_room()
   elseif cmd == "r1" then
     begin_game()
+  elseif cmd == "esc" then
+    love.event.quit()
   end
 end
 

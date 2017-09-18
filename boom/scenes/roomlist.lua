@@ -32,10 +32,10 @@ local lbl_title_h = 120 --60
 local scrollgroup = nil
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
-local room_item_num_per_page = 6 -- 一页显示几个room_item
+local room_item_num_per_page = 4 -- 一页显示几个room_item
 local room_scroll_x = 20 --10
 local room_scroll_y = 140 --70
-local room_item_height = 70 --70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
+local room_item_height = 105 --70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
 local room_item_width = 904 --444
 local room_infos = {}  --存放从Server拿到的所有的房间item的数据
 
@@ -288,6 +288,8 @@ function roomlist:gamepadpressed(joystick, button)
   elseif button == 'leftshoulder' then
     --refresh()
     eventmanager:fireEvent(events.RoomListInputPressed("l1"))
+  elseif button == "guide" then
+    eventmanager:fireEvent(events.RoomListInputPressed("esc"))
   end
 end
 
@@ -322,6 +324,8 @@ function roomlist:keypressed(key, scancode, isrepeat)
   elseif key == 'l' then
     --refresh()
     eventmanager:fireEvent(events.RoomListInputPressed("l1"))
+  elseif key == "escape" then
+    eventmanager:fireEvent(events.RoomListInputPressed("esc"))
   end
 end
 
@@ -443,6 +447,8 @@ function InputHandler:firePressedEvent(event)
     game_state.switch(create_room, init_table)
   elseif cmd == "r2" then
     
+  elseif cmd == "esc" then
+    love.event.quit()
   end
 end
 

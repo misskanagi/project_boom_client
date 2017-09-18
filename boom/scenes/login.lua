@@ -128,7 +128,7 @@ local sm_keyboard = {
   ["focous_keyboard"] = {["dpleft"] = function()
       --消去当前的btn的呼吸灯效果
       local color = keyboard_btns[current_kb_row][current_kb_col].style.bgColor
-      keyboard_btns[current_kb_row][current_kb_col]:bg({color[1],color[2],color[3],50})
+      keyboard_btns[current_kb_row][current_kb_col]:bg({color[1],color[2],color[3],20})
       current_kb_col = current_kb_col - 1
       if current_kb_col == 0 then
         current_kb_col = 10
@@ -136,7 +136,7 @@ local sm_keyboard = {
     end,
     ["dpright"] = function()
       --消去当前的btn的呼吸灯效果
-      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
       current_kb_col = current_kb_col + 1
       if current_kb_col > 10 then
         current_kb_col = 1
@@ -144,7 +144,7 @@ local sm_keyboard = {
     end,
     ["dpup"] = function()
       --消去当前的btn的呼吸灯效果
-      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
       if current_kb_row == 1 then
         current_keyboard_state = "focous_text"
       else
@@ -153,7 +153,7 @@ local sm_keyboard = {
     end,
     ["dpdown"] = function()
       --消去当前的btn的呼吸灯效果
-      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
+      keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
       if current_kb_row == 4 then
         if current_kb_col < 4 then
           current_keyboard_state = "focous_btn_cancel"
@@ -412,7 +412,7 @@ close_kb = function()
   --关闭所有呼吸灯
   local color = keyboard_text.style.bgColor
   keyboard_text:bg({color[1],color[2],color[3],100})
-  keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,50})
+  keyboard_btns[current_kb_row][current_kb_col]:bg({255,255,255,20})
   btn_cancel:danger()
   btn_delete:warning()
   btn_confirm:success()
@@ -488,7 +488,7 @@ states.update = function(dt)
       if keyboard_btns and keyboard_btns[current_kb_row] then
         local keyboard_current_btn = keyboard_btns[current_kb_row][current_kb_col]
         local color = keyboard_current_btn.style.bgColor
-        keyboard_current_btn:bg({color[1],color[2],color[3],50 + (breath_acc_time / breath_loop_time) * 50})
+        keyboard_current_btn:bg({color[1],color[2],color[3],20 + (breath_acc_time / breath_loop_time) * 50})
       end
     elseif current_keyboard_state == "focous_btn_cancel" then
       btn_cancel:bg({217, 83, 79, (breath_acc_time / breath_loop_time) * 180 + 75})
@@ -606,7 +606,7 @@ function login:enter()
     keyboard_btns[row_id] = {}
     for col_id, character_item in ipairs(line_item) do
       -- character_item就是对应的字符
-      local btn_ch = gooi.newButton({text = character_item, group = group_kb}):center():bg({255,255,255,50})
+      local btn_ch = gooi.newButton({text = character_item, group = group_kb}):center():bg({255,255,255,20})
       keyboard_btns[row_id][col_id] = btn_ch
       pKeyboard:add(btn_ch, row_id..","..col_id)
       table.insert(comps, btn_ch)
