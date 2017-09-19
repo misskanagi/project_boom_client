@@ -448,11 +448,11 @@ update_players_widgets = function()
   --print("update_players_widgets: my_group_id = "..my_group_id..",oppo_group_id = "..oppo_group_id)
   --直接拿着新的PlayerInfos[my_group_id]数据进行players_widgets[my_group_id]的更新
   for i = 1, 8 do
-    if PlayerInfos[my_group_id] then
+    --[[if PlayerInfos[my_group_id] then
       print("PlayerInfos[my_group_id] is not nil")
     else
       print("PlayerInfos[my_group_id] is nil")
-    end
+    end]]--
     if i <= #(PlayerInfos[my_group_id]) then
       local f_widget = players_widgets[my_group_id][i]
       local f_info_item = PlayerInfos[my_group_id][i]
