@@ -462,8 +462,8 @@ update_players_widgets = function()
       end
       if f_info_item["playerStatus"] == 1 then --已经准备完成
         --设置一个坦克缩略图
-        local img_tank = tankbag[f_info_item["tankType"]]["img"]
-        if img_tank then
+        if tankbag[f_info_item["tankType"]] then
+          local img_tank = tankbag[f_info_item["tankType"]]["img"]
           f_widget:setIcon(img_tank)
         else
           f_widget:setIcon(img_ready)

@@ -81,6 +81,7 @@ function network:updateReceive(dt)
   if msg then
     for _, json_string in pairs(msg) do
       data = json.decode(json_string)
+      print(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         local playerId = data.playerId
         if playerId ~= self.playerId then
@@ -97,7 +98,7 @@ function network:updateReceive(dt)
           end
         end
       elseif data.cmdType == self.cmd_code.SNAPSHOT_BROADCAST then
-        print(json_string)
+        --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
         eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
