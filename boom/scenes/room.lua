@@ -73,8 +73,9 @@ local grid_2_x = 320--160
 local grid_2_y = 370--165
 local grid_2_w = 600--300
 local grid_2_h = 270--145
-local scrollitem_tankbag_pos = {0, 0, 280, 100}--{0, 0, 140, 50}
-
+--local scrollitem_tankbag_pos = {0, 0, 280, 100}--{0, 0, 140, 50}
+local scrollitem_tankimg_pos = {34, 34, 32, 32}
+local scrollitem_tanktext_pos = {100, 0, 120, 100}
 
 --坦克背包scrollgroup的各项参数
 local scroll_window_index = 1 --变化范围是1~scroll_item_num_per_page
@@ -88,6 +89,7 @@ local scroll_item_width = 240--120
 
 --控制信息
 local isready = false  --玩家已经ready
+local i_wanna_quit_room = false  --玩家提出了退房申请
 
 --存放所有的tank
 local tankbag = {
@@ -102,19 +104,6 @@ local tankbag = {
   [9] = {["tankType"] = 9, ["img"] = love.graphics.newImage("assets/tank/9.png")},
 }
 --存放所有的玩家的信息，groupId作key
---[[local PlayerInfos = {
-  [1] = {
-    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
-    [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
-    [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
-    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
-    },--groupId为1的所有players
-  [2] = {
-    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
-    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 2},
-    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 1, ["tankType"] = 3},
-    }--groupId为2的所有players
-  }]]--
 
 --前置声明
 local update_players_widgets, ready, cancel_ready, remove_widgets, quit_room, begin_game,
@@ -217,16 +206,21 @@ setup_tankbag = function()
   --创建scollgroup
   sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255, 50}}, gui)
   for i = 1, #tankbag do
-    local tank_text = gui:text(tankbag[i]["tankType"], scrollitem_tankbag_pos, nil, false, {255,255,255,20})
-    sv_tankbag:addChild(tank_text, 'vertical')
+    local gi = gui:group('', {x = 0, y = 0, w = scroll_item_width, h = scroll_item_height})
+    gi.bgcolor = {255,255,255,0}
+    local tank_img = gui:image("", scrollitem_tankimg_pos, gi, tankbag[i]["img"])
+    local tank_text = gui:text(tankbag[i]["tankType"], scrollitem_tanktext_pos, gi, false, {255,255,255,0})
+    sv_tankbag:addChild(gi, 'vertical')
   end
   sv_tankbag:allChildAdded()
+  sv_tankbag:scrollToTop()
 end
 
 
 function room:leave()
   gui:feedback("room:leave")
   isready = false
+  i_wanna_quit_room = false
   remove_widgets()
   PlayerInfos = {[1] = {}, [2] = {}}
 end
@@ -361,6 +355,13 @@ end
 
 --获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
 get_quitroom_broadcast = function(isMaster, playerId)
+  if i_wanna_quit_room and playerId == myId then
+    --Server准许了玩家的退房申请
+    local roomlist = require("boom.scenes.roomlist")
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(roomlist, init_table)
+  end
   local groupId = 1
   if isMaster then
     game_state.switch(roomlist)  --散了散了
@@ -523,11 +524,14 @@ end
 quit_room = function()
   if not test_on_windows then
     net:requestQuitRoom(roomId, myId)
+    i_wanna_quit_room = true
+  else
+    --模拟收到退出的信息了
+    local roomlist = require("boom.scenes.roomlist")
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(roomlist, init_table)
   end
-  local roomlist = require("boom.scenes.roomlist")
-  local init_table = {}
-  init_table["myId"] = myId
-  game_state.switch(roomlist, init_table)
 end
 
 --房主开始游戏
@@ -561,20 +565,26 @@ end
 function InputHandler:firePressedEvent(event)
   local cmd = event.cmd
   if cmd == "up" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     if isready then return end
     --begin_move_scrollgroup("up")
     sv_tankbag:scrollUp()
   elseif cmd == "down" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     if isready then return end
     --begin_move_scrollgroup("down")
     sv_tankbag:scrollDown()
   elseif cmd == "a" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     ready()
   elseif cmd == "b" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     cancel_ready()
   elseif cmd == "l1" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     quit_room()
   elseif cmd == "r1" then
+    if i_wanna_quit_room then return end --提出了退房申请期间，是无法监听键盘的
     begin_game()
   elseif cmd == "esc" then
     love.event.quit()

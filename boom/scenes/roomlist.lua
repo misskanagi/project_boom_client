@@ -203,7 +203,7 @@ update_scrollgroup_widgets = function()
     local roomInfo_item = RoomInfos[i]
     local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
     local room_image_ = "assets/gamemode/"
-    local i = 2
+    local j = 2
     
     local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
     local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
@@ -211,7 +211,7 @@ update_scrollgroup_widgets = function()
     local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
     gi.lsm = true
     gi.bgcolor = {255,255,255,0}
-    local widget_room_image = gui:image("", scrollitem_img_pos, gi, room_image_..i..".jpg")  --放置对应的战斗模式图片作为房间图像
+    local widget_room_image = gui:image("", scrollitem_img_pos, gi, room_image_..j..".jpg")  --放置对应的战斗模式图片作为房间图像
     local widget_room_id = gui:text(room_id, scrollitem_textid_pos, gi, false, {255, 255, 255, 0})
     local widget_room_mode = gui:text(room_mode, scrollitem_textmode_pos, gi, false, {255, 255, 255, 0})--, {255,255,255,20})
     local widget_room_people = gui:text(room_people, scrollitem_textpeople_pos, gi, false, {255, 255, 255, 0})--, {255,255,255,20})
