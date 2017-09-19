@@ -52,27 +52,27 @@ local gooi_widgets = {}
 
 --固定尺寸
 local window_w = 960--480
-local window_h = 800--320
+local window_h = 680--320
 local gridRoominfo_x = 20--10
 local gridRoominfo_y = 20--10
 local gridRoominfo_w = 280--140
 local gridRoominfo_h = 200--100
 local lbl_group1_x = 320
 local lbl_group1_y = 20
-local lbl_group1_w = 600
-local lbl_group1_h = 50
+local lbl_group1_w = 150
+local lbl_group1_h = 30
 local grid_1_x = 320--160
-local grid_1_y = 70--10
+local grid_1_y = 50--10
 local grid_1_w = 600--300
-local grid_1_h = 290--145
+local grid_1_h = 270--145
 local lbl_group2_x = 320
-local lbl_group2_y = 400
-local lbl_group2_w = 600
-local lbl_group2_h = 50
+local lbl_group2_y = 340
+local lbl_group2_w = 150
+local lbl_group2_h = 30
 local grid_2_x = 320--160
-local grid_2_y = 450--165
+local grid_2_y = 370--165
 local grid_2_w = 600--300
-local grid_2_h = 290--145
+local grid_2_h = 270--145
 local scrollitem_tankbag_pos = {0, 0, 280, 100}--{0, 0, 140, 50}
 
 
@@ -182,8 +182,8 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, lbl_life)
   table.insert(gooi_widgets, lbl_map)
 
-  lbl_group1 = gooi.newLabel({text = "GROUP1", x = lbl_group1_x, y = lbl_group1_y, w = lbl_group1_w, h = lbl_group1_h}):left():bg({255,255,255,255})
-  lbl_group2 = gooi.newLabel({text = "GROUP2", x = lbl_group2_x, y = lbl_group2_y, w = lbl_group2_w, h = lbl_group2_h}):left()
+  lbl_group1 = gooi.newLabel({text = "GROUP1", x = lbl_group1_x, y = lbl_group1_y, w = lbl_group1_w, h = lbl_group1_h}):center()
+  lbl_group2 = gooi.newLabel({text = "GROUP2", x = lbl_group2_x, y = lbl_group2_y, w = lbl_group2_w, h = lbl_group2_h}):center()
 
   --创建groupId==1的显示列表
   grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
