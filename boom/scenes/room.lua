@@ -562,10 +562,11 @@ end
 begin_game = function()
   --不是房主你开始个p啊
   if not isMaster() then
+    print("you are not master,you cannot begin game.")
     return
   end
   --检查是否是已经全员到齐且全员ready
-  if #PlayerInfos[2] == room_people and #PlayerInfos[1] == room_people then
+  if #PlayerInfos[2] == playersPerGroup and #PlayerInfos[1] == playersPerGroup then
     for k, v in PlayerInfos[2] do
       if not v["playerStatus"] == 1 then
         return
