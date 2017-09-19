@@ -345,6 +345,7 @@ end
 --本地函数
 --获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
 get_enterroom_broadcast = function(playerId, groupId)
+  print("room.lua get_enterroom_broadcast,playerId = "..playerId..",groupId = "..groupId)
   local group_players = PlayerInfos[groupId]
   --group_players是groupId对应的table
   local new_player_info_item = {}
@@ -439,9 +440,10 @@ update_players_widgets = function()
   if my_group_id == 1 then
     oppo_group_id = 2
   end
+  print("update_players_widgets: my_group_id = "..my_group_id..",oppo_group_id = "..oppo_group_id)
   --直接拿着新的PlayerInfos[my_group_id]数据进行players_widgets[my_group_id]的更新
   for i = 1, 8 do
-    if i <= #PlayerInfos[my_group_id] then
+    if i <= #(PlayerInfos[my_group_id]) then
       local f_widget = players_widgets[my_group_id][i]
       local f_info_item = PlayerInfos[my_group_id][i]
       f_widget:setText(f_info_item["playerId"])

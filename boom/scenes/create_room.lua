@@ -377,7 +377,7 @@ function CreateRoomNetHandler:fireCreateRoomResEvent(event)
     --房间创建成功了
     --此时可以进入room.lua了，把该带的带进入
     local roomId = event.roomId
-    local groupId = event.groupId
+    local groupId = event.groupId + 1 --房间号为1/2，收到0/1
     local init_table = {}
     init_table["myId"] = myId
     init_table["roomId"] = roomId
