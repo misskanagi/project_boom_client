@@ -18,10 +18,10 @@ local InputHandler = class("InputHandler", System)
 local input_handler = InputHandler()
 
 --init_table中带入的数据
-local myId = nil   --玩家自己的Id
-local roomId = ""
+local myId = "ERRORID"   --玩家自己的Id
+local roomId = "ERRORROOMID"
 local groupId = 1
-local roomMasterId = ""
+local roomMasterId = "ERRORROOMMASTERID"
 local gameMode = 1
 local mapType = 1
 local lifeNumber = 3
@@ -43,26 +43,37 @@ local lbl_life = nil
 local lbl_map = nil
 local grid_1 = nil  --放置groupId为1的grid
 local grid_2 = nil  --放置groupId为2的grid
-local sv_tank = nil --坦克背包
+local lbl_group1 = nil
+local lbl_group2 = nil
+local sv_tankbag = nil --坦克背包
 --存放所有控件的table
 local players_widgets = {[1] = {}, [2] = {}}  --存放两个groupId的所有玩家的信息显示的widget，为了方便更新显示玩家在房间中的情况
 local gooi_widgets = {}
 
 --固定尺寸
-local window_w = 480
-local window_h = 320
-local gridRoominfo_x = 10
-local gridRoominfo_y = 10
-local gridRoominfo_w = 140
-local gridRoominfo_h = 100
-local grid_1_x = 160
-local grid_1_y = 10
-local grid_1_w = 300
-local grid_1_h = 145
-local grid_2_x = 160
-local grid_2_y = 165
-local grid_2_w = 300
-local grid_2_h = 145
+local window_w = 960--480
+local window_h = 800--320
+local gridRoominfo_x = 20--10
+local gridRoominfo_y = 20--10
+local gridRoominfo_w = 280--140
+local gridRoominfo_h = 200--100
+local lbl_group1_x = 320
+local lbl_group1_y = 20
+local lbl_group1_w = 600
+local lbl_group1_h = 50
+local grid_1_x = 320--160
+local grid_1_y = 70--10
+local grid_1_w = 600--300
+local grid_1_h = 290--145
+local lbl_group2_x = 320
+local lbl_group2_y = 400
+local lbl_group2_w = 600
+local lbl_group2_h = 50
+local grid_2_x = 320--160
+local grid_2_y = 450--165
+local grid_2_w = 600--300
+local grid_2_h = 290--145
+local scrollitem_tankbag_pos = {0, 0, 280, 100}--{0, 0, 140, 50}
 
 
 --坦克背包scrollgroup的各项参数
@@ -70,10 +81,10 @@ local scroll_window_index = 1 --变化范围是1~scroll_item_num_per_page
 local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快速滑动room_item
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
 local scroll_item_num_per_page = 3 -- 一页显示几个room_item
-local scrollgroup_x = 10
-local scrollgroup_y = 120
-local scroll_item_height = 50   --scroll_item_height * scroll_item_num_per_page == scrollgroup_h，这一点在这里就要保证，不然会出问题
-local scroll_item_width = 120
+local scrollgroup_x = 20--10
+local scrollgroup_y = 240--120
+local scroll_item_height = 100--50   --scroll_item_height * scroll_item_num_per_page == scrollgroup_h，这一点在这里就要保证，不然会出问题
+local scroll_item_width = 240--120
 
 --控制信息
 local isready = false  --玩家已经ready
@@ -93,27 +104,29 @@ local tankbag = {
 --存放所有的玩家的信息，groupId作key
 local all_players_infos = {
   [1] = {
-    --[[[1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
+    [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
     [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
     [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
-    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}]]--
+    [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
     },--groupId为1的所有players
   [2] = {
-    --[[[1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
+    [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
     [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 1},
-    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},]]--
+    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},
     }--groupId为2的所有players
   }
 
 --前置声明
 local update_players_widgets, ready, cancel_ready, remove_widgets, quit_room, begin_game,
 isMaster, get_enterroom_broadcast, get_quitroom_broadcast, get_gamebegin_broadcast,get_gamecancelready_broadcast, get_gamereadybroadcast
+local setup_tankbag
 
 --[[room的入口，有两种进入的可能：
 1.roomlist:带入除了create_room带入的内容以外，还有所有PlayerInfo的集合
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
+  gui:setOriginSize(window_w, window_h)
   camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
@@ -122,8 +135,8 @@ function room:enter(pre, init_table)
   eventmanager:addListener("QuitBroadcast", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
   eventmanager:addListener("RoomInputPressed", input_handler, input_handler.firePressedEvent)
   eventmanager:addListener("RoomInputReleased", input_handler, input_handler.fireReleasedEvent)
-  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
-  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
+  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 28)
+  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 20)
   font_current = lg.getFont()
   style = {
       font = font_small,
@@ -136,16 +149,16 @@ function room:enter(pre, init_table)
   gooi.shadow()
 
   --把从init_table带进来的数据拿出来
-  myId = init_table and init_table["myId"]
-  roomId = init_table and init_table["roomId"]
-  roomMasterId = init_table and init_table["roomMasterId"]
-  groupId = init_table and init_table["groupId"]
-  gameMode = init_table and init_table["gameMode"]
-  mapType = init_table and init_table["mapType"]
-  lifeNumber = init_table and init_table["lifeNumber"]
-  playersPerGroup = init_table and init_table["playersPerGroup"]
-  PlayerInfos = init_table and init_table["PlayerInfos"]
-  playersInRoom = init_table and init_table["playersInRoom"]
+  myId = init_table and init_table["myId"] or myId
+  roomId = init_table and init_table["roomId"] or roomId
+  roomMasterId = init_table and init_table["roomMasterId"] or myId
+  groupId = init_table and init_table["groupId"] or groupId
+  gameMode = init_table and init_table["gameMode"] or gameMode
+  mapType = init_table and init_table["mapType"] or mapType
+  lifeNumber = init_table and init_table["lifeNumber"] or lifeNumber
+  playersPerGroup = init_table and init_table["playersPerGroup"] or playersPerGroup
+  PlayerInfos = init_table and init_table["PlayerInfos"] or PlayerInfos
+  playersInRoom = init_table and init_table["playersInRoom"] or playersInRoom
   --playersInfo = init_table and init_table["playersInfo"] or {}
 
 
@@ -153,7 +166,7 @@ function room:enter(pre, init_table)
   gridRoominfo = gooi.newPanel({x = gridRoominfo_x, y = gridRoominfo_y , w = gridRoominfo_w, h = gridRoominfo_h, layout = "grid 5x1"})
 
   lbl_title = gooi.newLabel({text = roomId}):left()
-  lbl_mode = gooi.newLabel({text = "mode:"..gameMode}):left()
+  lbl_mode  = gooi.newLabel({text = "mode:"..gameMode}):left()--
   lbl_people = gooi.newLabel({text = "people:"..playersPerGroup.." vs "..playersPerGroup}):left()
   lbl_life = gooi.newLabel({text = "life:"..lifeNumber}):left()
   lbl_map = gooi.newLabel({text = "map:"..mapType}):left()
@@ -169,7 +182,8 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, lbl_life)
   table.insert(gooi_widgets, lbl_map)
 
-  --创建敌方的显示列表
+  lbl_group1 = gooi.newLabel({text = "GROUP1", x = lbl_group1_x, y = lbl_group1_y, w = lbl_group1_w, h = lbl_group1_h}):left():bg({255,255,255,255})
+  lbl_group2 = gooi.newLabel({text = "GROUP2", x = lbl_group2_x, y = lbl_group2_y, w = lbl_group2_w, h = lbl_group2_h}):left()
 
   --创建groupId==1的显示列表
   grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
@@ -239,15 +253,19 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, grid_2)
 
   --创建一个选择tank的列表
+  setup_tankbag()
+end
+
+setup_tankbag = function()
   --创建scollgroup
-  sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,50}}, gui)
-  --sv_tankbag:setDataSource(tankbag)
+  sv_tankbag = scrollview.createObject({x = scrollgroup_x, y = scrollgroup_y, item_width = scroll_item_width, item_height = scroll_item_height, item_num_per_page = scroll_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255, 50}}, gui)
   for i = 1, #tankbag do
-    local tank_text = gui:text(tankbag[i]["tankType"], {0, 0, 140, 50}, nil, false, {255,255,255,20})
+    local tank_text = gui:text(tankbag[i]["tankType"], scrollitem_tankbag_pos, nil, false, {255,255,255,20})
     sv_tankbag:addChild(tank_text, 'vertical')
   end
   sv_tankbag:allChildAdded()
 end
+
 
 function room:leave()
   gui:feedback("room:leave")
@@ -270,8 +288,6 @@ function room:draw()
   lg.draw(bgimg,0,0)
   camera:attach()
   local r,g,b,a = lg.getColor()
-  lg.setColor(0, 0, 0, 127)
-  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制出两个玩家表格的格线
   --grid_1
   for i = 1, 5 do
@@ -280,7 +296,6 @@ function room:draw()
   for i = 1, 3 do
     lg.line(grid_1_x+(i-1)*grid_1_w/2, grid_1_y, grid_1_x+(i-1)*grid_1_w/2, grid_1_y+grid_1_h)
   end
-
   --grid_2
   for i = 1, 5 do
     lg.line(grid_2_x, grid_2_y+(i-1)*grid_2_h/4, grid_2_x + grid_2_w, grid_2_y+(i-1)*grid_2_h/4)
@@ -288,14 +303,22 @@ function room:draw()
   for i = 1, 3 do
     lg.line(grid_2_x+(i-1)*grid_2_w/2, grid_2_y, grid_2_x+(i-1)*grid_2_w/2, grid_2_y+grid_2_h)
   end
+  --绘制lbl_group1和lbl_group2的背景
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", lbl_group1_x, lbl_group1_y, lbl_group1_w, lbl_group1_h)
+  lg.rectangle("fill", lbl_group2_x, lbl_group2_y, lbl_group2_w, lbl_group2_h)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制提示文字
-  local font_current = lg.getFont()
-  local ready_string = "O-ready/X-cancel ready"
+  lg.setColor(255,255,255,255)
+  --local font_current = lg.getFont()
+  local ready_string = "O-ready"
+  local cancel_ready_string = "X-cancel ready"
   local quit_string = "L1-quit room"
   local begin_string = "R1-master begin game"
-  lg.print(ready_string, 10, 270)
-  lg.print(quit_string, 10, 270 + font_current:getHeight())
-  lg.print(begin_string, 10, 270 + 2*font_current:getHeight())
+  lg.print(ready_string, 20, 540)--10, 270)
+  lg.print(cancel_ready_string, 20, 540 + font_small:getHeight())--10, 270)
+  lg.print(quit_string, 20, 540 + 2*font_small:getHeight())--10, 270 + font_current:getHeight())
+  lg.print(begin_string, 20, 540 + 3*font_small:getHeight())--10, 270 + 2*font_current:getHeight())
   lg.setColor(0, 0, 0, 127)
   lg.rectangle("fill", gridRoominfo_x, gridRoominfo_y, gridRoominfo_w, gridRoominfo_h)
   lg.setColor(r,g,b,a)

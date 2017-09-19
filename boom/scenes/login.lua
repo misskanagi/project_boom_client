@@ -307,10 +307,10 @@ local sm_keyboard = {
 --点击了登陆按钮以后的逻辑
 login_pressed = function()
   --删除所有的component！
-  --[[for k,v in pairs(comps) do
+  for k,v in pairs(comps) do
     gooi.removeComponent(v)
   end
-  game_state.switch(roomlist,{["myId"] = "lsm"})]]--
+  game_state.switch(roomlist,{["myId"] = "lsm"})
 
 
   --实现登陆的逻辑

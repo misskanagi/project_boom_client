@@ -180,12 +180,12 @@ refresh = function()
     --添加新的控件
     roomNumbers = 6
     RoomInfos = {
-      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 3},
-      [2] = {["roomId"] = "james_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 5},
-      [3] = {["roomId"] = "hackhao_www", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 9},
-      [4] = {["roomId"] = "yuge_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 16},
-      [5] = {["roomId"] = "kingdom", ["gameMode"] = "chaos", ["playersPerGroup"] = 3, ["playersInRoom"] = 2},
-      [6] = {["roomId"] = "heheheh", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 8},
+      [1] = {["roomId"] = "lsm123", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 3, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [2] = {["roomId"] = "james_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 5, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [3] = {["roomId"] = "hackhao_www", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 9, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [4] = {["roomId"] = "yuge_room", ["gameMode"] = "chaos", ["playersPerGroup"] = 8, ["playersInRoom"] = 16, ["lifeNumber"] = 10, ["mapType"] = 1},
+      [5] = {["roomId"] = "kingdom", ["gameMode"] = "chaos", ["playersPerGroup"] = 3, ["playersInRoom"] = 2, ["lifeNumber"] = 10 ,["mapType"] = 1},
+      [6] = {["roomId"] = "heheheh", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 8, ["lifeNumber"] = 10 ,["mapType"] = 1},
     }
     update_scrollgroup_widgets()   --更新scrollgroup的显示
     refreshing = false
@@ -247,8 +247,8 @@ enter_room = function()
     init_table["roomMasterId"] = "root"
     init_table["playersInfo"] = {}
     init_table["gameMode"] = selected_room_item["gameMode"]   --
-    init_table["mapType"] = 2
-    init_table["lifeNumber"] = 5
+    init_table["mapType"] = selected_room_item["mapType"]
+    init_table["lifeNumber"] = selected_room_item["lifeNumber"]
     init_table["playersPerGroup"] = selected_room_item["playersPerGroup"]  --
     --init_table[""] = 
     local room = require("boom.scenes.room")
@@ -259,7 +259,7 @@ end
 --移除所有的控件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
-  gooi.removeComponent(lbl_modeimg)
+  gooi.removeComponent(lbl_masterimg)
   gooi.removeComponent(lbl_roomid)
   gooi.removeComponent(lbl_mode)
   gooi.removeComponent(lbl_people)
