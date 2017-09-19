@@ -143,10 +143,12 @@ function scrollview.createObject(init_table, gui_obj)
     end
     local scroll = self.scrollgroup.scrollv
     if direction == "up" then
+      if selected_index == 1 then return end
       scroll_focous_flag = true
       scroll_focous_time_account = 0
       scroll:drop("up")
     elseif direction == "down" then
+      if selected_index == #self.scroll_items then return end
       scroll_focous_flag = true
       scroll_focous_time_account = 0
       scroll:drop("down")
