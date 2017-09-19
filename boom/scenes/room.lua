@@ -184,8 +184,10 @@ function room:enter(pre, init_table)
   for i = 1, 8 do
     local r = (i-1) % 4 + 1
     local c = math.floor((i-1)/4) + 1
-    --
     local lbl_1_item = gooi.newLabel({text = ""}):left()
+    if i > playersPerGroup then
+      lbl_1_item:setText("————"):center()
+    end
     grid_1:add(lbl_1_item, r..","..c)
     players_widgets[1][#players_widgets[1]+1] = lbl_1_item
     table.insert(gooi_widgets, lbl_1_item)
@@ -197,6 +199,9 @@ function room:enter(pre, init_table)
     local r = (i-1) % 4 + 1
     local c = math.floor((i-1)/4) + 1
     local lbl_2_item = gooi.newLabel({text = ""}):left()
+    if i > playersPerGroup then
+      lbl_2_item:setText("————"):center()
+    end
     grid_2:add(lbl_2_item, r..","..c)
     players_widgets[2][#players_widgets[2]+1] = lbl_2_item
     table.insert(gooi_widgets, lbl_2_item)
