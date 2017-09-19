@@ -350,21 +350,25 @@ get_enterroom_broadcast = function(playerId, groupId)
   local new_player_info_item = {}
   new_player_info_item["playerId"] = playerId
   new_player_info_item["playerStatus"] = 2 -- ready为1，未ready为2
+  new_player_info_item["tankType"] = 2 --应该是从broadcast中获取
   group_players[#group_players+1] = new_player_info_item
 end
 
 --获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
 get_quitroom_broadcast = function(isMaster, playerId)
+  local roomlist = require("boom.scenes.roomlist")
   if i_wanna_quit_room and playerId == myId then
     --Server准许了玩家的退房申请
-    local roomlist = require("boom.scenes.roomlist")
     local init_table = {}
     init_table["myId"] = myId
     game_state.switch(roomlist, init_table)
   end
+  
   local groupId = 1
   if isMaster then
-    game_state.switch(roomlist)  --散了散了
+    local init_table = {}
+    init_table["myId"] = myId
+    game_state.switch(roomlist, init_table)  --散了散了
   else
     for i = 1, 2 do
       local group_players = PlayerInfos[i]

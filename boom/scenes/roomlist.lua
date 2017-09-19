@@ -243,7 +243,7 @@ enter_room = function()
     local init_table = {}
     init_table["myId"] = myId
     init_table["roomId"] = selected_room_item["roomId"]   --
-    init_table["groupId"] = 2
+    init_table["groupId"] = 1
     init_table["roomMasterId"] = "root"
     init_table["playersInfo"] = {}
     init_table["gameMode"] = selected_room_item["gameMode"]   --
@@ -253,14 +253,14 @@ enter_room = function()
     init_table["PlayerInfos"] = {
       [1] = {
         [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
-        [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
-        [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
+        [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 4},
+        [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 3},
         [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
       },--groupId为1的所有players
       [2] = {
         [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
-        [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 2},
-        [3] = {["playerId"] = "yuge2", ["playerStatus"] = 1, ["tankType"] = 3},
+        [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 6},
+        [3] = {["playerId"] = "yuge2", ["playerStatus"] = 1, ["tankType"] = 7},
       }--groupId为2的所有players
     }
     --init_table[""] = 
