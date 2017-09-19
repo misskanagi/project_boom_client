@@ -97,7 +97,7 @@ function network:updateReceive(dt)
           end
         end
       elseif data.cmdType == self.cmd_code.SNAPSHOT_BROADCAST then
-        --print(json_string)
+        print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
         eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
@@ -111,7 +111,7 @@ function network:updateReceive(dt)
         print("got CREATE_ROOM_RES")
         eventmanager:fireEvent(events.CreateRoomRes(data.roomId, data.groupId))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_RES then
-        print("got ENTER_ROOM_RES:"..json_string)
+        print("got ENTER_ROOM_RES:")
         eventmanager:fireEvent(events.EnterRoomRes(data.responseCode, data.groupId, data.roomMasterId, data.playersInfo))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_BROADCAST then
         print("got ENTER_ROOM_BROADCAST")

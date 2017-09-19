@@ -429,18 +429,15 @@ function RoomListNetHandler:fireEnterRoomResEvent(event)
     init_table["groupId"] = groupId
     init_table["roomMasterId"] = roomMasterId
     local PlayerInfos = {[1] = {}, [2] = {}}
-    if playersInfo[1] then
-      PlayerInfos[1] = playersInfo[1]
-      for k, v in pairs(PlayerInfos[1]) do
-        PlayerInfos[1][k]["groupId"] = PlayerInfos[1][k]["groupId"] + 1
+    for k,player_item in pairs(playersInfo) do
+      if player_item.groupId == 0 then
+        player_item.groupId = 1
+        PlayerInfos[1][(#PlayerInfos[1])+1] = player_item
+      else 
+        player_item.groupId = 2
+        PlayerInfos[2][(#PlayerInfos[2])+1] = player_item
       end
     end
-    if playersInfo[2] then
-      PlayerInfos[2] = playersInfo[2]
-      for k, v in pairs(PlayerInfos[2]) do
-        PlayerInfos[2][k]["groupId"] = PlayerInfos[2][k]["groupId"] + 1
-      end
-    end 
     init_table["PlayerInfos"] = PlayerInfos
     init_table["gameMode"] =selected_room_item["gameMode"]   --
     init_table["mapType"] = selected_room_item["mapType"]   --
