@@ -184,6 +184,7 @@ function room:enter(pre, init_table)
   for i = 1, 8 do
     local r = (i-1) % 4 + 1
     local c = math.floor((i-1)/4) + 1
+    --
     local lbl_1_item = gooi.newLabel({text = ""}):left()
     grid_1:add(lbl_1_item, r..","..c)
     players_widgets[1][#players_widgets[1]+1] = lbl_1_item
@@ -447,6 +448,11 @@ update_players_widgets = function()
   --print("update_players_widgets: my_group_id = "..my_group_id..",oppo_group_id = "..oppo_group_id)
   --直接拿着新的PlayerInfos[my_group_id]数据进行players_widgets[my_group_id]的更新
   for i = 1, 8 do
+    if PlayerInfos[my_group_id] then
+      print("PlayerInfos[my_group_id] is not nil")
+    else
+      print("PlayerInfos[my_group_id] is nil")
+    end
     if i <= #(PlayerInfos[my_group_id]) then
       local f_widget = players_widgets[my_group_id][i]
       local f_info_item = PlayerInfos[my_group_id][i]
