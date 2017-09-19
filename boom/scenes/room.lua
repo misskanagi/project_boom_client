@@ -444,7 +444,7 @@ update_players_widgets = function()
   if my_group_id == 1 then
     oppo_group_id = 2
   end
-  print("update_players_widgets: my_group_id = "..my_group_id..",oppo_group_id = "..oppo_group_id)
+  --print("update_players_widgets: my_group_id = "..my_group_id..",oppo_group_id = "..oppo_group_id)
   --直接拿着新的PlayerInfos[my_group_id]数据进行players_widgets[my_group_id]的更新
   for i = 1, 8 do
     if i <= #(PlayerInfos[my_group_id]) then

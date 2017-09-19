@@ -428,7 +428,7 @@ function RoomListNetHandler:fireEnterRoomResEvent(event)
     init_table["roomId"] = selected_room_item["roomId"]   --
     init_table["groupId"] = groupId
     init_table["roomMasterId"] = roomMasterId
-    init_table["playersInfo"] = playersInfo
+    init_table["PlayerInfos"] = playersInfo
     init_table["gameMode"] =selected_room_item["gameMode"]   --
     init_table["mapType"] = selected_room_item["mapType"]   --
     init_table["lifeNumber"] = selected_room_item["lifeNumber"]  --
