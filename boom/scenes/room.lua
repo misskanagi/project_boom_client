@@ -29,7 +29,6 @@ local playersPerGroup = 1
 local roomState = nil   --waiting or gaming
 local playersInRoom = 1
 local PlayerInfos = {[1] = {}, [2] = {}}   --包含房间内所有人的PlayerInfo, string playerId = 1;int32 playerStatus = 2;int32 groupId = 3;int32 tankType = 4;
-local room_people = 4 --每队几个人
 
 local img_ready = lg.newImage("assets/sign_bullet.png")   --地方准备好了的图片
 local img_blank = lg.newImage("assets/blank_32.png")
@@ -407,10 +406,12 @@ get_quitroom_broadcast = function(isMaster, playerId)
 end
 
 --获取一个游戏开始的广播
-get_gamebegin_broadcast = function()
-  local test_place = require("boom.scenes.test_place")
-  local init_table = {}
-  game_state.switch(test_place, init_table)
+get_gamebegin_broadcast = function(roomid)
+  if roomid ~= "-fail" then
+    local test_place = require("boom.scenes.test_place")
+    local init_table = {}
+    game_state.switch(test_place, init_table)
+  end
 end
 
 --获取一个玩家取消ready状态的广播
@@ -477,7 +478,7 @@ update_players_widgets = function()
         --设置一个空白图
         f_widget:setIcon(img_blank)
       end
-    elseif i <= room_people then
+    elseif i <= playersPerGroup then
       local f_widget = players_widgets[my_group_id][i]
       f_widget:setText("")
       f_widget:setIcon(nil)
@@ -498,7 +499,7 @@ update_players_widgets = function()
         --设置一个空白图
         e_widget:setIcon(img_blank)
       end
-    elseif i <= room_people then
+    elseif i <= playersPerGroup then
       local e_widget = players_widgets[oppo_group_id][i]
       e_widget:setText("")
       e_widget:setIcon(nil)
@@ -567,12 +568,12 @@ begin_game = function()
   end
   --检查是否是已经全员到齐且全员ready
   if #PlayerInfos[2] == playersPerGroup and #PlayerInfos[1] == playersPerGroup then
-    for k, v in PlayerInfos[2] do
+    for k, v in pairs(PlayerInfos[2]) do
       if not v["playerStatus"] == 1 then
         return
       end
     end
-    for k, v in PlayerInfos[1] do
+    for k, v in pairs(PlayerInfos[1]) do
       if not v["playerStatus"] == 1 then
         return
       end
@@ -642,7 +643,7 @@ end
 --收到游戏开始的广播
 function RoomNetHandler:fireGameBeginBroadcastEvent(event)
   print("RoomNetHandler:fireGameBeginBroadcastEvent")
-  get_gamebegin_broadcast()
+  get_gamebegin_broadcast(event.roomId)
 end
 
 --收到有玩家取消准备的广播
