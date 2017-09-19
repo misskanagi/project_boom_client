@@ -416,7 +416,7 @@ end
 function RoomListNetHandler:fireEnterRoomResEvent(event)
   print("RoomListNetHandler:fireEnterRoomResEvent")
   local responseCode = event.responseCode
-  local groupId = event.groupId
+  local groupId = event.groupId + 1
   local roomMasterId = event.roomMasterId
   local playersInfo = event.playersInfo
   local room_selected_index = scrollgroup:getSelectedIndex()

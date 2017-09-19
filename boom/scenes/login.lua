@@ -540,9 +540,9 @@ end
 
 function login:enter()
   if not test_on_windows then
-    --net:connect("192.168.1.101")
+    net:connect("192.168.1.101", 8080)
     --net:connect("172.28.37.19", 8080)
-    net:connect("114.212.83.208", 8080)
+    --net:connect("114.212.83.208", 8080)
     net:startReceiving()
   end
   --注册事件监听函数
@@ -773,9 +773,9 @@ function LoginNetHandler:fireLoginResEvent(event)
     login_success = true
 
     ----------
-    local init_table = {}
+    --[[local init_table = {}
     init_table["myId"] = myId
-    game_state.switch(roomlist, init_table)
+    game_state.switch(roomlist, init_table)]]--
     --------
   else
     print("LoginNetHandler fail")

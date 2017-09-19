@@ -148,6 +148,10 @@ function room:enter(pre, init_table)
   playersPerGroup = init_table and init_table["playersPerGroup"] or playersPerGroup
   PlayerInfos = init_table and init_table["PlayerInfos"] or {[1] = {}, [2] = {}}
   playersInRoom = init_table and init_table["playersInRoom"] or playersInRoom
+  if init_table["from_create_room"] then
+    --此时是房主创房间成功，玩家是房主
+    PlayerInfos[groupId][#(PlayerInfos[groupId])+1] = {["playerId"] = myId, ["playerStatus"] = 2, ["tankType"] = -1}
+  end
   --playersInfo = init_table and init_table["playersInfo"] or {}
 
 
@@ -346,7 +350,7 @@ end
 --获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
 get_enterroom_broadcast = function(playerId, groupId)
   print("room.lua get_enterroom_broadcast,playerId = "..playerId..",groupId = "..groupId)
-  local group_players = PlayerInfos[groupId]
+  local group_players = PlayerInfos[groupId+1]
   --group_players是groupId对应的table
   local new_player_info_item = {}
   new_player_info_item["playerId"] = playerId
@@ -447,7 +451,10 @@ update_players_widgets = function()
       local f_widget = players_widgets[my_group_id][i]
       local f_info_item = PlayerInfos[my_group_id][i]
       f_widget:setText(f_info_item["playerId"])
-      if f_info_item["playerStatus"] == 1 then
+      if f_info_item["playerId"] == myId then
+        f_widget:fg({255,0,0,255})
+      end
+      if f_info_item["playerStatus"] == 1 then --已经准备完成
         --设置一个坦克缩略图
         local img_tank = tankbag[f_info_item["tankType"]]["img"]
         if img_tank then
@@ -473,7 +480,7 @@ update_players_widgets = function()
       local e_widget = players_widgets[oppo_group_id][i]
       local e_info_item = PlayerInfos[oppo_group_id][i]
       e_widget:setText(e_info_item["playerId"])
-      if e_info_item["playerStatus"] == 1 then
+      if e_info_item["playerStatus"] == 1 then --已经准备完成
         --设置一个准备完成的图片
         e_widget:setIcon(img_ready)
       else

@@ -15,7 +15,7 @@ log.logswitch(false)  --关闭log开关
 engine = Engine()
 
 --network
-test_on_windows = true
+test_on_windows = false
 local network = nil
 if not test_on_windows then
   network = require("boom.network")

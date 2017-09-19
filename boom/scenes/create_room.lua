@@ -388,6 +388,7 @@ function CreateRoomNetHandler:fireCreateRoomResEvent(event)
     init_table["lifeNumber"] = selections["life"][results["life"]]
     init_table["playersPerGroup"] = selections["people"][results["people"]]
     init_table["playersInRoom"] = 1
+    init_table["from_create_room"] = true   --是否是从create_room进入的
     game_state.switch(room, init_table)
   end
 end
