@@ -4,6 +4,13 @@ local LoginNetHandler = class("LoginNetHandler", System)
 local login_net_handler = LoginNetHandler()
 local game_state = require("libs.hump.gamestate")
 local bgimg = love.graphics.newImage("assets/bgimg.jpg")
+local img_head = love.graphics.newImage("assets/magic.jpg")
+local cam = require "boom.camera"
+local camera = cam:instance()
+local camera_shaking_interval = 1  --shake一次的时间长度
+local camera_shaking_account = 0   --已经shake了多久
+local camera_shaking = false
+local camera_start_shake, camera_stop_shake, camera_update
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
@@ -20,6 +27,7 @@ local keyboard_to_gamepad = {
 }
 --函数前置声明
 local login_pressed, exit_pressed, enter_kb_psw, enter_kb_id, open_kb, close_kb, delete_char, processbar_login_update
+
 --键盘控件
 local keyboard_text, keyboard_label, btn_cancel, btn_delete, btn_confirm
 --driving license控件
@@ -64,9 +72,7 @@ local logining = false --是否正在登陆中
 local login_feedback1 = false  --发出过了feedback否
 local login_feedback2 = false
 local login_feedback3 = false
-local login_feedback4 = false
 local myId = nil
-local cam = require "boom.camera"
 local got_login_response = false  --是否接收到Server的输入
 --状态机
 local states = {
@@ -332,45 +338,51 @@ login_pressed = function()
     else
       current_state = "focous_psw"
     end
+    camera_start_shake(0.2 ,5)   --
   else
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
+    myId = str_id
+    processbar_login:increaseAt(0.2)
+    logining = true  --进入正在登陆中的状态
     if not test_on_windows then
       net:requestLogin(str_id, str_psw)
     else
       --模拟一个通过情况
-      game_state.switch(roomlist,{["myId"] = "lsm"})
+      --[[for k,v in pairs(comps) do
+        gooi.removeComponent(v)
+      end
+      game_state.switch(roomlist,{["myId"] = "lsm"})]]--
+      got_login_response = true
+      login_success = true
     end
-    myId = str_id
-    processbar_login:increaseAt(0.2)
-    logining = true
   end
 end
+
 --更新processbar_login_update的方法
 processbar_login_update = function()
   local info1 = "Your information is checked."
-  local info2 = "Now we are doing some work."
-  local info3 = "A country does not have permanent friends, or permanent enemies."
-  local info4 = "Good luck."
+  local info2 = "A country does not have permanent friends, or permanent enemies."
+  local info3 = "Good luck."
   if processbar_login:getValue() >= 0.2 and not login_feedback1 then
     if not got_login_response then  --当没有获取到Server响应时先卡住
       --现在需要让进度条卡在0.2的位置，不再继续下去
       processbar_login:increaseAt(0)
     elseif login_success then  --获取了响应且成功了以后
+      camera_start_shake(100, 3)
       gui:feedback(info1)
       login_feedback1 = true
-      processbar_login:increaseAt(0.2)
+      processbar_login:increaseAt(0.3)
     end
-  elseif processbar_login:getValue() >= 0.4 and not login_feedback2 then
+  elseif processbar_login:getValue() >= 0.49 and not login_feedback2 then
     gui:feedback(info2)
     login_feedback2 = true
-  elseif processbar_login:getValue() >= 0.6 and not login_feedback3 then
+  elseif processbar_login:getValue() >= 0.79 and not login_feedback3 then
     gui:feedback(info3)
     login_feedback3 = true
-  elseif processbar_login:getValue() >= 0.8 and not login_feedback4 then
-    gui:feedback(info4)
-    login_feedback4 = true
-  elseif processbar_login:getValue() == 1 then
+  elseif processbar_login:getValue() >= 1 then
+    --进度条已经到达了，执行切换工作
+    camera_stop_shake()
     local init_table = {}
     init_table["myId"] = myId
     game_state.switch(roomlist, init_table)
@@ -527,9 +539,11 @@ states.transfer = function(button)
 end
 
 function login:enter()
-  --net:connect("192.168.1.101")
-  net:connect("172.28.37.19", 8080)
-  net:startReceiving() 
+  if not test_on_windows then
+    --net:connect("192.168.1.101")
+    net:connect("172.28.37.19", 8080)
+    net:startReceiving()
+  end
   --注册事件监听函数
   print("login:enter()")
   gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
@@ -567,7 +581,7 @@ function login:enter()
   :setColspan(4, 2, 2)
   --pGrid:fg(component.colors.blue)
   local img_bullet = lg.newImage("assets/sign_bullet.png")
-  local img_head = lg.newImage("assets/halou.png")
+  
   text_id = gooi.newText({w = 300, group = group_dl}):bg({209,209,209,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
   text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({209,209,209,0}):setText(""):setTooltip("please enter your powerful password :o"):fg({255,255,255,255}) -- 输入password的文本框
   label_id = gooi.newLabel({text = "enter your id:", group = group_dl}):left():setIcon(img_bullet)
@@ -654,9 +668,10 @@ function login:enter()
 
   -- camera operations
 
-  local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-  --cam:zoom(zm)
-  --cam:lookAt(window_w/2, window_h/2)
+  --local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
+  --camera:zoom(zm)
+  camera:lookAt(window_w/2, window_h/2)
+  --camera_start_shake(0.2, 5)
 end
 
 function login:update(dt)
@@ -664,17 +679,20 @@ function login:update(dt)
     --检查channel是否有已经有了返回值，如果有，检查是否登陆成功
     if got_login_response then  --已经获取到了Server的响应
       if not login_success then
-        --身份验证未通过
+        --身份验证未通过 --登陆失败
         logining = false
         login_success = false
         got_login_response = false
         --log.debug("id:"..str_id..", psw:"..str_psw)
         --此时说明登陆失败，提示玩家登陆信息有误
+        camera_start_shake(0.2, 5)
         text_id:bg({255,0,0,100})
         text_psw:bg({255,0,0,100})
         current_state = "focous_id"   --把焦点重新给到玩家的登陆信息输入框
         processbar_login.value = 0
         processbar_login:increaseAt(0)
+      else
+        --此时登陆已经成功了，但是不在此处进行场景切换，而是交给processbar的update函数
       end
     end
   end
@@ -685,13 +703,14 @@ function login:update(dt)
   if not test_on_windows then
     net:update(dt)
   end
+  camera_update(dt)
 end
 
 function login:draw()
   --设置一个背景图片
   
   lg.draw(bgimg,0,0)
-  --cam:attach()
+  camera:attach()
 
 
   --绘制一个矩形框将框内信息框住
@@ -716,7 +735,7 @@ function login:draw()
     gui:draw()
   end
   --
-  --cam:detach()
+  camera:detach()
 
   if debug_on then lg.print(text) end
 end
@@ -766,6 +785,34 @@ end
 
 function quit()
   love.event.quit()
+end
+
+--camera相关的函数
+camera_start_shake = function(time, strength)
+  camera_shaking = true
+  camera_shaking_interval = time
+  camera_shaking_account = 0
+  camera:shake(strength)
+  camera:shakeCamera()
+end
+
+camera_stop_shake = function()
+  camera:dontPanic()
+  camera_shaking = false
+  camera_shaking_account = 0
+  camera:lookAt(window_w/2, window_h/2)
+end
+
+camera_update = function(dt)
+  if camera_shaking then
+    camera:update(dt)
+    if camera_shaking_account > camera_shaking_interval then
+      --别再shake了
+      camera_stop_shake()
+    else 
+      camera_shaking_account = camera_shaking_account + dt
+    end
+  end
 end
 
 return login

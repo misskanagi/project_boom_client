@@ -6,6 +6,7 @@ local game_state = require("libs.hump.gamestate")
 local gui = require("libs.Gspot")
 
 local cam = require("boom.camera")
+local camera = cam:instance()
 --package.loaded["./libs/Gspot"] = nil
 
 local events = require("boom.events")
@@ -139,7 +140,7 @@ submit_request = function()
 end
 
 function create_room:enter(prev, init_table)
-  --cam:lookAt(window_w/2, window_h/2)
+  camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
@@ -233,7 +234,7 @@ end
 function create_room:draw()
   --local bgimg = lg.newImage("assets/bgimg.jpg")
   lg.draw(bgimg,0,0)
-  --cam:attach()
+  camera:attach()
   if submitting then
     --绘制提交中的动画
     lg.line(submit_line_x1, window_h/2, submit_line_x2, window_h/2)
@@ -258,7 +259,7 @@ function create_room:draw()
   local confirm_string = "R1-confirm"
   lg.print(back_string, 40, window_h-font_current:getHeight() - 40)   --origin:20
   lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 40, window_h-font_current:getHeight() - 40)  --origin:20
-  --cam:detach()
+  camera:detach()
 end
 
 function create_room:leave()

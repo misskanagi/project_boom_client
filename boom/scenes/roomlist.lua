@@ -2,6 +2,7 @@
 local roomlist = class("roomlist")
 local game_state = require("libs.hump.gamestate")
 local cam = require "boom.camera"
+local camera = cam:instance()
 local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 local gui = require("libs.Gspot")
@@ -17,17 +18,25 @@ local input_handler = InputHandler()
 
 local myId = nil   --当前玩家的id
 --前置声明
-local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update
+local scroll_update, begin_move_scrollgroup, stop_move_scrollgroup, refresh, refresh_update, cancel_refresh, enter_room, remove_widgets, enter_update, update_scrollgroup_widgets
 --固定尺寸
 local window_w = 960 --480
 local window_h = 640 --320
-
 --lbl_title的各项参数
 local lbl_title = nil
 local lbl_title_x = 20 --10
 local lbl_title_y = 20 --10
 local lbl_title_w = 920 --460
 local lbl_title_h = 120 --60
+--滚动列表各项抬头的lbl
+local lbl_masterimg = nil
+local lbl_roomid = nil
+local lbl_mode = nil
+local lbl_people = nil
+local lbl_masterimg_pos = {x = 40, y = 140, w = 120, h = 40}
+local lbl_roomid_pos = {x = 160, y = 140, w = 340, h = 40}
+local lbl_mode_pos = {x = 500, y = 140, w = 200, h = 40}
+local lbl_people_pos = {x = 700, y = 140, w = 200, h = 40}
 
 --滚动列表的各项参数
 local scrollgroup = nil
@@ -35,11 +44,15 @@ local scroll_focous_time_bound = 0.2  -- 按住方向键0.8s以后，开始快�
 local scroll_frame_time_gap_bound = 0.05  -- 按住方向键以后，每过150ms越过一个room_item
 local room_item_num_per_page = 4 -- 一页显示几个room_item
 local room_scroll_x = 20 --10
-local room_scroll_y = 140 --70
+local room_scroll_y = 180 --70
 local room_item_height = 105 --70   --room_item_height * room_item_num_per_page == room_scroll_h，这一点在这里就要保证，不然会出问题
 local room_item_width = 904 --444
 local room_infos = {}  --存放从Server拿到的所有的房间item的数据
-
+--scrollgroup的item的各种尺寸
+local scrollitem_img_pos = {20, 5, 120, 105}
+local scrollitem_textid_pos = {140, 5, 340, 60}
+local scrollitem_textmode_pos = {480, 5, 200, 60}
+local scrollitem_textpeople_pos = {680, 5, 200, 60}
 --刷新相关值
 local refreshing = false --是否在刷新中
 local refresh_line_x1 = 480 --240
@@ -51,6 +64,9 @@ local entering = false
 
 local roomNumbers = 0  --房间数量
 local RoomInfos = {} --从服务器上拉下来的最新房间信息数据
+
+
+
 
 function roomlist:leave()
   --
@@ -67,7 +83,7 @@ end
 
 function roomlist:enter(prev, init_table)
   gui:setOriginSize(window_w, window_h)
-  --cam:lookAt(window_w/2, window_h/2)
+  camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
   eventmanager:addListener("RoomListInputPressed", input_handler, input_handler.firePressedEvent)
@@ -91,7 +107,12 @@ function roomlist:enter(prev, init_table)
   gooi.desktopMode()
   gooi.shadow()
   --创建lbl_title
+  style.font = font_small
   lbl_title = gooi.newLabel({text = "Room List", x = lbl_title_x, y = lbl_title_y, w = lbl_title_w, h = lbl_title_h}):center()
+  lbl_masterimg = gooi.newLabel({text = "Master", x = lbl_masterimg_pos.x, y = lbl_masterimg_pos.y, w = lbl_masterimg_pos.w, h = lbl_masterimg_pos.h}):center():bg({255,0,0,255})
+  lbl_roomid = gooi.newLabel({text = "RoomId", x = lbl_roomid_pos.x, y = lbl_roomid_pos.y, w = lbl_roomid_pos.w, h = lbl_roomid_pos.h}):center():bg({255,250,0,255})
+  lbl_mode = gooi.newLabel({text = "Mode", x = lbl_mode_pos.x, y = lbl_mode_pos.y, w = lbl_mode_pos.w, h = lbl_mode_pos.h}):center():bg({255,0,250,255})
+  lbl_people = gooi.newLabel({text = "Players", x = lbl_people_pos.x, y = lbl_people_pos.y, w = lbl_people_pos.w, h = lbl_people_pos.h}):center():bg({0,255,0,255})
   refresh()   --刷新房间列表
 end
 
@@ -166,35 +187,41 @@ refresh = function()
       [5] = {["roomId"] = "kingdom", ["gameMode"] = "chaos", ["playersPerGroup"] = 3, ["playersInRoom"] = 2},
       [6] = {["roomId"] = "heheheh", ["gameMode"] = "chaos", ["playersPerGroup"] = 4, ["playersInRoom"] = 8},
     }
-    --创建scollgroup
-    scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
-    for i = 1, roomNumbers do
-    --w一共是444
-      local roomInfo_item = RoomInfos[i]
-      local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
-      local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
-      local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
-      local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
-      local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
-      gi.lsm = true
-      gi.bgcolor = {255,255,255,0}
-      --local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-      --local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
-      --local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
-      --local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
-      local widget_room_image = gui:image("", {10, 5, 120, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-      local widget_room_id = gui:text(room_id, {140, 5, 340, 60}, gi, false)
-      local widget_room_mode = gui:text(room_mode, {480, 5, 200, 60}, gi, false)--, {255,255,255,20})
-      local widget_room_people = gui:text(room_people, {680, 5, 200, 60}, gi, false)--, {255,255,255,20})
-      widget_room_id:setfont(font_small)
-      widget_room_mode:setfont(font_small)
-      widget_room_people:setfont(font_small)
-      scrollgroup:addChild(gi)
-    end
-    scrollgroup:allChildAdded()
-    scrollgroup:scrollToTop()
+    update_scrollgroup_widgets()   --更新scrollgroup的显示
     refreshing = false
   end
+end
+
+--根据roomNumbers/RoomInfos的内容来scrollgroup的child建立起来
+update_scrollgroup_widgets = function()
+  --更新显示房间列表
+  --创建scollgroup
+  scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
+  for i = 1, roomNumbers do
+  --w一共是444
+    if not RoomInfos[i] then break end   --以防万一的操作
+    local roomInfo_item = RoomInfos[i]
+    local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
+    local room_image_ = "assets/gamemode/"
+    local i = 2
+    
+    local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
+    local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
+    local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
+    local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
+    gi.lsm = true
+    gi.bgcolor = {255,255,255,0}
+    local widget_room_image = gui:image("", scrollitem_img_pos, gi, room_image_..i..".jpg")  --放置对应的战斗模式图片作为房间图像
+    local widget_room_id = gui:text(room_id, scrollitem_textid_pos, gi, false, {255, 255, 255, 0})
+    local widget_room_mode = gui:text(room_mode, scrollitem_textmode_pos, gi, false, {255, 255, 255, 0})--, {255,255,255,20})
+    local widget_room_people = gui:text(room_people, scrollitem_textpeople_pos, gi, false, {255, 255, 255, 0})--, {255,255,255,20})
+    widget_room_id:setfont(font_small)
+    widget_room_mode:setfont(font_small)
+    widget_room_people:setfont(font_small)
+    scrollgroup:addChild(gi)
+  end
+  scrollgroup:allChildAdded()
+  scrollgroup:scrollToTop()
 end
 
 --进入房间
@@ -232,6 +259,10 @@ end
 --移除所有的控件
 remove_widgets = function()
   gooi.removeComponent(lbl_title)
+  gooi.removeComponent(lbl_modeimg)
+  gooi.removeComponent(lbl_roomid)
+  gooi.removeComponent(lbl_mode)
+  gooi.removeComponent(lbl_people)
   if scrollgroup then
     scrollgroup:clean()
   end
@@ -241,7 +272,7 @@ end
 function roomlist:draw()
   --local bgimg = lg.newImage("assets/bgimg.jpg")
   lg.draw(bgimg,0,0)
-  --cam:attach()
+  camera:attach()
   if refreshing then
     --绘制一个
     lg.line(refresh_line_x1, window_h/2, refresh_line_x2, window_h/2)
@@ -261,7 +292,7 @@ function roomlist:draw()
   lg.print(help_string, window_w-font_current:getWidth(help_string) - 40, window_h-font_current:getHeight() - 40) --origin:20
   gui:draw()
   gooi.draw()
-  --cam:detach()
+  camera:detach()
 end
 
 
@@ -364,36 +395,8 @@ function RoomListNetHandler:fireGetRoomListResEvent(event)
   for k,v in pairs(event.roomsInfo) do
     RoomInfos[#RoomInfos + 1] = v
   end
-  --更新显示房间列表
-  --创建scollgroup
-    scrollgroup = scrollview.createObject({x = room_scroll_x, y = room_scroll_y, item_width = room_item_width, item_height = room_item_height, item_num_per_page = room_item_num_per_page, time_before_fastscroll = scroll_focous_time_bound, time_between_fastscroll = scroll_frame_time_gap_bound, bgcolor = {255,255,255,20}, bgcolor_focous = {255,255,255,50}}, gui)
-    for i = 1, roomNumbers do
-    --w一共是444
-      if not RoomInfos[i] then break end
-      local roomInfo_item = RoomInfos[i]
-      local room_image = 'assets/room.jpg'   --x = 10, y = 5, w = 60, h = 60
-      local room_id = roomInfo_item["roomId"]       --x = 70, y = 5, w = 170, h = 60
-      local room_mode = roomInfo_item["gameMode"]  --x = 240, y = 5, w = 100, h = 60,
-      local room_people = roomInfo_item["playersInRoom"].."/"..(roomInfo_item["playersPerGroup"]*2)        --x = 340, y = 5, w = 104 , h = 60,
-      local gi = gui:group('', {x = 0, y = 0, w = room_item_width, h = room_item_height})
-      gi.lsm = true
-      gi.bgcolor = {255,255,255,0}
-      --local widget_room_image = gui:image("", {10, 5, 60, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-      --local widget_room_id = gui:text(room_id, {70, 5, 170, 60}, gi, false)
-      --local widget_room_mode = gui:text(room_mode, {240, 5, 100, 60}, gi, false)--, {255,255,255,20})
-      --local widget_room_people = gui:text(room_people, {340, 5, 100, 60}, gi, false)--, {255,255,255,20})
-      local widget_room_image = gui:image("", {10, 5, 120, 60}, gi, room_image)  --放置对应的战斗模式图片作为房间图像
-      local widget_room_id = gui:text(room_id, {140, 5, 340, 60}, gi, false)
-      local widget_room_mode = gui:text(room_mode, {480, 5, 200, 60}, gi, false)--, {255,255,255,20})
-      local widget_room_people = gui:text(room_people, {680, 5, 200, 60}, gi, false)--, {255,255,255,20})
-      widget_room_id:setfont(font_small)
-      widget_room_mode:setfont(font_small)
-      widget_room_people:setfont(font_small)
-      scrollgroup:addChild(gi)
-    end
-    scrollgroup:allChildAdded()
-    scrollgroup:scrollToTop()
-    refreshing = false
+  update_scrollgroup_widgets()   --更新scrollgroup的显示
+  refreshing = false
 end
 
 --收到服务器对进入房间请求的响应
