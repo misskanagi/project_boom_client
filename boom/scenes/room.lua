@@ -407,10 +407,12 @@ end
 
 --获取一个游戏开始的广播
 get_gamebegin_broadcast = function(roomid)
-  if roomid ~= "-fail" then
+  if not roomid == "-fail" then
     local test_place = require("boom.scenes.test_place")
     local init_table = {}
     game_state.switch(test_place, init_table)
+  else
+    gui:feedback("Cannot begin game!")
   end
 end
 
