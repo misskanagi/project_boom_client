@@ -250,6 +250,19 @@ enter_room = function()
     init_table["mapType"] = selected_room_item["mapType"]
     init_table["lifeNumber"] = selected_room_item["lifeNumber"]
     init_table["playersPerGroup"] = selected_room_item["playersPerGroup"]  --
+    init_table["PlayerInfos"] = {
+      [1] = {
+        [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
+        [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
+        [3] = {["playerId"] = "yuge", ["playerStatus"] = 2, ["tankType"] = 1},
+        [4] = {["playerId"] = "james", ["playerStatus"] = 1, ["tankType"] = 1}
+      },--groupId为1的所有players
+      [2] = {
+        [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
+        [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 2},
+        [3] = {["playerId"] = "yuge2", ["playerStatus"] = 1, ["tankType"] = 3},
+      }--groupId为2的所有players
+    }
     --init_table[""] = 
     local room = require("boom.scenes.room")
     game_state.switch(room, init_table)

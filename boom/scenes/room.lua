@@ -28,10 +28,10 @@ local lifeNumber = 3
 local playersPerGroup = 1
 local roomState = nil   --waiting or gaming
 local playersInRoom = 1
-local PlayerInfos = nil   --包含房间内所有人的PlayerInfo, string playerId = 1;int32 playerStatus = 2;int32 groupId = 3;int32 tankType = 4;
+local PlayerInfos = {[1] = {}, [2] = {}}   --包含房间内所有人的PlayerInfo, string playerId = 1;int32 playerStatus = 2;int32 groupId = 3;int32 tankType = 4;
 local room_people = 4 --每队几个人
 
-local img_ready = lg.newImage("assets/sign_bullet.png")
+local img_ready = lg.newImage("assets/sign_bullet.png")   --地方准备好了的图片
 local img_blank = lg.newImage("assets/blank_32.png")
 
 --所有控件
@@ -91,18 +91,18 @@ local isready = false  --玩家已经ready
 
 --存放所有的tank
 local tankbag = {
-  [1] = {["tankType"] = 1},
-  [2] = {["tankType"] = 2},
-  [3] = {["tankType"] = 3},
-  [4] = {["tankType"] = 4},
-  [5] = {["tankType"] = 5},
-  [6] = {["tankType"] = 6},
-  [7] = {["tankType"] = 7},
-  [8] = {["tankType"] = 8},
-  [9] = {["tankType"] = 9},
+  [1] = {["tankType"] = 1, ["img"] = love.graphics.newImage("assets/tank/1.png")},
+  [2] = {["tankType"] = 2, ["img"] = love.graphics.newImage("assets/tank/2.png")},
+  [3] = {["tankType"] = 3, ["img"] = love.graphics.newImage("assets/tank/3.png")},
+  [4] = {["tankType"] = 4, ["img"] = love.graphics.newImage("assets/tank/4.png")},
+  [5] = {["tankType"] = 5, ["img"] = love.graphics.newImage("assets/tank/5.png")},
+  [6] = {["tankType"] = 6, ["img"] = love.graphics.newImage("assets/tank/6.png")},
+  [7] = {["tankType"] = 7, ["img"] = love.graphics.newImage("assets/tank/7.png")},
+  [8] = {["tankType"] = 8, ["img"] = love.graphics.newImage("assets/tank/8.png")},
+  [9] = {["tankType"] = 9, ["img"] = love.graphics.newImage("assets/tank/9.png")},
 }
 --存放所有的玩家的信息，groupId作key
-local all_players_infos = {
+--[[local PlayerInfos = {
   [1] = {
     [1] = {["playerId"] = "lsm", ["playerStatus"] = 1, ["tankType"] = 1},
     [2] = {["playerId"] = "hackhao", ["playerStatus"] = 1, ["tankType"] = 1},
@@ -111,10 +111,10 @@ local all_players_infos = {
     },--groupId为1的所有players
   [2] = {
     [1] = {["playerId"] = "lsm2", ["playerStatus"] = 1, ["tankType"] = 1},
-    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 1},
-    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 2, ["tankType"] = 1},
+    [2] = {["playerId"] = "hackhao2", ["playerStatus"] = 1, ["tankType"] = 2},
+    [3] = {["playerId"] = "yuge2", ["playerStatus"] = 1, ["tankType"] = 3},
     }--groupId为2的所有players
-  }
+  }]]--
 
 --前置声明
 local update_players_widgets, ready, cancel_ready, remove_widgets, quit_room, begin_game,
@@ -157,7 +157,7 @@ function room:enter(pre, init_table)
   mapType = init_table and init_table["mapType"] or mapType
   lifeNumber = init_table and init_table["lifeNumber"] or lifeNumber
   playersPerGroup = init_table and init_table["playersPerGroup"] or playersPerGroup
-  PlayerInfos = init_table and init_table["PlayerInfos"] or PlayerInfos
+  PlayerInfos = init_table and init_table["PlayerInfos"] or {[1] = {}, [2] = {}}
   playersInRoom = init_table and init_table["playersInRoom"] or playersInRoom
   --playersInfo = init_table and init_table["playersInfo"] or {}
 
@@ -181,77 +181,34 @@ function room:enter(pre, init_table)
   table.insert(gooi_widgets, lbl_people)
   table.insert(gooi_widgets, lbl_life)
   table.insert(gooi_widgets, lbl_map)
-
   lbl_group1 = gooi.newLabel({text = "GROUP1", x = lbl_group1_x, y = lbl_group1_y, w = lbl_group1_w, h = lbl_group1_h}):center()
   lbl_group2 = gooi.newLabel({text = "GROUP2", x = lbl_group2_x, y = lbl_group2_y, w = lbl_group2_w, h = lbl_group2_h}):center()
-
+  table.insert(gooi_widgets, lbl_group1)
+  table.insert(gooi_widgets, lbl_group2)
+  
   --创建groupId==1的显示列表
   grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
   for i = 1, 8 do
-    local lbl_1_item = nil
-    if i <= #all_players_infos[1] then
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_1_item = gooi.newLabel({text = all_players_infos[1][i]["playerId"]}):left()
-      if all_players_infos[1][i]["playerStatus"]==1 then
-        lbl_1_item:setIcon(img_ready)
-      else
-        --lbl_1_item设置一个空的图片作为icon
-        lbl_1_item:setIcon(img_blank)
-      end
-      grid_1:add(lbl_1_item, r..","..c)
-    elseif i <= room_people then
-      --还未到来的选手
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_1_item = gooi.newLabel({text = ""}):left()
-      grid_1:add(lbl_1_item, r..","..c)
-    else
-      --永远的空位
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_1_item = gooi.newLabel({text = "————"}):center()
-      grid_1:add(lbl_1_item, r..","..c)
-    end
+    local r = (i-1) % 4 + 1
+    local c = math.floor((i-1)/4) + 1
+    local lbl_1_item = gooi.newLabel({text = ""}):left()
+    grid_1:add(lbl_1_item, r..","..c)
     players_widgets[1][#players_widgets[1]+1] = lbl_1_item
     table.insert(gooi_widgets, lbl_1_item)
   end
-  table.insert(gooi_widgets, grid_1)
-
-  --创建我方的显示列表
+  
+  --创建groupId==1的显示列表
   grid_2 = gooi.newPanel({x = grid_2_x, y = grid_2_y, w = grid_2_w, h = grid_2_h, layout = "grid 4x2"})
   for i = 1, 8 do
-    local lbl_2_item = nil
-    if i <= #all_players_infos[2] then
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_2_item = gooi.newLabel({text = all_players_infos[2][i]["playerId"]}):left()
-      if all_players_infos[2][i]["playerStatus"]==1 then
-        --设置该玩家的tankType对应的tank缩略图作为icon
-        lbl_2_item:setIcon(img_ready)
-      else
-        --如果没有ready，就设置一个空icon
-        lbl_2_item:setIcon(img_blank)
-      end
-      grid_2:add(lbl_2_item, r..","..c)
-    elseif i <= room_people then
-      --还未到来的选手
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_2_item = gooi.newLabel({text = ""}):left()
-      grid_2:add(lbl_2_item, r..","..c)
-    else
-      --永远的空位
-      local r = (i-1) % 4 + 1
-      local c = math.floor((i-1)/4) + 1
-      lbl_2_item = gooi.newLabel({text = "————"}):center()
-      grid_2:add(lbl_2_item, r..","..c)
-    end
+    local r = (i-1) % 4 + 1
+    local c = math.floor((i-1)/4) + 1
+    local lbl_2_item = gooi.newLabel({text = ""}):left()
+    grid_2:add(lbl_2_item, r..","..c)
     players_widgets[2][#players_widgets[2]+1] = lbl_2_item
     table.insert(gooi_widgets, lbl_2_item)
   end
+  table.insert(gooi_widgets, grid_1)
   table.insert(gooi_widgets, grid_2)
-
   --创建一个选择tank的列表
   setup_tankbag()
 end
@@ -271,10 +228,11 @@ function room:leave()
   gui:feedback("room:leave")
   isready = false
   remove_widgets()
+  PlayerInfos = {[1] = {}, [2] = {}}
 end
 
 function room:update(dt)
-  update_players_widgets()  --根据最新的all_players_infos[1],all_players_infos[2]的内容更新所有的控件
+  update_players_widgets()  --根据最新的PlayerInfos[1],PlayerInfos[2]的内容更新所有的控件
   sv_tankbag:update(dt)
   gui:update(dt)
   gooi.update()
@@ -393,7 +351,7 @@ end
 --本地函数
 --获取一个进入房间的广播以后的处理，新进入的玩家是playerId，组别是groupId
 get_enterroom_broadcast = function(playerId, groupId)
-  local group_players = all_players_infos[groupId]
+  local group_players = PlayerInfos[groupId]
   --group_players是groupId对应的table
   local new_player_info_item = {}
   new_player_info_item["playerId"] = playerId
@@ -408,7 +366,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
     game_state.switch(roomlist)  --散了散了
   else
     for i = 1, 2 do
-      local group_players = all_players_infos[i]
+      local group_players = PlayerInfos[i]
       for j = 1, #group_players do
         if group_players[j]["playerId"] == playerId then
           --found!
@@ -420,7 +378,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
    end 
   ::delete_player:: do
     --执行删除玩家的操作
-    local group_players = all_players_infos[groupId]
+    local group_players = PlayerInfos[groupId]
     local group_players_copy = {}
     for i = 1, #group_players do
       if group_players[i]["playerId"] ~= playerId then
@@ -442,7 +400,7 @@ end
 --获取一个玩家取消ready状态的广播
 get_gamecancelready_broadcast = function(playerId)
   for i = 1, 2 do
-    local group_players = all_players_infos[i]
+    local group_players = PlayerInfos[i]
     for j = 1, #group_players do
       if group_players[j]["playerId"] == playerId then
         --found!
@@ -456,7 +414,7 @@ end
 --获取一个玩家进入ready状态的广播
 get_gamereadybroadcast = function(playerId, tankType)
   for i = 1, 2 do
-    local group_players = all_players_infos[i]
+    local group_players = PlayerInfos[i]
     for j = 1, #group_players do
       if group_players[j]["playerId"] == playerId then
         --found!
@@ -471,32 +429,42 @@ end
 --更新players的相应的控件
 update_players_widgets = function()
   --当前的玩家
-  --直接拿着新的all_players_infos[2]数据进行players_widgets[2]的更新
+  local my_group_id = groupId   --我方的组
+  local oppo_group_id = 1 --对方的组
+  if my_group_id == 1 then
+    oppo_group_id = 2
+  end
+  --直接拿着新的PlayerInfos[my_group_id]数据进行players_widgets[my_group_id]的更新
   for i = 1, 8 do
-    if i <= #all_players_infos[2] then
-      local f_widget = players_widgets[2][i]
-      local f_info_item = all_players_infos[2][i]
+    if i <= #PlayerInfos[my_group_id] then
+      local f_widget = players_widgets[my_group_id][i]
+      local f_info_item = PlayerInfos[my_group_id][i]
       f_widget:setText(f_info_item["playerId"])
       if f_info_item["playerStatus"] == 1 then
         --设置一个坦克缩略图
-        --f_widget:setIcon()
+        local img_tank = tankbag[f_info_item["tankType"]]["img"]
+        if img_tank then
+          f_widget:setIcon(img_tank)
+        else
+          f_widget:setIcon(img_ready)
+        end
       else
         --设置一个空白图
         f_widget:setIcon(img_blank)
       end
     elseif i <= room_people then
-      local f_widget = players_widgets[2][i]
+      local f_widget = players_widgets[my_group_id][i]
       f_widget:setText("")
       f_widget:setIcon(nil)
     else
       break
     end
   end
-  --直接拿着新的all_players_infos[1]数据进行players_widgets[1]的更新
+  --直接拿着新的PlayerInfos[oppo_group_id]数据进行players_widgets[oppo_group_id]的更新
   for i = 1, 8 do
-    if i <= #all_players_infos[1] then
-      local e_widget = players_widgets[1][i]
-      local e_info_item = all_players_infos[1][i]
+    if i <= #PlayerInfos[oppo_group_id] then
+      local e_widget = players_widgets[oppo_group_id][i]
+      local e_info_item = PlayerInfos[oppo_group_id][i]
       e_widget:setText(e_info_item["playerId"])
       if e_info_item["playerStatus"] == 1 then
         --设置一个准备完成的图片
@@ -506,7 +474,7 @@ update_players_widgets = function()
         e_widget:setIcon(img_blank)
       end
     elseif i <= room_people then
-      local e_widget = players_widgets[1][i]
+      local e_widget = players_widgets[oppo_group_id][i]
       e_widget:setText("")
       e_widget:setIcon(nil)
     else
@@ -569,13 +537,13 @@ begin_game = function()
     return
   end
   --检查是否是已经全员到齐且全员ready
-  if #all_players_infos[2] == room_people and #all_players_infos[1] == room_people then
-    for k, v in all_players_infos[2] do
+  if #PlayerInfos[2] == room_people and #PlayerInfos[1] == room_people then
+    for k, v in PlayerInfos[2] do
       if not v["playerStatus"] == 1 then
         return
       end
     end
-    for k, v in all_players_infos[1] do
+    for k, v in PlayerInfos[1] do
       if not v["playerStatus"] == 1 then
         return
       end
