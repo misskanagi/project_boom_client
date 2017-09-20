@@ -9,8 +9,8 @@ function SendPhysicSnapshot:update(dt)
     elapsed = elapsed + dt
     if elapsed > every then
       elapsed = 0.0
-      if my_name == "yuge" then
-      --if isMaster then
+      --if my_name == "yuge" then
+      if isMaster then
         self:sendSnapshot()
       end
     end
