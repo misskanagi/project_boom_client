@@ -407,7 +407,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
       end
     end
     --此时group_players_copy是新的table
-    group_players = group_players_copy
+    PlayerInfos[delete_groupId] = group_players_copy
   end
 end
 
