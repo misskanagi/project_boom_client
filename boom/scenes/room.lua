@@ -120,7 +120,7 @@ function room:enter(pre, init_table)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
   eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
   eventmanager:addListener("GameReadyBroadcast", room_net_handler, room_net_handler.fireGameReadyBroadcastEvent)
-  eventmanager:addListener("QuitBroadcast", room_net_handler, room_net_handler.fireQuitBroadcastEvent)
+  eventmanager:addListener("QuitRoomBroadcast", room_net_handler, room_net_handler.fireQuitRoomBroadcastEvent)
   eventmanager:addListener("RoomInputPressed", input_handler, input_handler.firePressedEvent)
   eventmanager:addListener("RoomInputReleased", input_handler, input_handler.fireReleasedEvent)
   font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 28)
@@ -672,8 +672,8 @@ function RoomNetHandler:fireGameReadyBroadcastEvent(event)
 end
 
 --收到有人退出房间的广播
-function RoomNetHandler:fireQuitBroadcastEvent(event)
-  print("RoomNetHandler:fireQuitBroadcastEvent")
+function RoomNetHandler:fireQuitRoomBroadcastEvent(event)
+  print("RoomNetHandler:fireQuitRoomBroadcastEvent")
   get_quitroom_broadcast(event.isMaster,event.playerId)
 end
 
