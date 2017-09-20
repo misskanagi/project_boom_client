@@ -368,7 +368,9 @@ end
 get_quitroom_broadcast = function(isMaster, playerId)
   print("get_quitroom_broadcast, playerId = "..playerId)
   local roomlist = require("boom.scenes.roomlist")
+  print("myId = "..myId.. " , quit room playerId = "..playerId)
   if i_wanna_quit_room and playerId == myId then
+    print("i_wanna_quit_room and it's me")
     --Server准许了玩家的退房申请
     local init_table = {}
     init_table["myId"] = myId
@@ -377,7 +379,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
     game_state.switch(roomlist, init_table)
   end
   
-  local groupId = 1
+  local delete_groupId = 1
   if isMaster then
     local init_table = {}
     init_table["myId"] = myId
@@ -388,7 +390,8 @@ get_quitroom_broadcast = function(isMaster, playerId)
       for j = 1, #group_players do
         if group_players[j]["playerId"] == playerId then
           --found!
-          groupId = i
+          print("found "..playerId.." at group"..i)
+          delete_groupId = i
           goto delete_player
         end
       end
@@ -396,7 +399,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
    end 
   ::delete_player:: do
     --执行删除玩家的操作
-    local group_players = PlayerInfos[groupId]
+    local group_players = PlayerInfos[delete_groupId]
     local group_players_copy = {}
     for i = 1, #group_players do
       if group_players[i]["playerId"] ~= playerId then
