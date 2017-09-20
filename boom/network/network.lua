@@ -112,7 +112,7 @@ function network:updateReceive(dt)
         print("got CREATE_ROOM_RES")
         eventmanager:fireEvent(events.CreateRoomRes(data.roomId, data.groupId))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_RES then
-        print("got ENTER_ROOM_RES:")
+        print("got ENTER_ROOM_RES")
         eventmanager:fireEvent(events.EnterRoomRes(data.responseCode, data.groupId, data.roomMasterId, data.playersInfo))
       elseif data.cmdType == self.cmd_code.ENTER_ROOM_BROADCAST then
         print("got ENTER_ROOM_BROADCAST")
@@ -200,7 +200,7 @@ function network:sendSnapshot(snapshot_entities)
     data = {roomId = self.roomId, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
-    --print(("snapshot: %d"):format(i))
+    print(("snapshot: %d"):format(i))
     --print(json.encode(data))
 end
 
@@ -208,7 +208,9 @@ function network:send(type, data)
     assert(self.is_connected==true)
     if self.is_connected then
       print(json.encode(data))
+        print("lua send")
         local result = netLib.Lua_send(type, json.encode(data))
+        print("lua send end")
         --print("send:")
         --print(json.encode(data))
         return result
