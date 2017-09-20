@@ -189,7 +189,7 @@ end
 
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId=self.playerId, roomId = "test",
+    data = {playerId=self.playerId, roomId = "yuge",
             playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
