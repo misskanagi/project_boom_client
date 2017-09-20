@@ -366,11 +366,14 @@ end
 
 --获取一个退出房间的广播以后的处理，退出的玩家是playerId，组别是groupId
 get_quitroom_broadcast = function(isMaster, playerId)
+  print("get_quitroom_broadcast, playerId = "..playerId)
   local roomlist = require("boom.scenes.roomlist")
   if i_wanna_quit_room and playerId == myId then
     --Server准许了玩家的退房申请
     local init_table = {}
     init_table["myId"] = myId
+    i_wanna_quit_room = false
+    isready = false
     game_state.switch(roomlist, init_table)
   end
   
