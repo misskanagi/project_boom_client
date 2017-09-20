@@ -410,7 +410,14 @@ get_gamebegin_broadcast = function(roomid)
   if not roomid == "-fail" then
     local test_place = require("boom.scenes.test_place")
     local init_table = {}
-    game_state.switch(test_place, init_table)
+    init_table["myId"] = myId
+    if isMaster() then
+      init_table["isMaster"] = true
+    else
+      init_table["isMaster"] = false
+    end
+    local test_network = require "boom.scenes.test_network"
+    game_state.switch(test_network, init_table)
   else
     gui:feedback("Cannot begin game!")
   end

@@ -36,7 +36,10 @@ local particle_canvas = require "boom.systems.graphic.particle_canvas"
 --net:connect("192.168.1.101", 8080)
 --net:startReceiving()
 
-function test_network:enter()
+function test_network:enter(pre, init_table)
+    --解出玩家自己的id
+    my_name = init_table and init_table["myId"]    --玩家的id即my_name
+    isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
@@ -51,21 +54,21 @@ function test_network:enter()
         if o.name == "spawn_point_1" then
           if my_name == "yuge" then
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "yuge", true)
-            net:loginTest("yuge")
+            --net:loginTest("yuge")
           else
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "yuge", false)
           end
         elseif o.name == "spawn_point_2" then
           if my_name == "hako" then
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "hako", true)
-            net:loginTest("hako")
+            --net:loginTest("hako")
           else
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "hako", false)
           end
         elseif o.name == "spawn_point_3" then
           if my_name == "lsm" then
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "lsm", true)
-            net:loginTest("lsm")
+            --net:loginTest("lsm")
           else
             e = entity:createEntity(o, layer, self.map, self.world, self.shader, "lsm", false)
           end

@@ -15,7 +15,11 @@ log.logswitch(false)  --关闭log开关
 engine = Engine()
 
 --network
-test_on_windows = false
+test_on_windows = true
+local system = love.system.getOS()
+if system == "OS X" then
+  test_on_windows = false
+end
 local network = nil
 if not test_on_windows then
   network = require("boom.network")
