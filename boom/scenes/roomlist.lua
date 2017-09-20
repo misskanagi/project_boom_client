@@ -226,6 +226,8 @@ end
 
 --进入房间
 enter_room = function()
+  --先检查一下是否有房间
+  if RoomInfos == nil or #RoomInfos == 0 then return end
   --先检查一下是否被选中的房间的人数还未满，当人数未满的时候才可以加入
   local room_selected_index = scrollgroup:getSelectedIndex()
   local selected_room_item = RoomInfos[room_selected_index]
