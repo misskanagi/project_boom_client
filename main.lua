@@ -20,6 +20,12 @@ local system = love.system.getOS()
 if system == "OS X" then
   test_on_windows = false
 end
+if not test_on_windows then
+    --net:connect("192.168.1.101", 8080)
+    net:connect("172.28.37.19", 8080)
+    --net:connect("114.212.83.208", 8080)
+    net:startReceiving()
+  end
 local network = nil
 if not test_on_windows then
   network = require("boom.network")
