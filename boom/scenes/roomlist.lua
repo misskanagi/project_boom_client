@@ -449,15 +449,16 @@ function RoomListNetHandler:fireEnterRoomResEvent(event)
     local room = require("boom.scenes.room")
     game_state.switch(room, init_table)
   else
+    entering = false
   end
 end
 
 function InputHandler:firePressedEvent(event)
   local cmd = event.cmd
   if cmd == "up" then
-    if not refreshing then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
+    if not refreshing and scrollgroup then scrollgroup:scrollUp() end--begin_move_scrollgroup("up") end
   elseif cmd == "down" then
-    if not refreshing then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
+    if not refreshing and scrollgroup then scrollgroup:scrollDown() end--begin_move_scrollgroup("down") end
   elseif cmd == "left" then
     
   elseif cmd == "right" then

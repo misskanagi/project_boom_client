@@ -141,6 +141,8 @@ function scrollview.createObject(init_table, gui_obj)
     if not (direction and type(direction) == "string") then
       return
     end
+    --如果没有列表项，就什么都不做
+    if self.scroll_items == nil or #self.scroll_items == 0 then return end
     local scroll = self.scrollgroup.scrollv
     if direction == "up" then
       if selected_index == 1 then return end
