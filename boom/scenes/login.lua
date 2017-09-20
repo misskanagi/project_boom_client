@@ -540,8 +540,8 @@ end
 
 function login:enter()
   if not test_on_windows then
-    net:connect("192.168.1.101", 8080)
-    --net:connect("172.28.37.19", 8080)
+    --net:connect("192.168.1.101", 8080)
+    net:connect("172.28.37.19", 8080)
     --net:connect("114.212.83.208", 8080)
     net:startReceiving()
   end

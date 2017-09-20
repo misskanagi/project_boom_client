@@ -407,7 +407,8 @@ end
 
 --获取一个游戏开始的广播
 get_gamebegin_broadcast = function(roomid)
-  if not roomid == "-fail" then
+  gui:feedback("roomId:"..roomid)
+  if roomid ~= "-fail" then
     local test_place = require("boom.scenes.test_place")
     local init_table = {}
     init_table["myId"] = myId
