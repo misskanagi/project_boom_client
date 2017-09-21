@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="154" height="100" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="383">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="154" height="100" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="384">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" width="544" height="480"/>
  </tileset>
@@ -8,7 +8,7 @@
    eJztnd1q3DAQRv0IeYfctE3xXuT5StmbPHcJVGCERprRz0jWHsOB3WRjrE9nR7JkyPtxHO8AAAAAAAAAAABg4idABTWePQAM4Bl4gGfgAZ6BB3gGHtR69s0Z0eu+RHPNsG6mkhez10liQtvfhNezr++OkCmZkCmZ7AKZkgmZkskukCmZkCmZ7MIrZGpdf/kq4Lnu9DEI7/WznpnO9inn2ecNOQdmci7QvhrwDM/wbH4+q2VKJmSKZ3i2S6Zksk+m8XMDKVb1rPXa8czG3wY0fVU6x6hMPK5dAs/Snv3O8Cz8vhYvzzzaErcLz+yenQP7w9uzUW3BMzzDs708ewqEuU54v4NnqXbimc/8LPW5+GezPes1P/s+z/XAszrPpNoU1yipVuU8C8zyzNourWfh83hm8+yad8v3XvrdCvWs1LZn9DoH9QzPenn264L093iGZ3i2nmepn7XOz1bzLDf+aTxLtQ/P2j2z1q47eHY9cp6lahee2TzT3GdZxhg8w7PaehbnHI8zUj9I4+0sz1LjvXSNmvvN+Fx45u9ZjhXqWQmpTaU6jWfj5md4hmcS0rpFr/sAjWd/CkjPhpX+bqRnue9U6zOSoz37ITDLM2kOI61pSHOWUn9Y+t3qSGqs92qXl2dWb1bzrEdfr+iZV7vwDM/wbB3PrGNKaX95Fc+82oVnZc88mOFZaw0LB57hGZ7pvbGCZ6/rmScjPNPsyVjmLTEz1s/wbI5nn5m+0Owxx0eNZ6MykTyzzPVr7gPYD/DxLK538fsVPNPUrtKYjGf1npW+w/G4GR/PI99XeIZnIV/Ns8macRPP8OzVPZP2OUselWr988CzWs+k77bVs1nzs5xP0neg5nkg6pneM8te51080zqCZ3t4Fp97Rc9KNU+z7otnunFTu1ZU+uxqnln2BvBsrGfWMcLSV/H7lT1j3MSzWs8stRrPfDzT7K/czbNcG1vmCvG+K57Z6lkruT2o0B8zPRsFnvl6pukPPMMzPMOz3p7VIj0blhofJUZ7NvLaJfCsL5q+mpUp/w9lH89WzpRMyBTP8GyXTMmETAPnwExmza/wbD3w7H6eWfgqYD1fCx+D8GxD70xn+9SLx3/ehNezr++OkCmZkCmZ7AKZkgmZkskukCmZkCmZ7MIdMw3rKPHzA73Weh4FvNeedsAzU8mLGs9K1w1wBc/AAzwDD/AMPMAz8KDWMwArs9dJAAAAAAAAAAAAACDNP3HLaIc=
   </data>
  </layer>
- <objectgroup name="entity_layer_1" visible="0">
+ <objectgroup name="entity_layer_1">
   <object id="1" gid="150" x="1376" y="992" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
@@ -679,8 +679,16 @@
     <property name="type" value="Light"/>
    </properties>
   </object>
-  <object id="202" x="960" y="704" width="256" height="32"/>
-  <object id="203" x="960" y="2432" width="256" height="32"/>
+  <object id="202" x="960" y="704" width="256" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="203" x="960" y="2432" width="256" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
   <object id="204" x="2080" y="2432" width="704" height="32">
    <properties>
     <property name="type" value="Wall"/>
@@ -1360,11 +1368,6 @@
   <object id="380" x="1024" y="928" width="32" height="32">
    <properties>
     <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="381" x="1056" y="2304" width="96" height="96">
-   <properties>
-    <property name="type" value="Sun"/>
    </properties>
   </object>
  </objectgroup>
