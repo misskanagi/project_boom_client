@@ -82,6 +82,13 @@ function test_network:enter(pre, init_table)
         local t = e and engine:addEntity(e)
       end
     end
+    
+    layer = self.map.layers["entity_layer_2"]
+    for _, o in pairs(layer.objects) do
+      local e = entity:createEntity(o, layer, self.map, self.world, self.shader)
+      local t = e and engine:addEntity(e)
+    end
+    
     local sun = require "boom.entities.Sun" -- add sun
     --engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager

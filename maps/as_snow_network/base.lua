@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "1.0.2",
+  tiledversion = "0.18.2",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 154,
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 153,
+  nextobjectid = 202,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -25,11 +25,6 @@ return {
       tileoffset = {
         x = 0,
         y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 32,
-        height = 32
       },
       properties = {},
       terrains = {},
@@ -57,7 +52,7 @@ return {
     {
       type = "objectgroup",
       name = "entity_layer_1",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -2117,13 +2112,28 @@ return {
           properties = {
             ["type"] = "Wall"
           }
+        },
+        {
+          id = 153,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2339.51,
+          y = 1446.42,
+          width = 148.485,
+          height = 69.697,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Light"
+          }
         }
       }
     },
     {
       type = "objectgroup",
-      name = "entity_layer_water",
-      visible = true,
+      name = "entity_layer_2",
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -2131,17 +2141,49 @@ return {
       properties = {},
       objects = {
         {
-          id = 151,
+          id = 198,
           name = "",
           type = "",
           shape = "rectangle",
-          x = 2098,
-          y = 1240,
-          width = 340,
-          height = 194,
+          x = 2084,
+          y = 1220,
+          width = 249.333,
+          height = 217.333,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "Water"
+          }
+        },
+        {
+          id = 199,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2336.67,
+          y = 1220.67,
+          width = 212,
+          height = 216,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Water"
+          }
+        },
+        {
+          id = 201,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2551.33,
+          y = 1220.67,
+          width = 225.333,
+          height = 217.334,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Water"
+          }
         }
       }
     }

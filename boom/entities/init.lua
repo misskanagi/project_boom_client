@@ -3,6 +3,7 @@ local Barrier = require "boom.entities.Barrier"
 local Light = require "boom.entities.Light"
 local Sun = require "boom.entities.Sun"
 local Wall = require "boom.entities.Wall"
+local Water = require "boom.entities.Water"
 
 local EntityManager = {
   entity_list = {},
@@ -22,6 +23,8 @@ function EntityManager:createEntity(object, layer, map, ...)
     e = Sun(map, ...)
   elseif type == "Wall" or type == "wall" then
     e = Wall(object, ...)
+  elseif type == "Water" or type == "water" then
+    e = Water(object, ...)
   end
   if e then
     local gid = e:get("GlobalEntityId").id
