@@ -4,6 +4,10 @@ function Physic:initialize(body, other_bodies)
     -- root body
     self.body = body
     self.root_body_id = 1
+    -- friction
+    self.maxLateralImpulse = 5
+    self.angularFrictionConstant = 0.05
+    self.rollFrictionConstant = 0.05
     -- none root bodies
     self.other_bodies = other_bodies or {}
     -- id to body list

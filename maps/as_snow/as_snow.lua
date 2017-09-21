@@ -8,7 +8,7 @@ return {
   height = 61,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 198,
+  nextobjectid = 201,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -19,7 +19,7 @@ return {
       tileheight = 32,
       spacing = 0,
       margin = 0,
-      image = "../as_snow_network/cs2dnorm.bmp",
+      image = "cs2dnorm.bmp",
       imagewidth = 544,
       imageheight = 480,
       transparentcolor = "#ff00ff",
@@ -1780,6 +1780,21 @@ return {
           gid = 55,
           visible = true,
           properties = {}
+        },
+        {
+          id = 200,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1056,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "shell"
+          }
         }
       }
     }

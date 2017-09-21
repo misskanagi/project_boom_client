@@ -23,7 +23,7 @@ local events = require("boom.events")
 local shader = require("boom.shader")
 
 --entity factory
-local entity = require("boom.entities")
+local EM = require("boom.entities")
 
 --debug canvas
 local debug_canvas = require "boom.systems.debug.debug_canvas"
@@ -39,14 +39,23 @@ function test_place:enter()
     -- init Shader
     self.shader = shader()
     -- init ECS engine
+
     local layer = self.map.layers["entity_layer_1"]
+    EM:init(layer, self.map, self.world, self.shader)
     for _, o in pairs(layer.objects) do
-      if o.name == "spawn_point_1" then
-        local e = entity:createEntity(o, layer, self.map, self.world, self.shader, "me", true)
-        local t = e and engine:addEntity(e)
+      local type = o.properties["type"]
+      local x, y, w, h = o.x, o.y, o.width, o.height
+      if type == "Barrier" or type == "barrier" then
+          local e = EM:createEntity(type, o)
+          local t = e and engine:addEntity(e)
       else
-        local e = entity:createEntity(o, layer, self.map, self.world, self.shader)
-        local t = e and engine:addEntity(e)
+          if o.name == "spawn_point_1" then
+            local e = EM:createEntity(type, x, y, w, h, "me", true)
+            local t = e and engine:addEntity(e)
+          else
+            local e = EM:createEntity(type, x, y, w, h)
+            local t = e and engine:addEntity(e)
+          end
       end
     end
     --local sun = require "boom.entities.Sun" -- add sun
@@ -108,7 +117,7 @@ function test_place:keypressed(key, scancode, isrepeat)
     eventmanager:fireEvent(events.KeyPressed(key, isrepeat))
 end
 
-function test_place.mousepressed(x, y, button, istouch)
+function test_place:mousepressed(x, y, button, istouch)
     eventmanager:fireEvent(events.MousePressed(x, y, button))
 end
 
@@ -116,7 +125,7 @@ function test_place:keyreleased(key, scancode)
     eventmanager:fireEvent(events.KeyReleased(key))
 end
 
-function test_place.mousereleased(x, y, button, istouch)
+function test_place:mousereleased(x, y, button, istouch)
     eventmanager:fireEvent(events.MouseReleased(x, y, button))
 end
 

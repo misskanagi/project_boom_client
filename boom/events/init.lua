@@ -16,6 +16,11 @@ local GameCancelReadyBroadcast = require("boom.events.GameCancelReadyBroadcast")
 local GameReadyBroadcast = require("boom.events.GameReadyBroadcast")
 local GetRoomListRes = require("boom.events.GetRoomListRes")
 local QuitRoomBroadcast = require("boom.events.QuitRoomBroadcast")
+local BeginContact = require("boom.events.BeginContact")
+local EndContact = require("boom.events.EndContact")
+local PreSolve = require("boom.events.PreSolve")
+local PostSolve = require("boom.events.PostSolve")
+local Damage = require("boom.events.Damage")
 
 local events = {
     KeyPressed = KeyPressed,
@@ -36,5 +41,10 @@ local events = {
     GameReadyBroadcast = GameReadyBroadcast,
     GetRoomListRes = GetRoomListRes,
     QuitRoomBroadcast = QuitRoomBroadcast,
+    BeginContact = BeginContact,
+    EndContact = EndContact,
+    PreSolve = PreSolve,
+    PostSolve = PostSolve,
+    Damage = Damage,
 }
 return events

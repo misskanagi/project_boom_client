@@ -1,21 +1,30 @@
 local Physic = require "boom.components.physic.Physic"
+local CollisionCallbacks = require("boom.components.physic.CollisionCallbacks")
+
 local IsPlayer = require "boom.components.identifier.IsPlayer"
+local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
+local IsMyself = require("boom.components.identifier.IsMyself")
+local IsRoomMaster = require("boom.components.identifier.IsRoomMaster")
+local PlayerName = require("boom.components.identifier.PlayerName")
+
 local Drivable = require "boom.components.control.Drivable"
 local Firable = require "boom.components.control.Firable"
+
 local Tire = require "boom.components.vehicle.Tire"
 local Turret = require "boom.components.vehicle.Turret"
+local Booster = require("boom.components.vehicle.Booster")
+
 local ShaderCircle = require("boom.components.graphic.ShaderCircle")
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
-local IsMyself = require("boom.components.identifier.IsMyself")
-local PlayerName = require("boom.components.identifier.PlayerName")
+
+local Health = require("boom.components.logic.Health")
+
 
 -- player entity
-local createPlayer = function(object, world, light_world, player_id, is_myself)
+local createPlayer = function(x, y, w, h, world, light_world, player_id, is_myself, is_room_master)
     local e = Entity()
-    local o = object
-    local sx, sy = o.x + o.width/2, o.y + o.height/2
+    local sx, sy = x + w/2, y + h/2
     local tire = Tire(world, sx, sy)
     local turret = Turret(world, sx, sy)
     local cx, cy = tire.body:getWorldCenter()
@@ -35,8 +44,19 @@ local createPlayer = function(object, world, light_world, player_id, is_myself)
     if is_myself then
       e:add(IsMyself())
     end
+    if is_room_master then
+      e:add(IsRoomMaster())
+    end
+    e:add(Health(100))
     e:add(GlobalEntityId())
+    --e:add(Booster(tire.body))
     tire.body:setUserData(e)
+    --[[add CollisionCallbacks
+    e:add(CollisionCallbacks(
+        function(other_entity, coll)
+            print(other_entity:get("GlobalEntityId").id)
+        end
+    ))]]
     return e
 end
 return createPlayer

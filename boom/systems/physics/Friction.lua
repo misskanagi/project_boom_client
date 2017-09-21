@@ -4,9 +4,13 @@ local Friction = class("Friction", System)
 function Friction:update(dt)
     -- Syncs the Position with the Physic. Physic is the primary component.
     for k, entity in pairs(self.targets) do
-        self:updateFriction(entity:get("Physic").body)
+        local p = entity:get("Physic")
+        local m = p.maxLateralImpulse
+        local a = p.angularFrictionConstant
+        local r = p.rollFrictionConstant
+        self:updateFriction(entity:get("Physic").body, m, a, r)
         for _, b in pairs(entity:get("Physic").other_bodies) do
-            self:updateFrictionForAngular(b)
+            self:updateFrictionForAngular(b, r)
             --self:updateFriction(b)
         end
     end
@@ -24,30 +28,29 @@ function Friction:getForwardVelocity(body)
     return (nx*sx+ny*sy)*nx, (nx*sx+ny*sy)*ny
 end
 
-function Friction:updateFriction(body)
+function Friction:updateFriction(body, maxLateralImpulse, angularFrictionConstant, rollFrictionConstant)
     -- vanish lateral speed
     local lx, ly = self:getLateralVelocity(body)
     local ix, iy = body:getMass() * -lx, body:getMass() * -ly
     local cx, cy = body:getWorldCenter()
     local impulseLength = math.sqrt(ix*ix+iy*iy)
-    local maxLateralImpulse = 5
     if impulseLength > maxLateralImpulse then
       local h = maxLateralImpulse / impulseLength
       ix, iy = ix * h, iy * h
     end
     body:applyLinearImpulse(ix, iy, cx, cy)
     -- vanish angular speed
-    body:applyAngularImpulse(0.05 * body:getInertia() * -body:getAngularVelocity())
+    body:applyAngularImpulse(angularFrictionConstant * body:getInertia() * -body:getAngularVelocity())
     -- vanish roll speed
     local nx, ny = self:getForwardVelocity(body)
     local forwardSpeed = math.sqrt(nx*nx+ny*ny)
-    local dragForceMagnitude = -0.05 * forwardSpeed
+    local dragForceMagnitude = -rollFrictionConstant * forwardSpeed
     body:applyForce(dragForceMagnitude * nx, dragForceMagnitude * ny, cx, cy)
 end
 
-function Friction:updateFrictionForAngular(body)
+function Friction:updateFrictionForAngular(body, angularFrictionConstant)
     -- vanish angular speed
-    body:applyAngularImpulse(0.05 * body:getInertia() * -body:getAngularVelocity())
+    body:applyAngularImpulse(angularFrictionConstant * body:getInertia() * -body:getAngularVelocity())
 end
 
 function Friction:requires()

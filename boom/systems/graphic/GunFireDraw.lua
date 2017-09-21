@@ -2,6 +2,7 @@ local particle_canvas = require("boom.systems.graphic.particle_canvas")
 local GunFireDraw = class("GunFireDraw", System)
 
 function GunFireDraw:draw()
+    local cvs = love.graphics.getCanvas()
     love.graphics.setCanvas(particle_canvas:getCanvas())
     for index, entity in pairs(self.targets) do
         local cmd = entity:get("Firable").cmd
@@ -24,7 +25,7 @@ function GunFireDraw:draw()
             end
         end
     end
-    love.graphics.setCanvas()
+    love.graphics.setCanvas(cvs)
 end
 
 function GunFireDraw:requires()

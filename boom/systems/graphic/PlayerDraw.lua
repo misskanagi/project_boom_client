@@ -22,8 +22,13 @@ function PlayerDraw:draw()
 
         -- recover color mode
         love.graphics.setColor(255, 255, 255, 255)
-    end
 
+        for _, child in pairs(entity.children) do
+            print(child)
+            --local x, y = child:get("Physic").body:getWorldCenter()
+            --print(x, y)
+        end
+    end
 end
 
 function PlayerDraw:requires()

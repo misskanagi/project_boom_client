@@ -4,6 +4,8 @@ local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local DrawableSTIObject = require("boom.components.graphic.DrawableSTIObject")
 local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
+local Health = require("boom.components.logic.Health")
+
 local convex_hull = require("libs.cv.convex")
 
 -- barrier entity
@@ -23,7 +25,9 @@ local createBarrier = function(object, map, world, light_world)
     local body = e:get("DrawableSTIObject").body
     t = light_world and e:add(ShaderPolygon(light_world, body, 4))
     e:add(Physic(body))
+    e:add(Health(20))
     e:add(GlobalEntityId())
+    body:setUserData(e)
     return e
 end
 return createBarrier

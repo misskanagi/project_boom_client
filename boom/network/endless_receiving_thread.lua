@@ -11,10 +11,10 @@ while true do
   local data = {netLib.Lua_receive()}
   --log.debug(data)
   --合并data
-  c:push(data)
+  c:supply(data)
   --查看有没有关闭消息
-  --[[local msg = c:pop()
+  local msg = c:pop()
   if msg and msg == "stop" then
     break
-  end]]
+  end
 end

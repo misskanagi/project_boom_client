@@ -3,14 +3,17 @@ local timer = require("libs.hump.timer")
 local SendPhysicSnapshot = class("SendPhysicSnapshot", System)
 
 local elapsed = 0.0
-local every = 0.1
+local every = 0.033
 
 function SendPhysicSnapshot:update(dt)
     elapsed = elapsed + dt
     if elapsed > every then
       elapsed = 0.0
-      if my_name == "yuge" then
-        self:sendSnapshot()
+      for _, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
+          if e:get("IsRoomMaster") then
+            self:sendSnapshot()
+          end
+          break
       end
     end
 end
