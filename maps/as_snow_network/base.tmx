@@ -1,637 +1,617 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="120" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="141">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="154" height="100" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="137">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" width="544" height="480"/>
  </tileset>
- <layer name="gound_layer_1" width="200" height="120">
+ <layer name="ground_layer_1" width="154" height="100">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
- <objectgroup name="entity_layer_1">
-  <object id="1" gid="150" x="2010.67" y="1313.33" width="32" height="32">
+ <objectgroup name="entity_layer_1" visible="0">
+  <object id="1" gid="150" x="1274.67" y="993.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="3" gid="150" x="2044" y="1314.67" width="32" height="32">
+  <object id="3" gid="150" x="1308" y="994.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="4" gid="150" x="2077.33" y="1314.67" width="32" height="32">
+  <object id="4" gid="150" x="1341.33" y="994.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="5" gid="150" x="2080" y="1345.33" width="32" height="32">
+  <object id="5" gid="150" x="1344" y="1025.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="6" gid="150" x="2045.33" y="1348" width="32" height="32">
+  <object id="6" gid="150" x="1309.33" y="1028" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="7" gid="150" x="1732" y="1346.67" width="32" height="32">
+  <object id="7" gid="150" x="996" y="1026.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="8" gid="150" x="1765.33" y="1348" width="32" height="32">
+  <object id="8" gid="150" x="1029.33" y="1028" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="9" gid="150" x="1764" y="1384" width="32" height="32">
+  <object id="9" gid="150" x="1028" y="1064" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="10" gid="150" x="1729.33" y="1381.33" width="32" height="32">
+  <object id="10" gid="150" x="993.33" y="1061.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="11" gid="150" x="1730.67" y="1600" width="32" height="32">
+  <object id="11" gid="150" x="994.67" y="1280" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="12" gid="150" x="1729.33" y="1634.67" width="32" height="32">
+  <object id="12" gid="150" x="993.33" y="1314.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="13" gid="150" x="1890.67" y="1692" width="32" height="32">
+  <object id="13" gid="150" x="1154.67" y="1372" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="14" gid="150" x="1892" y="1724" width="32" height="32">
+  <object id="14" gid="150" x="1156" y="1404" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="15" gid="150" x="1821.33" y="1758.67" width="32" height="32">
+  <object id="15" gid="150" x="1085.33" y="1438.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="16" gid="150" x="1822.67" y="1789.33" width="32" height="32">
+  <object id="16" gid="150" x="1086.67" y="1469.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="17" gid="150" x="2078.67" y="1726.67" width="32" height="32">
+  <object id="17" gid="150" x="1342.67" y="1406.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="18" gid="150" x="2142.67" y="1886.67" width="32" height="32">
+  <object id="18" gid="150" x="1406.67" y="1566.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="19" gid="150" x="2178.67" y="1885.33" width="32" height="32">
+  <object id="19" gid="150" x="1442.67" y="1565.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="20" gid="150" x="2306.67" y="1601.33" width="32" height="32">
+  <object id="20" gid="150" x="1570.67" y="1281.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="21" gid="150" x="2308" y="1636" width="32" height="32">
+  <object id="21" gid="150" x="1572" y="1316" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="22" gid="150" x="2364" y="1506.67" width="32" height="32">
+  <object id="22" gid="150" x="1628" y="1186.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="23" gid="150" x="2397.33" y="1506.67" width="32" height="32">
+  <object id="23" gid="150" x="1661.33" y="1186.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="24" gid="150" x="2398.67" y="1540" width="32" height="32">
+  <object id="24" gid="150" x="1662.67" y="1220" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="25" gid="150" x="2365.33" y="1540" width="32" height="32">
+  <object id="25" gid="150" x="1629.33" y="1220" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="26" gid="150" x="2466.67" y="1577.33" width="32" height="32">
+  <object id="26" gid="150" x="1730.67" y="1257.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="27" gid="150" x="2466.67" y="1610.67" width="32" height="32">
+  <object id="27" gid="150" x="1730.67" y="1290.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="28" gid="150" x="2501.33" y="1610.67" width="32" height="32">
+  <object id="28" gid="150" x="1765.33" y="1290.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="29" gid="150" x="2500" y="1578.67" width="32" height="32">
+  <object id="29" gid="150" x="1764" y="1258.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="30" gid="150" x="2589.33" y="2112" width="32" height="32">
+  <object id="30" gid="150" x="1853.33" y="1792" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="31" gid="150" x="2622.67" y="2110.67" width="32" height="32">
+  <object id="31" gid="150" x="1886.67" y="1790.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="32" gid="150" x="2622.67" y="2145.33" width="32" height="32">
+  <object id="32" gid="150" x="1886.67" y="1825.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="33" gid="150" x="2592" y="2144" width="32" height="32">
+  <object id="33" gid="150" x="1856" y="1824" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="34" gid="150" x="2496" y="2210.67" width="32" height="32">
+  <object id="34" gid="150" x="1760" y="1890.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="35" gid="150" x="2528" y="2208" width="32" height="32">
+  <object id="35" gid="150" x="1792" y="1888" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="36" gid="150" x="2494.67" y="2241.33" width="32" height="32">
+  <object id="36" gid="150" x="1758.67" y="1921.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="37" gid="150" x="2493.33" y="2368" width="32" height="32">
+  <object id="37" gid="150" x="1757.33" y="2048" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="38" gid="150" x="2494.67" y="2402.67" width="32" height="32">
+  <object id="38" gid="150" x="1758.67" y="2082.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="39" gid="150" x="2561.33" y="2432" width="32" height="32">
+  <object id="39" gid="150" x="1825.33" y="2112" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="40" gid="150" x="2366.67" y="2398.67" width="32" height="32">
+  <object id="40" gid="150" x="1630.67" y="2078.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="41" gid="150" x="2369.33" y="2430.67" width="32" height="32">
+  <object id="41" gid="150" x="1633.33" y="2110.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="42" gid="150" x="2142.67" y="2369.33" width="32" height="32">
+  <object id="42" gid="150" x="1406.67" y="2049.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="43" gid="150" x="2177.33" y="2368" width="32" height="32">
+  <object id="43" gid="150" x="1441.33" y="2048" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="44" gid="150" x="2178.67" y="2401.33" width="32" height="32">
+  <object id="44" gid="150" x="1442.67" y="2081.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="45" gid="150" x="2145.33" y="2400" width="32" height="32">
+  <object id="45" gid="150" x="1409.33" y="2080" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="46" gid="150" x="1982.67" y="2272" width="32" height="32">
+  <object id="46" gid="150" x="1246.67" y="1952" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="47" gid="150" x="1982.67" y="2302.67" width="32" height="32">
+  <object id="47" gid="150" x="1246.67" y="1982.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="48" gid="150" x="1985.33" y="2336" width="32" height="32">
+  <object id="48" gid="150" x="1249.33" y="2016" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="49" gid="150" x="2018.67" y="2336" width="32" height="32">
+  <object id="49" gid="150" x="1282.67" y="2016" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="50" gid="150" x="1988" y="2434.67" width="32" height="32">
+  <object id="50" gid="150" x="1252" y="2114.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="51" gid="150" x="1953.33" y="2434.67" width="32" height="32">
+  <object id="51" gid="150" x="1217.33" y="2114.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="52" gid="150" x="1921.33" y="2264" width="32" height="32">
+  <object id="52" gid="150" x="1185.33" y="1944" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="53" gid="150" x="1924" y="2297.33" width="32" height="32">
+  <object id="53" gid="150" x="1188" y="1977.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="54" gid="150" x="1892" y="2296" width="32" height="32">
+  <object id="54" gid="150" x="1156" y="1976" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="55" gid="150" x="1732" y="2522.67" width="32" height="32">
+  <object id="55" gid="150" x="996" y="2202.67" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="56" gid="150" x="1768" y="2524" width="32" height="32">
+  <object id="56" gid="150" x="1032" y="2204" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="57" gid="150" x="1760" y="2080" width="32" height="32">
+  <object id="57" gid="150" x="1024" y="1760" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="58" gid="150" x="1790.67" y="2080" width="32" height="32">
+  <object id="58" gid="150" x="1054.67" y="1760" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="59" gid="150" x="1822.67" y="2081.33" width="32" height="32">
+  <object id="59" gid="150" x="1086.67" y="1761.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="60" gid="150" x="1856" y="2081.33" width="32" height="32">
+  <object id="60" gid="150" x="1120" y="1761.33" width="32" height="32">
    <properties>
     <property name="type" value="barrier"/>
    </properties>
   </object>
-  <object id="65" x="1952" y="1282" width="32" height="28">
+  <object id="65" x="1216" y="962" width="32" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="66" x="1696" y="1246" width="480" height="34">
+  <object id="66" x="960" y="926" width="480" height="34">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="67" x="1696" y="1278" width="30" height="480">
+  <object id="67" x="960" y="958" width="30" height="480">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="68" x="1954" y="1412" width="26" height="26">
+  <object id="68" x="1218" y="1092" width="26" height="26">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="69" x="1858" y="1440" width="252" height="28">
+  <object id="69" x="1122" y="1120" width="252" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="72" x="1858" y="1470" width="28" height="448">
+  <object id="72" x="1122" y="1150" width="28" height="448">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="73" x="1890" y="1890" width="94" height="28">
+  <object id="73" x="1154" y="1570" width="94" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="74" x="1954" y="1794" width="122" height="26">
+  <object id="74" x="1218" y="1474" width="122" height="26">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="76" x="2016" y="1728" width="30" height="64">
+  <object id="76" x="1280" y="1408" width="30" height="64">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="77" x="2018" y="1568" width="26" height="62">
+  <object id="77" x="1282" y="1248" width="26" height="62">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="78" x="2048" y="1570" width="62" height="28">
+  <object id="78" x="1312" y="1250" width="62" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="79" x="2240" y="1568" width="62" height="30">
+  <object id="79" x="1504" y="1248" width="62" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="80" x="2272" y="1598" width="30" height="62">
+  <object id="80" x="1536" y="1278" width="30" height="62">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="81" x="2114" y="1662" width="94" height="62">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="84" x="2274" y="1760" width="26" height="30">
+  <object id="81" x="1378" y="1342" width="94" height="62">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="85" x="2210" y="1794" width="154" height="28">
+  <object id="84" x="1538" y="1440" width="26" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="88" x="2242" y="1438" width="60" height="32">
+  <object id="85" x="1474" y="1474" width="154" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="89" x="2274" y="1376" width="28" height="60">
+  <object id="88" x="1506" y="1118" width="60" height="32">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="90" x="2306" y="1376" width="154" height="30">
+  <object id="89" x="1538" y="1056" width="28" height="60">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="91" x="2434" y="1406" width="32" height="288">
+  <object id="90" x="1570" y="1056" width="154" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="92" x="2470" y="1666" width="88" height="28">
+  <object id="91" x="1698" y="1086" width="32" height="288">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="93" x="2528" y="1374" width="60" height="32">
+  <object id="92" x="1734" y="1346" width="88" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="94" x="2560" y="1408" width="32" height="60">
+  <object id="93" x="1792" y="1054" width="60" height="32">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="95" x="2596" y="1442" width="56" height="28">
+  <object id="94" x="1824" y="1088" width="32" height="60">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="96" x="2434" y="1794" width="30" height="124">
+  <object id="95" x="1860" y="1122" width="56" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="97" x="2112" y="1888" width="320" height="30">
+  <object id="96" x="1698" y="1474" width="30" height="124">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="98" x="2142" y="2014" width="192" height="32">
+  <object id="97" x="1376" y="1568" width="320" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="99" x="2304" y="2050" width="30" height="284">
+  <object id="98" x="1406" y="1694" width="192" height="32">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="100" x="2144" y="2048" width="28" height="286">
+  <object id="99" x="1568" y="1730" width="30" height="284">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="101" x="2176" y="2308" width="130" height="26">
+  <object id="100" x="1408" y="1728" width="28" height="286">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="102" x="2402" y="2084" width="62" height="26">
+  <object id="101" x="1440" y="1988" width="130" height="26">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="103" x="2402" y="2112" width="26" height="348">
+  <object id="102" x="1666" y="1764" width="62" height="26">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="104" x="2530" y="2082" width="56" height="30">
+  <object id="103" x="1666" y="1792" width="26" height="348">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="105" x="2562" y="2116" width="30" height="154">
+  <object id="104" x="1794" y="1762" width="56" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="107" x="2530" y="2214" width="30" height="56">
+  <object id="105" x="1826" y="1796" width="30" height="154">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="108" x="2528" y="2336" width="30.5" height="127">
+  <object id="107" x="1794" y="1894" width="30" height="56">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="109" x="2496" y="2431" width="32" height="32.5">
+  <object id="108" x="1792" y="2016" width="30.5" height="127">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="110" x="1889.33" y="2014.67" width="156" height="33.3333">
+  <object id="109" x="1760" y="2111" width="32" height="32.5">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="111" x="2018.67" y="2050.67" width="26.6667" height="92">
+  <object id="110" x="1153.33" y="1694.67" width="156" height="33.3333">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="112" x="1888" y="2049.33" width="30.6667" height="61.3333">
+  <object id="111" x="1282.67" y="1730.67" width="26.6667" height="92">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="113" x="1794.67" y="2113.33" width="221.333" height="28">
+  <object id="112" x="1152" y="1729.33" width="30.6667" height="61.3333">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="114" x="1793.33" y="2142.67" width="28" height="96">
+  <object id="113" x="1058.67" y="1793.33" width="221.333" height="28">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="115" x="1953.33" y="2209.33" width="30.6667" height="126.667">
+  <object id="114" x="1057.33" y="1822.67" width="28" height="96">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="116" x="1793.33" y="2304" width="158.667" height="29.3333">
+  <object id="115" x="1217.33" y="1889.33" width="30.6667" height="126.667">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="117" x="1889.33" y="2340" width="30.6667" height="58.6667">
+  <object id="116" x="1057.33" y="1984" width="158.667" height="29.3333">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="119" x="1858.67" y="2400" width="93.3333" height="30.6667">
+  <object id="117" x="1153.33" y="2020" width="30.6667" height="58.6667">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="120" x="2465" y="1248" width="192" height="32">
+  <object id="119" x="1122.67" y="2080" width="93.3333" height="30.6667">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="121" x="2657" y="1249" width="62" height="541">
+  <object id="120" x="1729" y="928" width="192" height="32">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="122" x="2655" y="2017.33" width="64" height="541.667">
+  <object id="121" x="1921" y="929" width="62" height="541">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="123" x="2465" y="2530" width="188" height="29">
+  <object id="122" x="1919" y="1697.33" width="64" height="541.667">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="124" x="1726" y="2527" width="448" height="33">
+  <object id="123" x="1729" y="2210" width="188" height="29">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="125" x="1696" y="2050" width="30" height="509">
+  <object id="124" x="990" y="2207" width="448" height="33">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="126" x="1630.67" y="1856" width="30.6667" height="30.6667">
+  <object id="125" x="960" y="1730" width="30" height="509">
    <properties>
-    <property name="type" value="Light"/>
+    <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="127" x="2239.33" y="2590.67" width="32" height="33.3333">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="128" x="2240" y="1183.33" width="31.3333" height="31.3333">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="129" name="spawn_point_2" x="2496" y="1822.67" width="33.3333" height="34.6667">
+  <object id="126" x="894.67" y="1536" width="30.6667" height="30.6667">
    <properties>
     <property name="type" value="Player"/>
    </properties>
   </object>
-  <object id="130" name="spawn_point_3" x="2494.67" y="1956" width="30.6667" height="29.3333">
+  <object id="127" x="1503.33" y="2270.67" width="32" height="33.3333">
    <properties>
     <property name="type" value="Player"/>
    </properties>
   </object>
-  <object id="131" name="spawn_point_1" x="2593.33" y="1825.33" width="33.3333" height="32">
+  <object id="128" x="1504" y="863.33" width="31.3333" height="31.3333">
    <properties>
     <property name="type" value="Player"/>
    </properties>
   </object>
-  <object id="133" x="2720" y="1760" width="352" height="29.3333">
+  <object id="129" name="spawn_point_2" x="1760" y="1502.67" width="33.3333" height="34.6667">
+   <properties>
+    <property name="type" value="Player"/>
+   </properties>
+  </object>
+  <object id="130" name="spawn_point_3" x="1758.67" y="1636" width="30.6667" height="29.3333">
+   <properties>
+    <property name="type" value="Player"/>
+   </properties>
+  </object>
+  <object id="131" name="spawn_point_1" x="1857.33" y="1505.33" width="33.3333" height="32">
+   <properties>
+    <property name="type" value="Player"/>
+   </properties>
+  </object>
+  <object id="133" x="1984" y="1440" width="352" height="29.3333">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="134" x="2720" y="2017.33" width="349.333" height="29.3333">
+  <object id="134" x="1984" y="1697.33" width="349.333" height="29.3333">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="135" x="3263.33" y="1760.67" width="383.333" height="30">
+  <object id="135" x="2527.33" y="1440.67" width="383.333" height="30">
    <properties>
     <property name="type" value="Wall"/>
    </properties>
   </object>
-  <object id="136" x="3264.67" y="2016.67" width="382" height="30">
+  <object id="136" x="2528.67" y="1696.67" width="382" height="30">
    <properties>
     <property name="type" value="Wall"/>
-   </properties>
-  </object>
-  <object id="137" x="2625" y="1478" width="30" height="28">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="138" x="2622" y="2499" width="32" height="30">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="139" x="1888" y="1473" width="63" height="61">
-   <properties>
-    <property name="type" value="Light"/>
-   </properties>
-  </object>
-  <object id="140" x="1857" y="2339" width="31" height="30">
-   <properties>
-    <property name="type" value="Light"/>
    </properties>
   </object>
  </objectgroup>
