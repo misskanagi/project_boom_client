@@ -4,6 +4,7 @@ local Light = require "boom.entities.Light"
 local Sun = require "boom.entities.Sun"
 local Wall = require "boom.entities.Wall"
 local Shell = require "boom.entities.Shell"
+local Water = require "boom.entities.Water"
 
 local EntityManager = {}
 
@@ -34,6 +35,8 @@ function EntityManager:createEntity(type, ...)
     e = Wall(x, y, w, h, self.world, self.shader)
   elseif type == "Shell" or type == "shell" then
     e = Shell(x, y, w, h, self.world, self.shader)
+  elseif type == "Water" or type == "water" then
+    e = Water(object, x, y, w, h, self.world, self.shader)
   end
   if e then
     local gid = e:get("GlobalEntityId").id

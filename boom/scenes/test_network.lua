@@ -37,11 +37,17 @@ local particle_canvas = require "boom.systems.graphic.particle_canvas"
 net:connect("114.212.83.208", 8080)
 net:startReceiving()
 
-function test_network:enter()
+function test_network:enter(pre, init_table)
+    --解出玩家自己的id
+    --my_name = init_table and init_table["myId"]    --玩家的id即my_name
+    --isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
+    isMaster = true
+    my_name = "yuge"
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    self.map = map("maps/as_snow_network/as_snow.lua")
+    --self.map = map("maps/as_snow_network/as_snow.lua")
+    self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -85,13 +91,15 @@ function test_network:enter()
             end
         end
     end
-    local sun = require "boom.entities.Sun" -- add sun
+
+	local sun = require "boom.entities.Sun" -- add sun
     --engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    self.camera:lookAt(1280, 1664)
+    --self.camera:lookAt(1280, 1664)
+    self.camera:lookAt(1968,1524)
 end
 
 function test_network:update(dt)

@@ -1,5 +1,9 @@
---local netLib = require "library"
-local netLib = require "libtcp"
+local netLib = nil
+if not test_on_windows then
+  netLib = require "libtcp"
+end
+
+
 local json = require "libs.json"
 --events
 local events = require("boom.events")
@@ -77,6 +81,7 @@ function network:updateReceive(dt)
   if msg then
     for _, json_string in pairs(msg) do
       data = json.decode(json_string)
+      print(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         local playerId = data.playerId
         if playerId ~= self.playerId then
@@ -184,7 +189,7 @@ end
 
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId=self.playerId, roomId = "test",
+    data = {playerId=self.playerId, roomId = "yuge",
             playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
@@ -202,6 +207,7 @@ end
 function network:send(type, data)
     assert(self.is_connected==true)
     if self.is_connected then
+      print(json.encode(data))
         print("lua send")
         local result = netLib.Lua_send(type, json.encode(data))
         print("lua send end")

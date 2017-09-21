@@ -21,6 +21,10 @@ function scrollview.createObject(init_table, gui_obj)
   
   sv_obj.scrollgroup = gui:scrollgroup(nil, {sv_obj.x, sv_obj.y, sv_obj.item_width, sv_obj.item_height*sv_obj.item_num_per_page}, sv_obj.parent, 'vertical', sv_obj.bgcolor)
   sv_obj.scrollgroup.scrollv.values.step = sv_obj.item_height -- 设置滑动步长
+  --sv_obj.scrollgroup.scrollv.values.size = sv_obj.item_height
+  --sv_obj.scrollgroup.is_fixed_scissor = true
+  --sv_obj.scrollgroup.spec_scissor = {x=0,y=0,w=200,h=400}
+  --sv_obj.scrollgroup.scissor = {sv_obj.x, sv_obj.y, sv_obj.item_width, sv_obj.item_height*sv_obj.item_num_per_page}
   --sv_obj.scrollgroup.scrollv:update_focous(0, 1)
   
   --各种用于sv_obj的控制信息
@@ -75,7 +79,6 @@ function scrollview.createObject(init_table, gui_obj)
             end
           end
         end
-        --gui:feedback(""..selected_index)
       elseif direction == "down" then
         if scroll_window_index < sv_obj.item_num_per_page then
           --滑动窗口还没有到最底下
@@ -113,7 +116,6 @@ function scrollview.createObject(init_table, gui_obj)
   
   --该函数可以实现长按快速滑动的功能
   sv_obj.update = function(self, dt)
-    --gui:feedback("!!!")
     -- 判断用户是否正在上下查看房间
     local scroll = self.scrollgroup.scrollv
     if scroll_focous_flag == true then
@@ -136,16 +138,19 @@ function scrollview.createObject(init_table, gui_obj)
 
   --用户使用键盘或者手柄操作scrollgroup,"up"/"down"
   sv_obj.begin_move = function(self, direction)
-    gui:feedback("begin_move")
     if not (direction and type(direction) == "string") then
       return
     end
+    --如果没有列表项，就什么都不做
+    if self.scroll_items == nil or #self.scroll_items == 0 then return end
     local scroll = self.scrollgroup.scrollv
     if direction == "up" then
+      if selected_index == 1 then return end
       scroll_focous_flag = true
       scroll_focous_time_account = 0
       scroll:drop("up")
     elseif direction == "down" then
+      if selected_index == #self.scroll_items then return end
       scroll_focous_flag = true
       scroll_focous_time_account = 0
       scroll:drop("down")
@@ -154,7 +159,6 @@ function scrollview.createObject(init_table, gui_obj)
   
   
   sv_obj.stop_move = function(self)
-    gui:feedback("stop_move")
     scroll_focous_time_account = 0
     scroll_focous_flag = false
   end
@@ -170,6 +174,7 @@ function scrollview.createObject(init_table, gui_obj)
   
   sv_obj.allChildAdded = function(self)
     self.scrollgroup.scrollv:update_focous(0, 1)
+    --sv_obj.scrollgroup.scrollv.lsm_spec_h = sv_obj.item_height * sv_obj.item_num_per_page / (#self.scroll_items)
   end
   
   
