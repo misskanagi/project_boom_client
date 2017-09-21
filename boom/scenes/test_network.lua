@@ -38,8 +38,10 @@ local particle_canvas = require "boom.systems.graphic.particle_canvas"
 
 function test_network:enter(pre, init_table)
     --解出玩家自己的id
-    my_name = init_table and init_table["myId"]    --玩家的id即my_name
-    isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
+    --my_name = init_table and init_table["myId"]    --玩家的id即my_name
+    --isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
+    isMaster = true
+    my_name = "yuge"
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
@@ -86,7 +88,8 @@ function test_network:enter(pre, init_table)
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    self.camera:lookAt(1280, 1664)
+    --self.camera:lookAt(1280, 1664)
+    self.camera:lookAt(2600,1825)
 end
 
 function test_network:update(dt)

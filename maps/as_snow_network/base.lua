@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "1.0.2",
+  tiledversion = "0.18.2",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 200,
   height = 120,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 137,
+  nextobjectid = 141,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -25,11 +25,6 @@ return {
       tileoffset = {
         x = 0,
         y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 32,
-        height = 32
       },
       properties = {},
       terrains = {},
@@ -1215,7 +1210,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Wall"
+            ["type"] = "Light"
           }
         },
         {
@@ -1800,7 +1795,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
@@ -1815,7 +1810,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
@@ -1830,7 +1825,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
@@ -1936,6 +1931,66 @@ return {
           visible = true,
           properties = {
             ["type"] = "Wall"
+          }
+        },
+        {
+          id = 137,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2625,
+          y = 1478,
+          width = 30,
+          height = 28,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Light"
+          }
+        },
+        {
+          id = 138,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2622,
+          y = 2499,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Light"
+          }
+        },
+        {
+          id = 139,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1888,
+          y = 1473,
+          width = 63,
+          height = 61,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Light"
+          }
+        },
+        {
+          id = 140,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1857,
+          y = 2339,
+          width = 31,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "Light"
           }
         }
       }
