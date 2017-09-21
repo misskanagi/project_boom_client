@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="154" height="100" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="137">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="154" height="100" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="137">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" width="544" height="480"/>
  </tileset>
@@ -306,7 +306,7 @@
   </object>
   <object id="65" x="1314" y="965.333" width="32" height="28">
    <properties>
-    <property name="type" value="Wall"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="66" x="1058" y="928" width="480" height="34">
@@ -321,7 +321,7 @@
   </object>
   <object id="68" x="1316" y="1094" width="26" height="26">
    <properties>
-    <property name="type" value="Wall"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="69" x="1218" y="1126" width="252" height="28">
@@ -466,7 +466,7 @@
   </object>
   <object id="104" x="1891" y="1763" width="56" height="30">
    <properties>
-    <property name="type" value="Wall"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="105" x="1923" y="1797" width="30" height="154">
@@ -566,17 +566,17 @@
   </object>
   <object id="126" x="984.67" y="1540" width="30.6667" height="30.6667">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="127" x="1675.33" y="2278.67" width="32" height="33.3333">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="128" x="1636" y="859.33" width="31.3333" height="31.3333">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="Light"/>
    </properties>
   </object>
   <object id="129" name="spawn_point_2" x="1854.67" y="1506" width="33.3333" height="34.6667">

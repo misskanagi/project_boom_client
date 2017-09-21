@@ -89,7 +89,7 @@ function test_network:enter(pre, init_table)
     -- init camera
     self.camera = camera:instance()
     --self.camera:lookAt(1280, 1664)
-    self.camera:lookAt(2600,1825)
+    self.camera:lookAt(1968,1524)
 end
 
 function test_network:update(dt)

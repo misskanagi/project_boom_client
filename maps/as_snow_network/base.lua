@@ -1,7 +1,7 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "1.0.2",
+  tiledversion = "0.18.2",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 154,
@@ -25,11 +25,6 @@ return {
       tileoffset = {
         x = 0,
         y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 32,
-        height = 32
       },
       properties = {},
       terrains = {},
@@ -1020,7 +1015,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Wall"
+            ["type"] = "Light"
           }
         },
         {
@@ -1065,7 +1060,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Wall"
+            ["type"] = "Light"
           }
         },
         {
@@ -1500,7 +1495,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Wall"
+            ["type"] = "Light"
           }
         },
         {
@@ -1800,7 +1795,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
@@ -1815,7 +1810,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
@@ -1830,7 +1825,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "Light"
           }
         },
         {
