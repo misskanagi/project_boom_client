@@ -1028,7 +1028,7 @@ return {
           width = 480,
           height = 34,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
@@ -1043,7 +1043,7 @@ return {
           width = 30,
           height = 480,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
@@ -1088,7 +1088,7 @@ return {
           width = 28,
           height = 448,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
@@ -1238,7 +1238,7 @@ return {
           width = 154,
           height = 28,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
@@ -1373,7 +1373,7 @@ return {
           width = 30,
           height = 124,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
@@ -1388,7 +1388,7 @@ return {
           width = 320,
           height = 30,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Wall"
           }
