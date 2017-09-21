@@ -57,9 +57,9 @@ return {
     {
       type = "objectgroup",
       name = "entity_layer_1",
-      visible = false,
+      visible = true,
       opacity = 1,
-      offsetx = 0,
+      offsetx = 94,
       offsety = 0,
       draworder = "topdown",
       properties = {},
