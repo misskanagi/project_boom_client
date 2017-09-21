@@ -9,6 +9,7 @@ local PlayerName = require("boom.components.identifier.PlayerName")
 
 local Drivable = require "boom.components.control.Drivable"
 local Firable = require "boom.components.control.Firable"
+local Launchable = require "boom.components.control.Launchable"
 
 local Tire = require "boom.components.vehicle.Tire"
 local Turret = require "boom.components.vehicle.Turret"
@@ -22,7 +23,7 @@ local Health = require("boom.components.logic.Health")
 
 
 -- player entity
-local createPlayer = function(x, y, w, h, world, light_world, player_id, is_myself, is_room_master)
+local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     local tire = Tire(world, sx, sy)
@@ -40,6 +41,7 @@ local createPlayer = function(x, y, w, h, world, light_world, player_id, is_myse
     e:add(IsPlayer())
     e:add(Drivable())
     e:add(Firable(light_world))
+    e:add(Launchable())
     e:add(PlayerName(player_id or "unname"))
     if is_myself then
       e:add(IsMyself())
@@ -49,7 +51,6 @@ local createPlayer = function(x, y, w, h, world, light_world, player_id, is_myse
     end
     e:add(Health(100))
     e:add(GlobalEntityId())
-    --e:add(Booster(tire.body))
     tire.body:setUserData(e)
     --[[add CollisionCallbacks
     e:add(CollisionCallbacks(

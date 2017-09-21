@@ -1,7 +1,7 @@
 local debug_canvas = require "boom.systems.debug.debug_canvas"
-local DebugGlobalEntityId = class("DebugGlobalEntityId", System)
+local DebugExplosiveRange = class("DebugExplosiveRange", System)
 
-function DebugGlobalEntityId:draw()
+function DebugExplosiveRange:draw()
     local cvs = love.graphics.getCanvas()
     love.graphics.setCanvas(debug_canvas:getCanvas())
     for k, entity in pairs(self.targets) do
@@ -22,8 +22,8 @@ function DebugGlobalEntityId:draw()
     love.graphics.setCanvas(cvs)
 end
 
-function DebugGlobalEntityId:requires()
+function DebugExplosiveRange:requires()
     return {"Explosive"}
 end
 
-return DebugGlobalEntityId
+return DebugExplosiveRange

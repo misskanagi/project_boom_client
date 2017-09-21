@@ -32,10 +32,10 @@ function boom_camera:moveToPlayer()
     return self
 end
 
-function boom_camera:shake(shaking)
+function boom_camera:shake(shaking, once)
     self.shaking = shaking or 0
     self.currShaking = self.shaking
-    self.calm = false
+    self.calm = once or false
     return self
 end
 

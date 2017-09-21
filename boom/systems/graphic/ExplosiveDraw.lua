@@ -16,7 +16,7 @@ function ExplosiveDraw:draw()
             local cvs = love.graphics.getCanvas()
             love.graphics.setCanvas(particle_canvas:getCanvas())
             local cx, cy = body:getWorldCenter()
-            love.graphics.draw(exp.explosion_ps, cx, cy)
+            love.graphics.draw(exp.explosion_ps, cx, cy, 0, 1.618, 1.618)
             love.graphics.setCanvas(cvs)
         end
     end

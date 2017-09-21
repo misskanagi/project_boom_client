@@ -5,7 +5,7 @@ local Light = require("boom.components.graphic.Light")
 local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
 -- light entity
-local createLight = function(x, y, w, h, world, light_world, r, g, b, range)
+local createLight = function(x, y, w, h, r, world, light_world, r, g, b, range)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     e:add(DrawablePolygon(world, sx, sy, w, h, "static", e, false))

@@ -8,7 +8,7 @@ function Booster:initialize(body)
     self.fuel_usage_per_sec = 20
     -- add fuel
     self.body_to_boost:setMass(self.body_to_boost:getMass() + self.fuel * self.mass_per_unit_fuel)
-    self.thrust_force = 200
+    self.thrust_force = 2000
     self.booster_fire_ps = PSM:createParticleSystem("booster_fire")
     local cx, cy = body:getWorldCenter()
     self.x = cx

@@ -58,29 +58,29 @@ function test_network:enter()
               local e = nil
               if o.name == "spawn_point_1" then
                 if my_name == "yuge" then
-                  e = entity:createEntity(type, x, y, w, h, "yuge", true, true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", true, true)
                   net:loginTest("yuge")
                 else
-                  e = entity:createEntity(type, x, y, w, h,, "yuge", false, true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", false, true)
                 end
               elseif o.name == "spawn_point_2" then
                 if my_name == "hako" then
-                  e = entity:createEntity(type, x, y, w, h,, "hako", true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", true)
                   net:loginTest("hako")
                 else
-                  e = entity:createEntity(type, x, y, w, h,, "hako", false)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", false)
                 end
               elseif o.name == "spawn_point_3" then
                 if my_name == "lsm" then
-                  e = entity:createEntity(type, x, y, w, h,, "lsm", true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", true)
                   net:loginTest("lsm")
                 else
-                  e = entity:createEntity(type, x, y, w, h, "lsm", false)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", false)
                 end
               end
               local t = e and engine:addEntity(e)
             else
-              local e = entity:createEntity(type, x, y, w, h)
+              local e = entity:createEntity(type, x, y, w, h, 0.0)
               local t = e and engine:addEntity(e)
             end
         end

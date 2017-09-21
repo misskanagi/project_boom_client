@@ -1780,21 +1780,6 @@ return {
           gid = 55,
           visible = true,
           properties = {}
-        },
-        {
-          id = 200,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1056,
-          y = 1536,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "shell"
-          }
         }
       }
     }

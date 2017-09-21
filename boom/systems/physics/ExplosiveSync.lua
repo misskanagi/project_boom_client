@@ -1,3 +1,4 @@
+local EM = require "boom.entities"
 local ExplosiveSync = class("ExplosiveSync", System)
 
 function ExplosiveSync:update(dt)
@@ -19,6 +20,14 @@ function ExplosiveSync:update(dt)
             end
         else
             entity:get("Explosive").explosion_ps:update(dt)
+            if entity:get("Explosive").explosion_ps:isStopped() then
+                local gid = entity:get("GlobalEntityId").id
+                local body = entity:get("Physic").body
+                body:setUserData(nil)
+                body:destroy()
+                EM:removeEntityFromList(gid)
+                engine:removeEntity(entity)
+            end
         end
     end
 end

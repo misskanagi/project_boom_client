@@ -21,6 +21,8 @@ function NetKeyboardHandler:fireNetPressedEvent(event)
                 dcmd.turret_spin_pos = true
             elseif event.key == "space" and fcmd then
                 fcmd.fire = true
+            elseif event.key == "q" and lcmd then
+                lcmd.launch = true
             end
         end
     end
