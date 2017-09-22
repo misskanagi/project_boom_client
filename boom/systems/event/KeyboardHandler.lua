@@ -9,6 +9,10 @@ function KeyboardHandler:firePressedEvent(event)
         system_manager.toggleModule("debug")
         --debug.debug()
     end
+    if event.key == "f1" then
+      local system_manager = require "boom.systems"
+      system_manager.toggleModule("HUD")
+    end
     for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
         local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
         local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil

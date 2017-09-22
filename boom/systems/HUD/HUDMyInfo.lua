@@ -3,9 +3,11 @@ require "/libs/gooi"
 local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
 
 local HUDMyInfo = class("HUDMyInfo", System)
-
+local img = love.graphics.newImage("/assets/sign_bullet.png")
 
 local pb_hp = nil  --血条
+local lbl_shell = nil --导弹仓
+local lbl_life = nil --生命数
 
 function HUDMyInfo:draw()
   print("HUDMyInfo draw()")
@@ -25,6 +27,7 @@ function HUDMyInfo:draw()
     :bg({255, 255, 255, 60})
     :fg({0, 255, 0, 150})
     
+    lbl_shell = gooi.newLabel({x = 10, y = 30, text = ""}):left()
     
     self.is_init = true
   end
@@ -37,7 +40,13 @@ function HUDMyInfo:draw()
     local hp = entity:get("Health").value
     --计算hp/max_hp
     pb_hp.value = hp/max_hp
-    local launchable = entity:get("")
+    
+    local launchable = entity:get("Launchable")
+    --local launchable_img = launchable.
+    --local launchable_count = launchable.count
+    
+    lbl_shell:setIcon(img):setText("X 10")
+    
   end
   gooi.draw()
   --love.graphics.setColor(255,255,255,255)

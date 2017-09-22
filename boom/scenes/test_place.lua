@@ -114,7 +114,6 @@ function test_place:draw()
     debug_canvas:draw()
     -- draw particle
     particle_canvas:draw()
-    
     -- camera detach
     self.camera:detach()
     -- draw HUD
