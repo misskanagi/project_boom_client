@@ -115,7 +115,7 @@ function HUDBattle:draw()
   --红队
   love.graphics.setColor(255,20,0,230)
   love.graphics.rectangle("fill", table_battle_x, table_battle_y, table_battle_w/2, table_battle_item_h)
-  love.graphics.setColor(255,40,0,230)
+  love.graphics.setColor(255,60,0,230)
   love.graphics.rectangle("fill", table_battle_x, table_battle_y+table_battle_item_h, table_battle_w/2, table_battle_item_h)
   love.graphics.setColor(150,150,150,230)
   love.graphics.rectangle("fill", table_battle_x, table_battle_y+2*table_battle_item_h, table_battle_w/2, table_battle_item_h*players_per_group)
