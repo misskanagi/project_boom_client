@@ -1,7 +1,7 @@
 local GamepadReleased = class("GamepadReleased")
 
-function GamepadReleased:initialize(joystick, button)
-    self.joystick = joystick
+function GamepadReleased:initialize(button)
+    --self.joystick = joystick
     self.button = button
 end
 

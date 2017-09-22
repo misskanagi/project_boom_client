@@ -59,8 +59,8 @@ function test_place:enter()
           end
       end
     end
-    --local sun = require "boom.entities.Sun" -- add sun
-    --engine:addEntity(sun(self.map, self.shader))
+    local sun = require "boom.entities.Sun" -- add sun
+    engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
@@ -85,7 +85,7 @@ function test_place:update(dt)
     self.shader:setTranslation(
       -self.camera.x + love.graphics.getWidth()/2,
       -self.camera.y + love.graphics.getHeight()/2,
-      self.camera.scale)
+      self.camera.scale, self.camera.rot)
     --print(c:pop())
 end
 
@@ -131,10 +131,10 @@ function test_place:mousereleased(x, y, button, istouch)
 end
 
 function test_place:gamepadpressed(joystick, button)
-    eventmanager:fireEvent(events.GamepadPressed(joystick, button))
+    eventmanager:fireEvent(events.GamepadPressed(button))
 end
 
 function test_place:gamepadreleased(joystick, button)
-    eventmanager:fireEvent(events.GamepadReleased(joystick, button))
+    eventmanager:fireEvent(events.GamepadReleased(button))
 end
 return test_place

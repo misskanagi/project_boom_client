@@ -89,7 +89,6 @@ function network:updateReceive(dt)
           local playerCommands = data.playerCommands
           for _, cmd in pairs(playerCommands) do
             --需要区分是手柄操作还是键盘操作
-            --[[
             local inputDevType = cmd.inputDevType
             if inputDevType == 1 then -- 键盘操作
               local pressedOrReleased = cmd.pressedOrReleased
@@ -101,16 +100,14 @@ function network:updateReceive(dt)
                 events.NetKeyReleased(key, isRepeat, playerId)
               )
             elseif inputDevType == 2 then -- 手柄操作
-              
-            end]]--
-            local pressedOrReleased = cmd.pressedOrReleased
-            local isRepeat = cmd.isRepeat
-            local key = cmd.key
-            eventmanager:fireEvent(
-              pressedOrReleased and
-              events.NetKeyPressed(key, isRepeat, playerId) or
-              events.NetKeyReleased(key, isRepeat, playerId)
-            )
+              local pressedOrReleased = cmd.pressedOrReleased
+              local button = cmd.key
+              eventmanager:fireEvent(
+                pressedOrReleased and
+                events.NetGamepadPressed(button, playerId) or
+                events.NetGamepadReleased(button, playerId)
+              )
+            end
           end
         end
       elseif data.cmdType == self.cmd_code.SNAPSHOT_BROADCAST then
@@ -206,15 +203,15 @@ end
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
     data = {playerId=self.playerId, roomId = "yuge",
-            playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
+            playerCommands = {{inputDevType = 1, pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
 --手柄适配
 function network:sendButton(playerId, pressedOrReleased, button)
     if not self.is_connected or self.playerId == nil then return end
-    --data = {playerId=self.playerId, roomId = "yuge",
-            --playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
+    data = {playerId=self.playerId, roomId = "yuge",
+            playerCommands = {{inputDevType = 2, pressedOrReleased=pressedOrReleased, isRepeat=false, key=button},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 

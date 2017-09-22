@@ -46,8 +46,8 @@ function test_network:enter(pre, init_table)
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    --self.map = map("maps/as_snow_network/as_snow.lua")
-    self.map = map("maps/as_snow_network/base.lua")
+    self.map = map("maps/as_snow_network/as_snow.lua")
+    --self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -93,7 +93,7 @@ function test_network:enter(pre, init_table)
     end
 
 	local sun = require "boom.entities.Sun" -- add sun
-    --engine:addEntity(sun(self.map, self.shader))
+    engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera

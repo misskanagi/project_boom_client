@@ -1,6 +1,7 @@
 local KeyboardHandler = require "boom.systems.event.KeyboardHandler"
 local GamepadHandler = require "boom.systems.event.GamepadHandler"
 local NetKeyboardHandler = require "boom.systems.event.NetKeyboardHandler"
+local NetGamepadHandler = require "boom.systems.event.NetGamepadHandler"
 local SnapshotReceivedHandler = require "boom.systems.event.SnapshotReceivedHandler"
 local CollisionHandler = require "boom.systems.event.CollisionHandler"
 local DamageHandler = require "boom.systems.event.DamageHandler"
@@ -8,6 +9,7 @@ local DamageHandler = require "boom.systems.event.DamageHandler"
 local KeyboardHandler = KeyboardHandler()
 local GamepadHandler = GamepadHandler()
 local NetKeyboardHandler = NetKeyboardHandler()
+local NetGamepadHandler = NetGamepadHandler()
 local SnapshotReceivedHandler = SnapshotReceivedHandler()
 local CollisionHandler = CollisionHandler()
 local DamageHandler = DamageHandler()
@@ -18,6 +20,8 @@ eventmanager:addListener("GamepadPressed", GamepadHandler, GamepadHandler.firePr
 eventmanager:addListener("GamepadReleased", GamepadHandler, GamepadHandler.fireReleasedEvent)
 eventmanager:addListener("NetKeyPressed", NetKeyboardHandler, NetKeyboardHandler.fireNetPressedEvent)
 eventmanager:addListener("NetKeyReleased", NetKeyboardHandler, NetKeyboardHandler.fireNetReleasedEvent)
+eventmanager:addListener("NetGamepadPressed", NetGamepadHandler, NetGamepadHandler.fireNetPressedEvent)
+eventmanager:addListener("NetGamepadReleased", NetGamepadHandler, NetGamepadHandler.fireNetReleasedEvent)
 eventmanager:addListener("SnapshotReceived", SnapshotReceivedHandler, SnapshotReceivedHandler.fireSnapshotReceived)
 eventmanager:addListener("BeginContact", CollisionHandler, CollisionHandler.fireBeginContact)
 eventmanager:addListener("EndContact", CollisionHandler, CollisionHandler.fireEndContact)
@@ -29,6 +33,7 @@ local event = {
   --KeyboardHandler = KeyboardHandler,
   --NetKeyboardHandler = NetKeyboardHandler,
   --CollisionHandler = CollisionHandler,
+  GamepadHandler = GamepadHandler,
 }
 
 return event
