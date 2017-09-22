@@ -35,7 +35,8 @@ function test_place:enter()
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    self.map = map("maps/as_snow/as_snow.lua")
+    --self.map = map("maps/as_snow/as_snow.lua")
+    self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -64,9 +65,9 @@ function test_place:enter()
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    self.camera:lookAt(1280, 1664)
+    self.camera:lookAt(1968, 1500)
     local w, h = love.graphics.getWidth(), love.graphics.getHeight()
-    self.camera:zoomTo(w/800)
+    --self.camera:zoomTo(w/800)
 end
 
 function test_place:update(dt)

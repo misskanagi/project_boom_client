@@ -6,6 +6,7 @@ local game_state = require("libs.hump.gamestate")
 local gui = require("libs.Gspot")
 
 local cam = require("boom.camera")
+local camera = cam:instance()
 --package.loaded["./libs/Gspot"] = nil
 
 local events = require("boom.events")
@@ -13,6 +14,7 @@ local CreateRoomNetHandler = class("CreateRoomNetHandler", System)
 local InputHandler = class("InputHandler", System)
 local create_room_net_handler = CreateRoomNetHandler()
 local input_handler = InputHandler()
+local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 require "./libs/gooi"
 local lg = love.graphics
@@ -30,30 +32,35 @@ local lbl_life_value = nil
 local lbl_map_value = nil
 
 --固定尺寸
-local window_w = 480
-local window_h = 320
-local lbl_title_x = 10
-local lbl_title_y = 10
-local lbl_title_w = 460
-local lbl_title_h = 60
-local choose_table_x = 10
-local choose_table_y = 80
-local choose_table_w = 460
-local choose_table_h = 200
+local window_w = 960--480
+local window_h = 640--320
+local lbl_title_x = 20--10
+local lbl_title_y = 20--10
+local lbl_title_w = 920--460
+local lbl_title_h = 120--60
+local choose_table_x = 20--10
+local choose_table_y = 160--80
+local choose_table_w = 920--460
+local choose_table_h = 400--200
 --绘制当前选项的白框
-local table_item_x = 10
-local table_item_ys = {["mode"] = 80, ["people"] = 130, ["life"] = 180, ["map"] = 230}
-local table_item_w = 460
-local table_item_h = 50
+local table_item_x = 20--10
+local table_item_ys = {
+  ["mode"] = 160,--80, 
+  ["people"] = 260,--130, 
+  ["life"] = 360,--180, 
+  ["map"] = 460--230
+  }
+local table_item_w = 920--460
+local table_item_h = 100--50
 
 --前置声明
 local submit_request, remove_widgets, back_to_roomlist
 --所有的选项值
 local selections = {
-  ["mode"] = {"chaos"},
+  ["mode"] = {1},
   ["people"] = {1,2,3,4,5,6,7,8},   --每队人数
   ["life"] = {1,3,5,10},
-  ["map"] = {"as_snow"}
+  ["map"] = {1}
 }
 --按了键以后的下一个选项类是什么
 local next_select_class = {
@@ -79,9 +86,9 @@ local results = {
   ["map"] = 1
 }
 local submitting = false --是否正在提交中
-local submit_line_x1 = 240
-local submit_line_x2 = 240
-local submit_line_length_bound = 200
+local submit_line_x1 = 480--240
+local submit_line_x2 = 480--240
+local submit_line_length_bound = 400--200
 local submit_line_shrink = false
 
 
@@ -110,20 +117,36 @@ end
 submit_request = function()
   --将results中的内容组织一下发送给Server
   local chosen_mode = selections["mode"][results["mode"]]
-  local chosen_map = selections["mode"][results["mode"]]
-  local chosen_life = selections["mode"][results["mode"]]
-  local chosen_people = selections["mode"][results["mode"]]
-  net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
-  submitting = true  --当前状态变成了提交中
+  local chosen_map = selections["map"][results["map"]]
+  local chosen_life = selections["life"][results["life"]]
+  local chosen_people = selections["people"][results["people"]]
+  if not test_on_windows then
+    submitting = true  --当前状态变成了提交中
+    net:requestCreateRoom(myId, chosen_mode, chosen_map, chosen_life, chosen_people)
+  else
+    --windows上模拟已经创建房间成功的效果
+    local init_table = {}
+    init_table["myId"] = myId
+    init_table["roomId"] = "fake_room_id"
+    init_table["groupId"] = 1  --房主默认在1号队
+    init_table["roomMasterId"] = myId
+    init_table["gameMode"] = selections["mode"][results["mode"]]  --"chaos"
+    init_table["mapType"] = selections["map"][results["map"]]  --"as_snow"
+    init_table["lifeNumber"] = selections["life"][results["life"]]
+    init_table["playersPerGroup"] = selections["people"][results["people"]]
+    init_table["playersInRoom"] = 1
+    game_state.switch(room, init_table)
+  end
 end
 
 function create_room:enter(prev, init_table)
+  camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
-  eventmanager:addListener("InputPressed", input_handler, input_handler.firePressedEvent)
+  eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
 
-  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 18)
-  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 13)
+  font_big = lg.newFont("assets/font/Arimo-Bold.ttf", 26)
+  font_small = lg.newFont("assets/font/Arimo-Bold.ttf", 20)
   font_current = lg.getFont()
   style = {
       font = font_big,
@@ -173,20 +196,20 @@ function create_room:update(dt)
     if submit_line_shrink then
       --收缩中
       if submit_line_x2 - submit_line_x1 > 0 then
-        submit_line_x2 = submit_line_x2 - 3
-        submit_line_x1 = submit_line_x1 + 3
+        submit_line_x2 = submit_line_x2 - 6--3
+        submit_line_x1 = submit_line_x1 + 6--3
       else
-        submit_line_x1 = 240
-        submit_line_x2 = 240
+        submit_line_x1 = 480--240
+        submit_line_x2 = 480--240
         submit_line_shrink = false
       end
     else
       if submit_line_x2 - submit_line_x1 < submit_line_length_bound then
-        submit_line_x1 = submit_line_x1 - 6
-        submit_line_x2 = submit_line_x2 + 6
+        submit_line_x1 = submit_line_x1 - 12--6
+        submit_line_x2 = submit_line_x2 + 12--6
       else
-        submit_line_x1 = 240 - submit_line_length_bound/2
-        submit_line_x2 = 240 + submit_line_length_bound/2
+        submit_line_x1 = -submit_line_length_bound/2 + 480--240
+        submit_line_x2 = submit_line_length_bound/2 + 480--240
         submit_line_shrink = true
       end
     end
@@ -203,16 +226,22 @@ function create_room:update(dt)
   lbl_map_value:setText(map_value)
   gooi.update(dt)
   gui:update(dt)
-  net:update(dt)
+  if not test_on_windows then
+    net:update(dt)
+  end
 end
 
 function create_room:draw()
-  cam:attach()
+  --local bgimg = lg.newImage("assets/bgimg.jpg")
+  lg.draw(bgimg,0,0)
+  camera:attach()
   if submitting then
     --绘制提交中的动画
     lg.line(submit_line_x1, window_h/2, submit_line_x2, window_h/2)
   end
   local r,g,b,a = lg.getColor()
+  lg.setColor(0, 0, 0, 127)
+  lg.rectangle("fill", 0, 0, window_w, window_h)
   --绘制lbl_title的底框
   lg.setColor(0, 0, 0, 100)
   lg.rectangle("fill", lbl_title_x, lbl_title_y, lbl_title_w, lbl_title_h)
@@ -228,9 +257,9 @@ function create_room:draw()
   local font_current = lg.getFont()
   local back_string = "L1-back"
   local confirm_string = "R1-confirm"
-  lg.print(back_string, 20, window_h-font_current:getHeight() - 20)
-  lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 20, window_h-font_current:getHeight() - 20)
-  cam:detach()
+  lg.print(back_string, 40, window_h-font_current:getHeight() - 40)   --origin:20
+  lg.print(confirm_string, window_w-font_current:getWidth(confirm_string) - 40, window_h-font_current:getHeight() - 40)  --origin:20
+  camera:detach()
 end
 
 function create_room:leave()
@@ -251,17 +280,19 @@ function create_room:gamepadpressed(joystick, button)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
   if button == "dpup" then
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("up"))
   elseif button == "dpdown" then
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("down"))
   elseif button == "dpleft" then
-    eventmanager:fireEvent(events.InputPressed("left"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("left"))
   elseif button == "dpright" then
-    eventmanager:fireEvent(events.InputPressed("right"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("right"))
   elseif button == "rightshoulder" then  --确认创建房间
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif button == "leftshoulder" then --取消创建房间，退回到roomlist
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
+  elseif button == "guide" then
+    eventmanager:fireEvent(events.CreateRoomInputPressed("esc"))
   end
 end
 
@@ -271,17 +302,19 @@ function create_room:keypressed(key, scancode, isrepeat)
   if submitting then return end --提交中的时候禁止任何输入
   --上下且选项类，左右切选项值
   if key == "up" then
-    eventmanager:fireEvent(events.InputPressed("up"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("up"))
   elseif key == "down" then
-    eventmanager:fireEvent(events.InputPressed("down"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("down"))
   elseif key == "left" then
-    eventmanager:fireEvent(events.InputPressed("left"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("left"))
   elseif key == "right" then
-    eventmanager:fireEvent(events.InputPressed("right"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("right"))
   elseif key == "r" then  --确认创建房间
-    eventmanager:fireEvent(events.InputPressed("r1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("r1"))
   elseif key == "l" then --取消创建房间，退回到roomlist
-    eventmanager:fireEvent(events.InputPressed("l1"))
+    eventmanager:fireEvent(events.CreateRoomInputPressed("l1"))
+  elseif key == "escape" then
+    eventmanager:fireEvent(events.CreateRoomInputPressed("esc"))
   end
 end
 
@@ -326,9 +359,12 @@ function InputHandler:firePressedEvent(event)
   elseif cmd == "l2" then
     
   elseif cmd == "r1" then
+    print("create_room input_handler r1")
     submit_request()
   elseif cmd == "r2" then
     
+  elseif cmd == "esc" then
+    love.event.quit()
   end
 end
 
@@ -341,7 +377,7 @@ function CreateRoomNetHandler:fireCreateRoomResEvent(event)
     --房间创建成功了
     --此时可以进入room.lua了，把该带的带进入
     local roomId = event.roomId
-    local groupId = event.groupId
+    local groupId = event.groupId + 1 --房间号为1/2，收到0/1
     local init_table = {}
     init_table["myId"] = myId
     init_table["roomId"] = roomId
@@ -352,6 +388,7 @@ function CreateRoomNetHandler:fireCreateRoomResEvent(event)
     init_table["lifeNumber"] = selections["life"][results["life"]]
     init_table["playersPerGroup"] = selections["people"][results["people"]]
     init_table["playersInRoom"] = 1
+    init_table["from_create_room"] = true   --是否是从create_room进入的
     game_state.switch(room, init_table)
   end
 end

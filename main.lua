@@ -15,9 +15,24 @@ log.logswitch(false)  --关闭log开关
 engine = Engine()
 
 --network
-local network = require("boom.network")
-net = network:instance()
+test_on_windows = true
+local system = love.system.getOS()
+if system == "OS X" then
+  test_on_windows = false
+end
 
+local network = nil
+if not test_on_windows then
+  network = require("boom.network")
+  net = network:instance()
+end
+--暂时在这里建立网络连接
+if not test_on_windows then
+    --net:connect("192.168.1.101", 8080)
+    --net:connect("172.28.37.19", 8080)
+    net:connect("114.212.83.208", 8080)
+    net:startReceiving()
+end
 --event manager
 eventmanager = EventManager()
 
@@ -28,10 +43,10 @@ local game_state = require("libs.hump.gamestate")
 
 -- test scene
 local test_place = require("boom.scenes.test_place")
---login = require("boom.scenes.login")
---roomlist = require("boom.scenes.roomlist")
---room = require("boom.scenes.room")
---create_room = require("boom.scenes.create_room")
+login = require("boom.scenes.login")
+roomlist = require("boom.scenes.roomlist")
+room = require("boom.scenes.room")
+create_room = require("boom.scenes.create_room")
 
 -- test choice
 local test_choice = require("boom.scenes.test_choice")
