@@ -1,14 +1,14 @@
 return {
   version = "1.1",
   luaversion = "5.1",
-  tiledversion = "1.0.2",
+  tiledversion = "0.18.2",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 154,
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 383,
+  nextobjectid = 384,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -25,11 +25,6 @@ return {
       tileoffset = {
         x = 0,
         y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 32,
-        height = 32
       },
       properties = {},
       terrains = {},
@@ -57,7 +52,7 @@ return {
     {
       type = "objectgroup",
       name = "entity_layer_1",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -1789,51 +1784,6 @@ return {
           }
         },
         {
-          id = 126,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1024,
-          y = 2208,
-          width = 30.6667,
-          height = 30.6667,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 127,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1504,
-          y = 2240,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 128,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1792,
-          y = 864,
-          width = 31.3333,
-          height = 31.3333,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
           id = 129,
           name = "spawn_point_2",
           type = "",
@@ -1936,66 +1886,6 @@ return {
           visible = true,
           properties = {
             ["type"] = "Wall"
-          }
-        },
-        {
-          id = 137,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1984,
-          y = 1728,
-          width = 31.3333,
-          height = 31.3333,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 138,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1760,
-          y = 1504,
-          width = 31.3333,
-          height = 31.3333,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 139,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1632,
-          y = 1728,
-          width = 31.3333,
-          height = 31.3333,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 140,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1344,
-          y = 1728,
-          width = 31.3333,
-          height = 31.3333,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
           }
         },
         {
@@ -2119,21 +2009,6 @@ return {
           }
         },
         {
-          id = 153,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3392,
-          y = 1600,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
           id = 202,
           name = "",
           type = "",
@@ -2144,7 +2019,9 @@ return {
           height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "Wall"
+          }
         },
         {
           id = 203,
@@ -2157,7 +2034,9 @@ return {
           height = 32,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "Wall"
+          }
         },
         {
           id = 204,
@@ -3685,546 +3564,6 @@ return {
           visible = true,
           properties = {
             ["type"] = "Water"
-          }
-        },
-        {
-          id = 341,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3296,
-          y = 1760,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 342,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2976,
-          y = 1376,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 343,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2976,
-          y = 1152,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 347,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3552,
-          y = 1312,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 348,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3488,
-          y = 1888,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 349,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3488,
-          y = 2048,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 350,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3296,
-          y = 2080,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 353,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3008,
-          y = 2240,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 354,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3328,
-          y = 2240,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 355,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2816,
-          y = 2240,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 356,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2944,
-          y = 1920,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 357,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 4224,
-          y = 2400,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 358,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 4224,
-          y = 1504,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 359,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 4224,
-          y = 736,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 360,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3936,
-          y = 736,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 361,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3648,
-          y = 736,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 362,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3008,
-          y = 896,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 363,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3328,
-          y = 896,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 364,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2816,
-          y = 800,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 365,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2080,
-          y = 1120,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 366,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2752,
-          y = 1120,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 367,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2752,
-          y = 1408,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 368,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2080,
-          y = 1408,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 369,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2016,
-          y = 800,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 370,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2016,
-          y = 2336,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 371,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 4224,
-          y = 1120,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 372,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 4224,
-          y = 2048,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 373,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 3680,
-          y = 2400,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 374,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1216,
-          y = 2400,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 375,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 608,
-          y = 2400,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 376,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 608,
-          y = 1248,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 377,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 608,
-          y = 736,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 378,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 608,
-          y = 1792,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 379,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1216,
-          y = 736,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 380,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1024,
-          y = 928,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Light"
-          }
-        },
-        {
-          id = 381,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1056,
-          y = 2304,
-          width = 96,
-          height = 96,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["type"] = "Sun"
           }
         }
       }

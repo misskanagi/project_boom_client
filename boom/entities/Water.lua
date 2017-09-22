@@ -2,12 +2,11 @@
 local ShaderRefraction = require("boom.components.graphic.ShaderRefraction")
 local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
-local createWaters = function(object, world, light_world)
+local createWaters = function(x, y, w, h, world, light_world)
     print("createWaters()")
     local e = Entity()
-    local o = object
-    local sx, sy = o.x + o.width/2, o.y + o.height/2
-    e:add(ShaderRefraction(light_world, sx, sy, o.width, o.height))
+    local sx, sy = x + w/2, y + h/2
+    e:add(ShaderRefraction(light_world, sx, sy, w, h))
     e:add(GlobalEntityId())
     return e
 end

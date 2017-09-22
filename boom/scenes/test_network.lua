@@ -67,18 +67,18 @@ function test_network:enter(pre, init_table)
                   e = entity:createEntity(type, x, y, w, h, "yuge", true, true)
                   net:loginTest("yuge")
                 else
-                  e = entity:createEntity(type, x, y, w, h,, "yuge", false, true)
+                  e = entity:createEntity(type, x, y, w, h, "yuge", false, true)
                 end
               elseif o.name == "spawn_point_2" then
                 if my_name == "hako" then
-                  e = entity:createEntity(type, x, y, w, h,, "hako", true)
+                  e = entity:createEntity(type, x, y, w, h, "hako", true)
                   net:loginTest("hako")
                 else
-                  e = entity:createEntity(type, x, y, w, h,, "hako", false)
+                  e = entity:createEntity(type, x, y, w, h, "hako", false)
                 end
               elseif o.name == "spawn_point_3" then
                 if my_name == "lsm" then
-                  e = entity:createEntity(type, x, y, w, h,, "lsm", true)
+                  e = entity:createEntity(type, x, y, w, h, "lsm", true)
                   net:loginTest("lsm")
                 else
                   e = entity:createEntity(type, x, y, w, h, "lsm", false)

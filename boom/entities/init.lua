@@ -36,7 +36,7 @@ function EntityManager:createEntity(type, ...)
   elseif type == "Shell" or type == "shell" then
     e = Shell(x, y, w, h, self.world, self.shader)
   elseif type == "Water" or type == "water" then
-    e = Water(object, x, y, w, h, self.world, self.shader)
+    e = Water(x, y, w, h, self.world, self.shader)
   end
   if e then
     local gid = e:get("GlobalEntityId").id
