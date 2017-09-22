@@ -66,10 +66,6 @@ function GamepadHandler:fireReleasedEvent(event)
             dcmd.forward=false
         elseif event.button == "movebackward" and dcmd then
             dcmd.backward=false
-        elseif event.button == "dpleft" and dcmd then
-            dcmd.turn_left=false
-        elseif event.button == "dpright" and dcmd then
-            dcmd.turn_right=false
         elseif event.button == "turn" and dcmd then
             dcmd.turn_left=false
             dcmd.turn_right=false

@@ -5,13 +5,13 @@ function NetGamepadHandler:fireNetPressedEvent(event)
         if entity:get("PlayerName").name == event.name then
             local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
             local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
-            if event.button == "b" and dcmd then
+            if event.button == "moveforward" and dcmd then
                 dcmd.forward=true
-            elseif event.button == "a" and dcmd then
+            elseif event.button == "movebackward" and dcmd then
                 dcmd.backward=true
-            elseif event.button == "dpleft" and dcmd then
+            elseif event.button == "turnleft" and dcmd then
                 dcmd.turn_left=true
-            elseif event.button == "dpright" and dcmd then
+            elseif event.button == "turnright" and dcmd then
                 dcmd.turn_right=true
             elseif event.button == "x" and dcmd then
                 dcmd.toggle_light = not dcmd.toggle_light
@@ -19,9 +19,9 @@ function NetGamepadHandler:fireNetPressedEvent(event)
                 --dcmd.turret_spin_neg = true
             --elseif event.button == "right" and dcmd then
                 --dcmd.turret_spin_pos = true
-            elseif event.button == "leftshoulder" and fcmd then
+            elseif event.button == "rightshoulder" and fcmd then
                 fcmd.fire = true
-            elseif event.button == "rightshoulder" and lcmd then
+            elseif event.button == "leftshoulder" and lcmd then
                 lcmd.launch = true
             end
         end
@@ -33,13 +33,12 @@ function NetGamepadHandler:fireNetReleasedEvent(event)
       if entity:get("PlayerName").name == event.name then
           local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
           local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
-          if event.button == "b" and dcmd then
+          if event.button == "moveforward" and dcmd then
               dcmd.forward=false
-          elseif event.button == "a" and dcmd then
+          elseif event.button == "movebackward" and dcmd then
               dcmd.backward=false
-          elseif event.button == "dpleft" and dcmd then
+          elseif event.button == "turn" and dcmd then
               dcmd.turn_left=false
-          elseif event.button == "dpright" and dcmd then
               dcmd.turn_right=false
           --elseif event.button == "left" and dcmd then
               --dcmd.turret_spin_neg = false
