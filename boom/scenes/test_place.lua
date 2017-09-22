@@ -25,6 +25,9 @@ local shader = require("boom.shader")
 --entity factory
 local EM = require("boom.entities")
 
+--HUD canvas
+local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
+
 --debug canvas
 local debug_canvas = require "boom.systems.debug.debug_canvas"
 
@@ -104,10 +107,14 @@ function test_place:draw()
         -- draw ECS engine
         engine:draw()
     end)
+    
+    -- draw HUD
+    HUD_canvas:draw()
     -- draw debug
     debug_canvas:draw()
     -- draw particle
     particle_canvas:draw()
+    
     -- camera detach
     self.camera:detach()
     -- draw HUD

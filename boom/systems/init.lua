@@ -4,6 +4,7 @@ local event = require "boom.systems.event" -- event system's initialization is d
 local control = require "boom.systems.control"
 local network = require "boom.systems.network"
 local debug = require "boom.systems.debug"
+local HUD = require "boom.systems.HUD"
 
 local modules = {
     physics = physics,
@@ -12,6 +13,7 @@ local modules = {
     debug = debug,
     network = network,
     control = control,
+    HUD = HUD,
 }
 
 local system_manager = {
