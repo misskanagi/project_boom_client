@@ -4,7 +4,6 @@ function Tire:initialize(world, x, y)
     local m = love.physics.getMeter()
     self.world = world
     self.body = love.physics.newBody(world, x, y, "dynamic")
-    self.body:setAngularDamping(10)
     self.CONTROLSTATE = {
       forward = 0,
       backward = 1,
@@ -15,10 +14,10 @@ function Tire:initialize(world, x, y)
     self.fixture = love.physics.newFixture(self.body, self.shape, 0.5)
     --self.body:setUserData(self)
     -- speed
-    self.max_forward_speed = -140
-    self.max_backward_speed = 110
-    self.max_drive_force = 1500
-    self.torque_force = 800
+    self.max_forward_speed = -120
+    self.max_backward_speed = 100
+    self.max_drive_force = 1000
+    self.torque_force = 1000
 end
 
 function Tire:getLateralVelocity()

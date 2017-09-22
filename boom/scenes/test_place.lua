@@ -130,4 +130,11 @@ function test_place:mousereleased(x, y, button, istouch)
     eventmanager:fireEvent(events.MouseReleased(x, y, button))
 end
 
+function test_place:gamepadpressed(joystick, button)
+    eventmanager:fireEvent(events.GamepadPressed(joystick, button))
+end
+
+function test_place:gamepadreleased(joystick, button)
+    eventmanager:fireEvent(events.GamepadReleased(joystick, button))
+end
 return test_place

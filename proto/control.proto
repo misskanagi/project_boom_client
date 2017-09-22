@@ -3,6 +3,7 @@ syntax = "proto3";
 package ControlProto;
 
 message PlayerCommand{
+    //int32 inputDevType = ... 1是键盘，2是手柄
     bool pressedOrReleased=1;
     bool isRepeat = 2;
     string key = 3;
