@@ -12,6 +12,7 @@ local RefractionDraw = require "boom.systems.graphic.RefractionDraw"
 local graphic = {
   PolygonDraw = PolygonDraw(),
   ExplosiveDraw = ExplosiveDraw(),
+  BoosterDraw = BoosterDraw(),
   PlayerDraw = PlayerDraw(),
   GunFireDraw = GunFireDraw(),
   ShaderRefractionSync = ShaderRefractionSync(),
