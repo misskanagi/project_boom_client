@@ -1,7 +1,7 @@
 --显示玩家自己的信息
 require "/libs/gooi"
 local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
-
+local group_hudmyinfo = 101
 local HUDMyInfo = class("HUDMyInfo", System)
 local img = love.graphics.newImage("/assets/sign_bullet.png")
 
@@ -23,11 +23,11 @@ function HUDMyInfo:draw()
     gooi.desktopMode()
     gooi.shadow()
     
-    pb_hp = gooi.newBar({x = 10, y = 10, w = 300, h = 10, value = 1})
+    pb_hp = gooi.newBar({x = 10, y = 10, w = 300, h = 10, value = 1, group = group_hudmyinfo})
     :bg({255, 255, 255, 60})
     :fg({0, 255, 0, 150})
     
-    lbl_shell = gooi.newLabel({x = 10, y = 30, text = ""}):left()
+    lbl_shell = gooi.newLabel({x = 10, y = 30, text = "", group = group_hudmyinfo}):left()
     
     self.is_init = true
   end
@@ -48,7 +48,7 @@ function HUDMyInfo:draw()
     lbl_shell:setIcon(img):setText("X 10")
     
   end
-  gooi.draw()
+  gooi.draw(group_hudmyinfo)
   --love.graphics.setColor(255,255,255,255)
   --love.graphics.rectangle("fill", 0, 0, 200, 200)
   love.graphics.pop()

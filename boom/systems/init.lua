@@ -45,6 +45,8 @@ local system_manager = {
     for n, s in pairs(modules["debug"]) do
         engine:stopSystem(n)
     end
+    -- disable HUDBattle system first
+    engine:toggleSystem("HUDBattle")
   end,
 }
 

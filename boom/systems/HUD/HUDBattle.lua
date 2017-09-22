@@ -1,7 +1,7 @@
 --显示对战信息
 require "/libs/gooi"
 local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
-
+local group_hudbattle = 100
 local HUDBattle = class("HUDBattle", System)
 --local img = love.graphics.newImage("/assets/sign_bullet.png")
 
@@ -47,7 +47,7 @@ function HUDBattle:draw()
     table_battle_x = (window_w - table_battle_w) / 2
     table_battle_y = (window_h - table_battle_h) / 2
     
-    table_battle = gooi.newPanel({x = table_battle_x, y = table_battle_y , w = table_battle_w, h = table_battle_h, layout = "grid "..table_battle_rows.."x8"})
+    table_battle = gooi.newPanel({x = table_battle_x, y = table_battle_y , w = table_battle_w, h = table_battle_h, layout = "grid "..table_battle_rows.."x8", group = group_hudbattle})
     --调整一下表格
     table_battle
       :setColspan(1,1,4)
@@ -58,14 +58,14 @@ function HUDBattle:draw()
         :setColspan(i,5,2)
     end
     --table_battle.layout.debug = true
-    lbl_title_group_red = gooi.newLabel({text = "Group1"}):center()
-    lbl_title_group_blue = gooi.newLabel({text = "Group2"}):center()
-    lbl_title_id_red = gooi.newLabel({text = "ID"}):center()
-    lbl_title_id_blue = gooi.newLabel({text = "ID"}):center()
-    lbl_title_kill_red = gooi.newLabel({text = "kill"}):center()
-    lbl_title_kill_blue = gooi.newLabel({text = "kill"}):center()
-    lbl_title_dead_red = gooi.newLabel({text = "dead"}):center()
-    lbl_title_dead_blue = gooi.newLabel({text = "dead"}):center()
+    lbl_title_group_red = gooi.newLabel({text = "Group1", group = group_hudbattle}):center()
+    lbl_title_group_blue = gooi.newLabel({text = "Group2", group = group_hudbattle}):center()
+    lbl_title_id_red = gooi.newLabel({text = "ID", group = group_hudbattle}):center()
+    lbl_title_id_blue = gooi.newLabel({text = "ID", group = group_hudbattle}):center()
+    lbl_title_kill_red = gooi.newLabel({text = "kill", group = group_hudbattle}):center()
+    lbl_title_kill_blue = gooi.newLabel({text = "kill", group = group_hudbattle}):center()
+    lbl_title_dead_red = gooi.newLabel({text = "dead", group = group_hudbattle}):center()
+    lbl_title_dead_blue = gooi.newLabel({text = "dead", group = group_hudbattle}):center()
     lbl_ids_red = {} --key是行号
     lbl_kills_red = {} --key是行号
     lbl_deads_red = {}
@@ -74,13 +74,13 @@ function HUDBattle:draw()
     lbl_deads_blue = {}
     --创建出红队的每个选手的每一个控件
     for i = 1, players_per_group do 
-      lbl_kills_red[i] = gooi.newLabel({text = ""}):center()
-      lbl_ids_red[i] = gooi.newLabel({text = ""}):center()
-      lbl_kills_red[i] = gooi.newLabel({text = ""}):center()
-      lbl_deads_red[i] = gooi.newLabel({text = ""}):center()
-      lbl_ids_blue[i] = gooi.newLabel({text = ""}):center()
-      lbl_kills_blue[i] = gooi.newLabel({text = ""}):center()
-      lbl_deads_blue[i] = gooi.newLabel({text = ""}):center()
+      lbl_kills_red[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_ids_red[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_kills_red[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_deads_red[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_ids_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_kills_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      lbl_deads_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
     end
     
     table_battle:add(lbl_title_group_red, "1,1")
@@ -141,7 +141,7 @@ function HUDBattle:draw()
       
   end
   
-  gooi.draw()
+  gooi.draw(group_hudbattle)
   --love.graphics.setColor(255,255,255,255)
   --love.graphics.rectangle("fill", 0, 0, 200, 200)
   love.graphics.pop()

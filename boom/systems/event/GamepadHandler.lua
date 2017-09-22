@@ -10,10 +10,12 @@ local l2_used = false --l2键之前被按下过
 -- locally pressed
 function GamepadHandler:firePressedEvent(event)
     --玩家无关操作
-    if event.button == "start" then  --PS4的share键
+    if event.button == "start" then  --PS4的options键
         local system_manager = require "boom.systems"
         system_manager.toggleModule("debug")
         --debug.debug()
+    elseif event.button == "back" then  --PS4的share键
+      engine:toggleSystem("HUDBattle")
     end
     for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
         local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil

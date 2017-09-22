@@ -8,5 +8,4 @@ local HUD = {
   HUDUpdate = HUDUpdate(),
 }
 
-
 return HUD
