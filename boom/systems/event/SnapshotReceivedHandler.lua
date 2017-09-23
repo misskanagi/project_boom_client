@@ -1,13 +1,6 @@
 local entity_manager = require "boom.entities"
 local SnapshotReceivedHandler = class("SnapshotReceivedHandler", System)
 
-local function lerp(a, b, k) --smooth transitions
-  if a == b then
-    return a
-  else
-    if math.abs(a-b) < 0.05 then return b else return a * (1-k) + b * k end
-  end
-end
 
 function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local roomId = event.roomId
@@ -19,17 +12,16 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
       if e then
           for _, b in pairs(se.bodies) do
             local bodyId = b.bodyId
-            local x, y, r, vx, vy, va = b.x, b.y, b.rotation, b.vx, b.vy, b.va
-            local physic_body = e:get("Physic").bodies[bodyId]
-            local ox, oy = physic_body:getWorldCenter()
-            local oor = physic_body:getAngle()
-            local ovx, ovy = physic_body:getLinearVelocity()
-            local ova = physic_body:getAngularVelocity()
-            local C = 0.1
-            physic_body:setPosition(lerp(ox, x, C), lerp(oy, y, C))
-            physic_body:setAngle(lerp(oor, r, C))
-            physic_body:setLinearVelocity(lerp(ovx, vx, C), lerp(ovy, vy, C))
-            physic_body:setAngularVelocity(lerp(ova, va, C))
+            --local x, y, r, vx, vy, va = b.x, b.y, b.rotation, b.vx, b.vy, b.va
+            e:get("Physic").lerp = {}
+            e:get("Physic").lerp[bodyId] = {
+                x = b.x,
+                y = b.y,
+                r = b.rotation,
+                vx = b.vx,
+                vy = b.vy,
+                va = b.va,
+            }
           end
       end
     end
