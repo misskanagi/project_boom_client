@@ -31,7 +31,7 @@ function SendPhysicSnapshot:sendSnapshot()
         entityId = entity:get("EntityId").id,
         status = 1,
         bodies = {},
-        health = 0,
+        health = 0.0,
         shellName = "NormalShell",
         shellCount = 0,
       }
