@@ -21,6 +21,8 @@ function BoosterSync:update(dt)
             if bfps:isStopped() then
               bfps:start()
             end
+        else
+            entity:remove("Booster")
         end
     end
 end

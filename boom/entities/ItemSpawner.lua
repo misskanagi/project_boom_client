@@ -28,7 +28,7 @@ local createItemSpawner = function(x, y, w, h, r, item_list, world, light_world)
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     local item_list = item_list or default_list
-    local start_spawn = 0
+    local start_spawn = (x + y) % 7 + 1
     local spawn_index_func = function()
         start_spawn = (start_spawn + 1) % 7 + 1
         return start_spawn

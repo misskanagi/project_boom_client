@@ -25,7 +25,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
             local oor = physic_body:getAngle()
             local ovx, ovy = physic_body:getLinearVelocity()
             local ova = physic_body:getAngularVelocity()
-            local C = 0.2
+            local C = 0.1
             physic_body:setPosition(lerp(ox, x, C), lerp(oy, y, C))
             physic_body:setAngle(lerp(oor, r, C))
             physic_body:setLinearVelocity(lerp(ovx, vx, C), lerp(ovy, vy, C))
