@@ -11,7 +11,7 @@ local lbl_life = nil --生命数
 local grid_life = nil
 
 function HUDMyInfo:draw()
-  print("HUDMyInfo draw()")
+  --print("HUDMyInfo draw()")
   if not self.is_init then
     local font_small = love.graphics.newFont("assets/font/Arimo-Bold.ttf", 14)
     local style = {

@@ -1,11 +1,15 @@
 local camera = require "boom.camera"
+local Vector = require "libs.hump.vector"
 local GamepadHandler = class("GamepadHandler", System)
 local events = require("boom.events")
 
 local leftstick_moved = false  --左摇杆上一刻是移动中的状态
 local r2_used = false --r2键之前被按下过
 local l2_used = false --l2键之前被按下过
-
+local rightstick_timer = 0
+local fire_interval = 0.02   --采集鼠标当前位置的时间间隔
+local v = Vector(0, 0)
+local nv = Vector(1, 0) 
 
 -- locally pressed
 function GamepadHandler:firePressedEvent(event)
@@ -97,6 +101,12 @@ function GamepadHandler:fireReleasedEventToNetwork(event)
     end
 end
 
+--专门处理右摇杆的移动
+function GamepadHandler:fireRightStickMovedEvent(event)
+  
+end
+
+
 --判断Gamepad的axis值
 function GamepadHandler:update(dt)
   local joystick = (love.joystick.getJoysticks())[1]
@@ -115,7 +125,17 @@ function GamepadHandler:update(dt)
         GamepadHandler:fireReleasedEvent(events.GamepadReleased("turn"))
       end
     end
-    --处理
+    
+    --处理右摇杆
+    rightstick_timer = rightstick_timer + dt
+    if rightstick_timer > fire_interval then
+      rightstick_timer = 0
+      --获取当前鼠标的参数
+      --local mx, my = camera:mousePosition()
+      local x = 1
+      local y = 1
+      eventmanager:fireEvent(events.GamepadRightStickMoved(x, y))
+    end
     
     --处理l2
     if l2 <= -0.5 then
