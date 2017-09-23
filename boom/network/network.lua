@@ -165,11 +165,13 @@ end
 
 --请求创建房间
 function network:requestCreateRoom(playerId, gameMode, mapType, lifeNumber, playersPerGroup)
+  self.roomId = roomId
   local result = self:send(self.cmd_code.CREATE_ROOM_REQ, {playerId = playerId, gameMode = gameMode, mapType = mapType, lifeNumber = lifeNumber, playersPerGroup = playersPerGroup})
 end
 
 --请求进入房间
 function network:requestEnterRoom(roomId, playerId)
+  self.roomId = roomId
   local result = self:send(self.cmd_code.ENTER_ROOM_REQ, {roomId = roomId, playerId = playerId})
 end
 
