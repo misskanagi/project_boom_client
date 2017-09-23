@@ -14,9 +14,9 @@ function Tire:initialize(world, x, y)
     self.fixture = love.physics.newFixture(self.body, self.shape, 0.5)
     --self.body:setUserData(self)
     -- speed
-    self.max_forward_speed = -100
-    self.max_backward_speed = 80
-    self.max_drive_force = 800
+    self.max_forward_speed = -120
+    self.max_backward_speed = 100
+    self.max_drive_force = 1000
     self.torque_force = 1000
 end
 

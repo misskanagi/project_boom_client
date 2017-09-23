@@ -32,6 +32,19 @@ function boom_camera:moveToPlayer()
     return self
 end
 
+function boom_camera:rotateToPlayer()
+    for i, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
+        local body = e:get("Physic").body
+        local r = body:getAngle()
+        local curr_r = self.rot
+        print(r, self.rot)
+        self:rotate((-r-curr_r)/10)
+        --self:rotateTo(-r)
+        break
+    end
+    return self
+end
+
 function boom_camera:shake(shaking, once)
     self.shaking = shaking or 0
     self.currShaking = self.shaking
@@ -58,6 +71,7 @@ end
 
 function boom_camera:apply()
     self:moveToPlayer()
+    --self:rotateToPlayer()
     self:shakeCamera()
 end
 

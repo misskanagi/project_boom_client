@@ -5,6 +5,7 @@ local control = require "boom.systems.control"
 local network = require "boom.systems.network"
 local logic = require "boom.systems.logic"
 local debug = require "boom.systems.debug"
+local HUD = require "boom.systems.HUD"
 
 local modules = {
     physics = physics,
@@ -14,6 +15,7 @@ local modules = {
     network = network,
     control = control,
     logic = logic,
+    HUD = HUD,
 }
 
 local system_manager = {
@@ -45,6 +47,8 @@ local system_manager = {
     for n, s in pairs(modules["debug"]) do
         engine:stopSystem(n)
     end
+    -- disable HUDBattle system first
+    engine:toggleSystem("HUDBattle")
   end,
 }
 

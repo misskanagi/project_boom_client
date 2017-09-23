@@ -6,7 +6,7 @@ local v = Vector(0, 0)
 local nv = Vector(1, 0)
 
 function TurretSpinSync:update(dt)
-    for k, entity in pairs(self.targets) do
+    --[[for k, entity in pairs(self.targets) do
       local turret = entity:get("Turret")
       local body = turret.body
       local mx, my = camera:mousePosition()
@@ -15,7 +15,7 @@ function TurretSpinSync:update(dt)
       v:rotateInplace(math.pi/2)
       --print(v:angleTo(nv))
       body:applyAngularImpulse(0.1 * body:getInertia() * v:angleTo(nv))
-    end
+    end]]--
 end
 
 function TurretSpinSync:requires()

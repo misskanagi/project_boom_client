@@ -1,5 +1,9 @@
---local netLib = require "library"
-local netLib = require "libtcp"
+local netLib = nil
+if not test_on_windows then
+  netLib = require "libtcp"
+end
+
+
 local json = require "libs.json"
 --events
 local events = require("boom.events")
@@ -77,19 +81,37 @@ function network:updateReceive(dt)
   if msg then
     for _, json_string in pairs(msg) do
       data = json.decode(json_string)
+      print(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
+        --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
         if playerId ~= self.playerId then
           local playerCommands = data.playerCommands
           for _, cmd in pairs(playerCommands) do
-            local pressedOrReleased = cmd.pressedOrReleased
-            local isRepeat = cmd.isRepeat
-            local key = cmd.key
-            eventmanager:fireEvent(
-              pressedOrReleased and
-              events.NetKeyPressed(key, isRepeat, playerId) or
-              events.NetKeyReleased(key, isRepeat, playerId)
-            )
+            --需要区分是手柄操作还是键盘操作
+            local inputDevType = cmd.inputDevType
+            if inputDevType == 1 then -- 键盘操作
+              local pressedOrReleased = cmd.pressedOrReleased
+              local isRepeat = cmd.isRepeat
+              local key = cmd.key
+              eventmanager:fireEvent(
+                pressedOrReleased and
+                events.NetKeyPressed(key, isRepeat, playerId) or
+                events.NetKeyReleased(key, isRepeat, playerId)
+              )
+            elseif inputDevType == 2 then -- 手柄操作
+              local pressedOrReleased = cmd.pressedOrReleased
+              local button = cmd.key
+              eventmanager:fireEvent(
+                pressedOrReleased and
+                events.NetGamepadPressed(button, playerId) or
+                events.NetGamepadReleased(button, playerId)
+              )
+            elseif inputDevType == 3 then
+              local tx = cmd.tx
+              local ty = cmd.ty
+              eventmanager:fireEvent(events.NetMouseMoved(tx, ty, playerId))
+            end
           end
         end
       elseif data.cmdType == self.cmd_code.SNAPSHOT_BROADCAST then
@@ -184,8 +206,23 @@ end
 
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId=self.playerId, roomId = "test",
-            playerCommands = {{pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
+    data = {playerId=self.playerId, roomId = "yuge",
+            playerCommands = {{inputDevType = 1, pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key,tx = 0, ty = 0},}}
+    self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
+end
+
+--手柄适配
+function network:sendButton(playerId, pressedOrReleased, button)
+    if not self.is_connected or self.playerId == nil then return end
+    data = {playerId=self.playerId, roomId = "yuge",
+            playerCommands = {{inputDevType = 2, pressedOrReleased=pressedOrReleased, isRepeat=false, key=button, tx = 0, ty = 0},}}
+    self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
+end
+
+function network:sendMouse(playerId, tx, ty)
+    if not self.is_connected or self.playerId == nil then return end
+    data = {playerId = self.playerId, roomId = "yuge",
+            playerCommands = {{inputDevType = 3, tx = tx, ty = ty, isRepeat=false, key="",pressedOrReleased = false},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
@@ -202,6 +239,7 @@ end
 function network:send(type, data)
     assert(self.is_connected==true)
     if self.is_connected then
+      print(json.encode(data))
         print("lua send")
         local result = netLib.Lua_send(type, json.encode(data))
         print("lua send end")

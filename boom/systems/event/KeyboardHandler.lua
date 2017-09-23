@@ -8,6 +8,8 @@ function KeyboardHandler:firePressedEvent(event)
         local system_manager = require "boom.systems"
         system_manager.toggleModule("debug")
         --debug.debug()
+    elseif event.key == "f1" then
+      engine:toggleSystem("HUDBattle")
     end
     for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
         local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
@@ -42,7 +44,9 @@ end
 function KeyboardHandler:firePressedEventToNetwork(event)
     for _, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
       local name = e:get("PlayerName").name
-      net:sendKey(name, true, event.isrepeat, event.key)
+      if net then
+        net:sendKey(name, true, event.isrepeat, event.key)
+      end
       break
     end
 end
@@ -76,7 +80,9 @@ function KeyboardHandler:fireReleasedEventToNetwork(event)
     for _, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
       local name = e:get("PlayerName").name
       -- 松开健位，没有repeat
-      net:sendKey(name, false, false, event.key)
+      if net then  --调试方便
+        net:sendKey(name, false, false, event.key)
+      end
       break
     end
 end

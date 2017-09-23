@@ -6,6 +6,7 @@ local DefaultWreckage = require "boom.entities.DefaultWreckage"
 local Light = require "boom.entities.Light"
 local Sun = require "boom.entities.Sun"
 local Wall = require "boom.entities.Wall"
+local Water = require "boom.entities.Water"
 local NormalShell = require "boom.entities.NormalShell"
 local HealShell = require "boom.entities.HealShell"
 local AdvancedShell = require "boom.entities.AdvancedShell"
@@ -54,6 +55,8 @@ function EntityManager:createEntity(type, ...)
     e = Sun(self.map, self.shader)
   elseif type == "Wall" or type == "wall" then
     e = Wall(x, y, w, h, r, self.world, self.shader)
+  elseif type == "Water" or type == "water" then
+    e = Water(x, y, w, h, r, self.world, self.shader)
   elseif type == "NormalShell" or type == "normalshell" then
     local dmg, range = args[6], args[7]
     e = NormalShell(x, y, w, h, r, dmg, range, self.world, self.shader)
@@ -77,6 +80,7 @@ function EntityManager:createEntity(type, ...)
   end
   if e and e:has("EntityId") then
     local gid = e:get("EntityId").id
+    print("gid = "..gid)
     self.entity_list[gid] = e
     print(#self.entity_list)
   end

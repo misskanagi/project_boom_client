@@ -25,6 +25,9 @@ local shader = require("boom.shader")
 --entity factory
 local EM = require("boom.entities")
 
+--HUD canvas
+local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
+
 --debug canvas
 local debug_canvas = require "boom.systems.debug.debug_canvas"
 
@@ -35,7 +38,8 @@ function test_place:enter()
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    self.map = map("maps/as_snow/as_snow.lua")
+    --self.map = map("maps/as_snow/as_snow.lua")
+    self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -61,15 +65,15 @@ function test_place:enter()
           end
       end
     end
-    --local sun = require "boom.entities.Sun" -- add sun
-    --engine:addEntity(sun(self.map, self.shader))
+    local sun = require "boom.entities.Sun" -- add sun
+    engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    self.camera:lookAt(1280, 1664)
+    self.camera:lookAt(1968, 1500)
     local w, h = love.graphics.getWidth(), love.graphics.getHeight()
-    self.camera:zoomTo(w/800)
+    --self.camera:zoomTo(w/800)
 end
 
 function test_place:update(dt)
@@ -87,7 +91,7 @@ function test_place:update(dt)
     self.shader:setTranslation(
       -self.camera.x + love.graphics.getWidth()/2,
       -self.camera.y + love.graphics.getHeight()/2,
-      self.camera.scale)
+      self.camera.scale, self.camera.rot)
     --print(c:pop())
 end
 
@@ -106,6 +110,9 @@ function test_place:draw()
         -- draw ECS engine
         engine:draw()
     end)
+    
+    -- draw HUD
+    HUD_canvas:draw()
     -- draw debug
     debug_canvas:draw()
     -- draw particle
@@ -132,4 +139,11 @@ function test_place:mousereleased(x, y, button, istouch)
     eventmanager:fireEvent(events.MouseReleased(x, y, button))
 end
 
+function test_place:gamepadpressed(joystick, button)
+    eventmanager:fireEvent(events.GamepadPressed(button))
+end
+
+function test_place:gamepadreleased(joystick, button)
+    eventmanager:fireEvent(events.GamepadReleased(button))
+end
 return test_place

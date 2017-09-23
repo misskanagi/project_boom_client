@@ -60,10 +60,12 @@ message EnterRoomRes {
     repeated PlayerInfo playersInfo = 4;
 }
 
+//漏字段
 message EnterRoomBroadcast {
     string roomId = 1;
     string playerId = 2;
     int32 groupId = 3;
+    //还有玩家的tankType
 }
 
 message QuitRoomReq {
