@@ -8,7 +8,6 @@ local function lerp(a, b, k) --smooth transitions
   end
 end
 
-
 function PhysicLerpSync:update(dt)
     for index, entity in pairs(self.targets) do
         local P = entity:get("Physic")
