@@ -17,6 +17,16 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
       local e = entity_manager.entity_list[id]
       -- update every body of this entity
       if e then
+          -- update health
+          if e:has("Health") then
+            e:get("Health").value = se.health
+          end
+          -- update launchable
+          if e:has("Launchable") then
+            e:get("Launchable").shell_name = se.shellName
+            e:get("Launchable").shell_count = se.shellCount
+          end
+          -- update bodies
           for _, b in pairs(se.bodies) do
             local bodyId = b.bodyId
             local x, y, r, vx, vy, va = b.x, b.y, b.rotation, b.vx, b.vy, b.va

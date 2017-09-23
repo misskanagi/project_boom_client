@@ -31,7 +31,19 @@ function SendPhysicSnapshot:sendSnapshot()
         entityId = entity:get("EntityId").id,
         status = 1,
         bodies = {},
+        health = 0,
+        shellName = "NormalShell",
+        shellCount = 0,
       }
+      if entity:has("Health") then
+        local H = entity:get("Health")
+        snapshot_entity.health = H.value
+      end
+      if entity:has("Launchable") then
+        local L = entity:get("Launchable")
+        snapshot_entity.shellName = L.shell_name
+        snapshot_entity.shellCount = L.shell_count
+      end
       for k, b in pairs(entity:get("Physic").bodies) do
         local x, y = b:getWorldCenter()
         local r = b:getAngle()
