@@ -71,7 +71,7 @@ function test_network:enter(pre, init_table)
                 end
               elseif o.name == "spawn_point_2" then
                 if my_name == "hako" then
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", true)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "hako", true)
                   net:loginTest("hako")
                 else
                   e = EM:createEntity(type, x, y, w, h, 0.0, "hako", false)
