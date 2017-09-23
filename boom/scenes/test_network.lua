@@ -86,7 +86,7 @@ function test_network:enter(pre, init_table)
               end
               local t = e and engine:addEntity(e)
             else
-              local e = entity:createEntity(type, x, y, w, h, 0.0)
+              local e = EM:createEntity(type, x, y, w, h, 0.0)
               local t = e and engine:addEntity(e)
             end
         end
