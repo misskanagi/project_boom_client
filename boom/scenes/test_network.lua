@@ -64,24 +64,24 @@ function test_network:enter(pre, init_table)
               local e = nil
               if o.name == "spawn_point_1" then
                 if my_name == "yuge" then
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", true, true)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", true, true)
                   net:loginTest("yuge")
                 else
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", false, true)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", false, true)
                 end
               elseif o.name == "spawn_point_2" then
                 if my_name == "hako" then
                   e = entity:createEntity(type, x, y, w, h, 0.0, "hako", true)
                   net:loginTest("hako")
                 else
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", false)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "hako", false)
                 end
               elseif o.name == "spawn_point_3" then
                 if my_name == "lsm" then
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", true)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", true)
                   net:loginTest("lsm")
                 else
-                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", false)
+                  e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", false)
                 end
               end
               local t = e and engine:addEntity(e)

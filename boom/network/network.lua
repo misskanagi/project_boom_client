@@ -222,7 +222,7 @@ end
 function network:sendMouse(playerId, tx, ty)
     if not self.is_connected or self.playerId == nil then return end
     data = {playerId = self.playerId, roomId = "yuge",
-            playerCommands = {{inputDevType = 3, tx = tx, ty = ty},}}
+            playerCommands = {{inputDevType = 3, tx = tx, ty = ty, isRepeat=false, key="",pressedOrReleased = false},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
