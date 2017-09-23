@@ -27,7 +27,7 @@ function SendPhysicSnapshot:sendSnapshot()
     --if entity:get("IsPlayer") then
       local snapshot_entity = {
         worldId = 1,
-        entityId = entity:get("GlobalEntityId").id,
+        entityId = entity:get("EntityId").id,
         status = 1,
         bodies = {},
       }
@@ -58,7 +58,7 @@ function SendPhysicSnapshot:sendSnapshot()
 end
 
 function SendPhysicSnapshot:requires()
-    return {"Physic", "GlobalEntityId"}
+    return {"Physic", "EntityId"}
 end
 
 return SendPhysicSnapshot

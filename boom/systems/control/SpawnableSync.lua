@@ -11,9 +11,13 @@ function SpawnableSync:update(dt)
             if not sp.triggered then
                 sp.triggered = true
                 Timer.after(sp.delay, function()
-                    local e = EntityManager:createEntity(sp.entity_name, unpack(sp.spawn_params))
+                    local e = EntityManager:createEntity(
+                        sp.entity_list[sp.spawn_callback()],
+                        unpack(sp.spawn_params)
+                    )
                     if e then
                         engine:addEntity(e)
+                        e:setParent(entity)
                     end
                     sp.triggered = false
                 end)

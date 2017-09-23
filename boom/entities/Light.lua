@@ -2,7 +2,6 @@ local DrawablePolygon = require("boom.components.graphic.DrawablePolygon")
 local Physic = require "boom.components.physic.Physic"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
 -- light entity
 local createLight = function(x, y, w, h, angle, world, light_world, r, g, b, range, height, glow)
@@ -15,7 +14,6 @@ local createLight = function(x, y, w, h, angle, world, light_world, r, g, b, ran
     e:add(DrawablePolygon({body:getWorldPoints(shape:getPoints())}, {r=r or 255, g=g or 255, b=b or 255}, "fill"))
     e:add(Physic(body))
     local t = light_world and e:add(Light(light_world, sx, sy, height or 24, r, g, b, range, glow))
-    e:add(GlobalEntityId())
     return e
 end
 

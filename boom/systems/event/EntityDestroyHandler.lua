@@ -29,8 +29,8 @@ function EntityDestroyHandler:fireEntityDestroy(event)
         end
     end
     --step 3: remove physical body and entity
-    if entity:has("GlobalEntityId") and entity:has("Physic") then
-        local gid = entity:get("GlobalEntityId").id
+    if entity:has("EntityId") and entity:has("Physic") then
+        local gid = entity:get("EntityId").id
         local body = entity:get("Physic").body
         body:setUserData(nil)
         body:destroy()

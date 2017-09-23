@@ -1,7 +1,6 @@
 local DrawablePolygon = require("boom.components.graphic.DrawablePolygon")
 local Physic = require "boom.components.physic.Physic"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 
 -- wall entity
 local createWalls = function(x, y, w, h, r, world, light_world)
@@ -13,7 +12,6 @@ local createWalls = function(x, y, w, h, r, world, light_world)
     body:setAngle(r or 0)
     t = light_world and e:add(ShaderPolygon(light_world, body, 4))
     e:add(Physic(body))
-    e:add(GlobalEntityId())
     body:setUserData(e)
     return e
 end

@@ -7,6 +7,7 @@ local BoosterSync = require "boom.systems.physics.BoosterSync"
 local ExplosiveSync = require "boom.systems.physics.ExplosiveSync"
 local ImagePhysicSync = require "boom.systems.physics.ImagePhysicSync"
 local PolygonPhysicSync = require "boom.systems.physics.PolygonPhysicSync"
+local ItemSpin = require "boom.systems.physics.ItemSpin"
 
 local physics = {
   Friction = Friction(),
@@ -18,6 +19,7 @@ local physics = {
   ExplosiveSync = ExplosiveSync(),
   ImagePhysicSync = ImagePhysicSync(),
   PolygonPhysicSync = PolygonPhysicSync(),
+  ItemSpin = ItemSpin(),
 }
 
 return physics

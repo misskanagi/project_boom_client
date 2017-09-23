@@ -1,7 +1,6 @@
 local Physic = require "boom.components.physic.Physic"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 local CollisionCallbacks = require("boom.components.physic.CollisionCallbacks")
 local DrawableImage = require("boom.components.graphic.DrawableImage")
 local events = require("boom.events")
@@ -26,7 +25,6 @@ local createHealthShellItem = function(x, y, r, world, light_world)
     e:add(Physic(body))
     e:add(DrawableImage(image, x, y, r))
     local t = light_world and e:add(ShaderPolygon(light_world, body))
-    e:add(GlobalEntityId())
     e:add(CollisionCallbacks(
         function(that_entity, coll)
             if that_entity:has("IsPlayer") and that_entity:has("Launchable") then

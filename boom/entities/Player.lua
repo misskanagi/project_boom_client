@@ -2,7 +2,7 @@ local Physic = require "boom.components.physic.Physic"
 local CollisionCallbacks = require("boom.components.physic.CollisionCallbacks")
 
 local IsPlayer = require "boom.components.identifier.IsPlayer"
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
+local EntityId = require("boom.components.identifier.EntityId")
 local IsMyself = require("boom.components.identifier.IsMyself")
 local IsRoomMaster = require("boom.components.identifier.IsRoomMaster")
 local PlayerName = require("boom.components.identifier.PlayerName")
@@ -24,7 +24,7 @@ local Health = require("boom.components.logic.Health")
 
 
 -- player entity
-local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master)
+local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     local tire = Tire(world, sx, sy)
@@ -52,14 +52,8 @@ local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_m
       e:add(IsRoomMaster())
     end
     e:add(Health(100))
-    e:add(GlobalEntityId())
+    e:add(EntityId(id))
     tire.body:setUserData(e)
-    --[[add CollisionCallbacks
-    e:add(CollisionCallbacks(
-        function(other_entity, coll)
-            print(other_entity:get("GlobalEntityId").id)
-        end
-    ))]]
     return e
 end
 return createPlayer

@@ -1793,7 +1793,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "AdvancedShellItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1808,7 +1808,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "LandmineItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1823,7 +1823,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "HealShellItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1838,7 +1838,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "BoosterItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1853,7 +1853,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "HealthBoxItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1868,7 +1868,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "NuclearShellItem"
+            ["type"] = "ItemSpawner"
           }
         },
         {
@@ -1883,7 +1883,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "NormalShellItem"
+            ["type"] = "ItemSpawner"
           }
         }
       }

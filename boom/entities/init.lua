@@ -12,6 +12,7 @@ local AdvancedShell = require "boom.entities.AdvancedShell"
 local NuclearShell = require "boom.entities.NuclearShell"
 local Landmine = require "boom.entities.Landmine"
 local ItemManager = require "boom.entities.items"
+local ItemSpawner = require "boom.entities.ItemSpawner"
 
 local EntityManager = {}
 
@@ -33,11 +34,12 @@ function EntityManager:createEntity(type, ...)
   local e = nil
   local x, y, w, h, r = args[1], args[2], args[3], args[4], args[5]
   if type == "Player" or type == "player" then
-    local player_id, is_myself, is_room_master = args[6], args[7], args[8]
-    e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master)
+    -- player need entity id from parameter!
+    local player_id, is_myself, is_room_master, id = args[6], args[7], args[8], args[9]
+    e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id)
   elseif type == "PlayerSpawner" or type == "playerspawner" then
-    local player_id, is_myself, is_room_master = args[6], args[7], args[8]
-    e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master)
+    local player_id, is_myself, is_room_master, id = args[6], args[7], args[8], args[9]
+    e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id)
   elseif type == "Barrier" or type == "barrier" then
     local object = args[1]
     e = Barrier(object, self.map, self.world, self.shader)
@@ -67,12 +69,16 @@ function EntityManager:createEntity(type, ...)
   elseif type == "Landmine" or type == "landmine" then
     local dmg, range = args[6], args[7]
     e = Landmine(x, y, w, h, r, dmg, range, self.world, self.shader)
+  elseif type == "ItemSpawner" or type == "itemspawner" then
+    local item_list = args[6]
+    e = ItemSpawner(x, y, w, h, r, item_list, self.world, self.shader)
   else
     e = ItemManager:createItem(type, ...)
   end
-  if e and e:has("GlobalEntityId") then
-    local gid = e:get("GlobalEntityId").id
+  if e and e:has("EntityId") then
+    local gid = e:get("EntityId").id
     self.entity_list[gid] = e
+    print(#self.entity_list)
   end
   return e
 end

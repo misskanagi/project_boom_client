@@ -3,7 +3,6 @@ local Physic = require "boom.components.physic.Physic"
 local DrawablePolygon = require "boom.components.graphic.DrawablePolygon"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
-local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 local IsShell = require("boom.components.identifier.IsShell")
 local Explosive = require("boom.components.vehicle.Explosive")
 local Booster = require("boom.components.vehicle.Booster")
@@ -28,7 +27,6 @@ local createHealShell = function(x, y, w, h, r, heal, range, world, light_world)
     --local t = light_world and e:add(ShaderPolygon(light_world, body))
     local sg = light_world and e:add(Light(light_world, sx, sy, 4, nil, nil, nil, 80))
     e:add(IsShell())
-    e:add(GlobalEntityId())
     e:add(CollisionCallbacks(
         function(that_entity, coll)
             if e:getParent() ~= that_entity and not e:get("Explosive").is_exploded then
@@ -36,15 +34,6 @@ local createHealShell = function(x, y, w, h, r, heal, range, world, light_world)
                 e:get("Explosive").is_exploded = true
                 e:get("Explosive").explosion_ps:start()
                 --camera:instance():shake(20, true)
-                -- heal to every body
-                local x1, y1 = body:getWorldCenter()
-                local range = e:get("Explosive").range_radius
-                local heal = e:get("Explosive").damage
-                for _, entity in pairs(e:get("Explosive").in_range_entity) do
-                    local x2, y2 = entity:get("Physic").body:getWorldCenter()
-                    local dist = math.sqrt(math.pow(x1-x2, 2) + math.pow(y1-y2, 2))
-                    eventmanager:fireEvent(events.Damage(e, entity, heal, dist, range))
-                end
                 light_world:remove(e:get("Light").light)
             end
         end
