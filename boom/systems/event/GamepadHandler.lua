@@ -103,7 +103,23 @@ end
 
 --专门处理右摇杆的移动
 function GamepadHandler:fireRightStickMovedEvent(event)
-  
+  --local mx = event.x
+  --local my = event.y
+  for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
+    local turret = entity:get("Turret") or nil
+    if turret then
+      --本地施加炮台旋转
+      local body = turret.body
+      --local tx, ty = body:getLocalPoint(event.x, event.y)
+     -- print(event.x, event.y)
+      v.x, v.y = event.x, -event.y
+      v:rotateInplace(math.pi/2)
+      --print(v:angleTo(nv))
+      body:applyAngularImpulse(0.1 * body:getInertia() * v:angleTo(nv))
+      --发给Server
+      
+    end
+  end
 end
 
 
@@ -130,11 +146,12 @@ function GamepadHandler:update(dt)
     rightstick_timer = rightstick_timer + dt
     if rightstick_timer > fire_interval then
       rightstick_timer = 0
-      --获取当前鼠标的参数
+      --获取当前右摇杆的参数
       --local mx, my = camera:mousePosition()
-      local x = 1
-      local y = 1
-      eventmanager:fireEvent(events.GamepadRightStickMoved(x, y))
+      local x = rightx
+      local y = righty
+      --print(x,y)
+      GamepadHandler:fireRightStickMovedEvent(events.GamepadRightStickMoved(x, y))
     end
     
     --处理l2
@@ -147,7 +164,6 @@ function GamepadHandler:update(dt)
       l2_used = true
       GamepadHandler:firePressedEvent(events.GamepadPressed("movebackward"))
     end
-    
     
     --处理r2, 松手-1，按下1
     --必须松了手以后在按才能开火

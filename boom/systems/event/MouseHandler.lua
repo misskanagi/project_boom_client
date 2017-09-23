@@ -50,7 +50,10 @@ function MouseHandler:update(dt)
     timer = 0
     --获取当前鼠标的参数
     local mx, my = camera:mousePosition()
-    eventmanager:fireEvent(events.MouseMoved(mx, my))
+    if (love.joystick.getJoysticks()) == nil then
+      eventmanager:fireEvent(events.MouseMoved(mx, my))
+    end
+    
   end
 end
 
