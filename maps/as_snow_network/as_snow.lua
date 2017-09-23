@@ -8,7 +8,7 @@ return {
   height = 61,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 242,
+  nextobjectid = 252,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -1097,7 +1097,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "PlayerSpawner"
           }
         },
         {
@@ -1282,7 +1282,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "PlayerSpawner"
           }
         },
         {
@@ -1889,7 +1889,142 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "PlayerSpawner"
+          }
+        },
+        {
+          id = 242,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 672,
+          y = 608,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 244,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 704,
+          y = 128,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 245,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 160,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 246,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 608,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 247,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1088,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 248,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1216,
+          y = 1344,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 249,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1152,
+          y = 512,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 250,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 960,
+          y = 224,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 251,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 384,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "ItemSpawner"
           }
         }
       }

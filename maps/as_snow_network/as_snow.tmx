@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="242">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="252">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" trans="ff00ff" width="544" height="480"/>
  </tileset>
@@ -351,7 +351,7 @@
   </object>
   <object id="123" name="spawn_point_1" x="800" y="1024" width="32" height="32">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="PlayerSpawner"/>
    </properties>
   </object>
   <object id="127" x="448" y="480" width="32" height="32">
@@ -405,7 +405,7 @@
   </object>
   <object id="166" name="spawn_point_2" x="576" y="1024" width="32" height="32">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="PlayerSpawner"/>
    </properties>
   </object>
   <object id="202" gid="150" x="992" y="1568" width="32" height="32">
@@ -589,7 +589,52 @@
   <object id="240" gid="59" x="160" y="320" width="32" height="32"/>
   <object id="241" name="spawn_point_3" x="576" y="1216" width="32" height="32">
    <properties>
-    <property name="type" value="Player"/>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="242" x="672" y="608" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="244" x="704" y="128" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="245" x="160" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="246" x="608" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="247" x="1088" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="248" x="1216" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="249" x="1152" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="250" x="960" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="251" x="160" y="384" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
    </properties>
   </object>
  </objectgroup>

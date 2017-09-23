@@ -6,12 +6,21 @@ local LaunchableSync = require "boom.systems.control.LaunchableSync"
 local SpawnableSync = require "boom.systems.control.SpawnableSync"
 
 local control = {
-  DrivableSync = DrivableSync(),
-  GunFireSync = GunFireSync(),
-  TurretSpinSync = TurretSpinSync(),
-  LightControl = LightControl(),
-  LaunchableSync = LaunchableSync(),
-  SpawnableSync = SpawnableSync(),
+    DrivableSync(),
+    GunFireSync(),
+    TurretSpinSync(),
+    LightControl(),
+    LaunchableSync(),
+    SpawnableSync(),
+}
+
+control.names = {
+    "DrivableSync",
+    "GunFireSync",
+    "TurretSpinSync",
+    "LightControl",
+    "LaunchableSync",
+    "SpawnableSync",
 }
 
 return control

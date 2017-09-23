@@ -12,15 +12,27 @@ local RefractionDraw = require "boom.systems.graphic.RefractionDraw"
 
 
 local graphic = {
-  PolygonDraw = PolygonDraw(),
-  ExplosiveDraw = ExplosiveDraw(),
-  BoosterDraw = BoosterDraw(),
-  PlayerDraw = PlayerDraw(),
-  GunFireDraw = GunFireDraw(),
-  ImageDraw = ImageDraw(),
-  WreckageDraw = WreckageDraw(),
-  ShaderRefractionSync = ShaderRefractionSync(),
-  --RefractionDraw = RefractionDraw(),
+    ImageDraw(),
+    PolygonDraw(),
+    ExplosiveDraw(),
+    BoosterDraw(),
+    GunFireDraw(),
+    WreckageDraw(),
+    ShaderRefractionSync(),
+    PlayerDraw(),
+    --RefractionDraw = RefractionDraw(),
+}
+
+graphic.names = {
+    "ImageDraw",
+    "PolygonDraw",
+    "ExplosiveDraw",
+    "BoosterDraw",
+    "GunFireDraw",
+    "WreckageDraw",
+    "ShaderRefractionSync",
+    "PlayerDraw",
+    --RefractionDraw = RefractionDraw(),
 }
 
 return graphic

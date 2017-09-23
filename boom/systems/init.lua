@@ -20,32 +20,33 @@ local modules = {
 
 local system_manager = {
   startModule = function(module_name)
-      for n, s in pairs(modules[module_name]) do
-          engine:startSystem(n)
+      for _, s in pairs(modules[module_name].names) do
+          engine:startSystem(s)
       end
   end,
 
   stopModule = function(module_name)
-      for n, s in pairs(modules[module_name]) do
-          engine:stopSystem(n)
+      for _, s in pairs(modules[module_name].names) do
+          engine:stopSystem(s)
       end
   end,
 
   toggleModule = function(module_name)
-      for n, s in pairs(modules[module_name]) do
-          engine:toggleSystem(n)
+      for _, s in pairs(modules[module_name].names) do
+          engine:toggleSystem(s)
       end
   end,
 
   addAllSystemsToEngine = function()
     for _, module in pairs(modules) do
-      for _, system in pairs(module) do
+      for _, system in ipairs(module) do
+        print(system)
         engine:addSystem(system)
       end
     end
     -- disable debug system first
-    for n, s in pairs(modules["debug"]) do
-        engine:stopSystem(n)
+    for _, s in pairs(modules["debug"].names) do
+        engine:stopSystem(s)
     end
     -- disable HUDBattle system first
     engine:toggleSystem("HUDBattle")

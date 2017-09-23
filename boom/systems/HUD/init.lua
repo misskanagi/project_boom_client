@@ -4,10 +4,17 @@ local HUDAssist = require "boom.systems.HUD.HUDAssist"
 local HUDUpdate = require "boom.systems.HUD.HUDUpdate"
 
 local HUD = {
-  HUDMyInfo = HUDMyInfo(),
-  HUDBattle = HUDBattle(),
-  HUDAssist = HUDAssist(),
-  HUDUpdate = HUDUpdate(),
+  HUDMyInfo(),
+  HUDBattle(),
+  HUDAssist(),
+  HUDUpdate(),
+}
+
+HUD.names = {
+  "HUDMyInfo",
+  "HUDBattle",
+  "HUDAssist",
+  "HUDUpdate",
 }
 
 return HUD

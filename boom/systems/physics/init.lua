@@ -10,16 +10,29 @@ local PolygonPhysicSync = require "boom.systems.physics.PolygonPhysicSync"
 local ItemSpin = require "boom.systems.physics.ItemSpin"
 
 local physics = {
-  Friction = Friction(),
-  ShaderPolygonSync = ShaderPolygonSync(),
-  ShaderCircleSync = ShaderCircleSync(),
-  LightPhysicSync = LightPhysicSync(),
-  STIObjectSync = STIObjectSync(),
-  BoosterSync = BoosterSync(),
-  ExplosiveSync = ExplosiveSync(),
-  ImagePhysicSync = ImagePhysicSync(),
-  PolygonPhysicSync = PolygonPhysicSync(),
-  ItemSpin = ItemSpin(),
+  Friction(),
+  ShaderPolygonSync(),
+  ShaderCircleSync(),
+  LightPhysicSync(),
+  STIObjectSync(),
+  BoosterSync(),
+  ExplosiveSync(),
+  ImagePhysicSync(),
+  PolygonPhysicSync(),
+  ItemSpin(),
+}
+
+physics.names = {
+  "Friction",
+  "ShaderPolygonSync",
+  "ShaderCircleSync",
+  "LightPhysicSync",
+  "STIObjectSync",
+  "BoosterSync",
+  "ExplosiveSync",
+  "ImagePhysicSync",
+  "PolygonPhysicSync",
+  "ItemSpin",
 }
 
 return physics

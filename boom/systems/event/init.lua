@@ -43,8 +43,16 @@ local event = {
   --KeyboardHandler = KeyboardHandler,
   --NetKeyboardHandler = NetKeyboardHandler,
   --CollisionHandler = CollisionHandler,
-  GamepadHandler = GamepadHandler,
-  MouseHandler = MouseHandler,
+  GamepadHandler,
+  MouseHandler,
+}
+
+event.names = {
+  --KeyboardHandler = KeyboardHandler,
+  --NetKeyboardHandler = NetKeyboardHandler,
+  --CollisionHandler = CollisionHandler,
+  "GamepadHandler",
+  "MouseHandler",
 }
 
 return event

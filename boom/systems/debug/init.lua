@@ -6,12 +6,22 @@ local DebugBooster = require "boom.systems.debug.DebugBooster"
 local DebugHealth = require "boom.systems.debug.DebugHealth"
 
 local debug = {
-    DebugPhysics = DebugPhysics(),
-    DebugEntityId = DebugEntityId(),
-    DebugGraphicStatus = DebugGraphicStatus(),
-    DebugExplosiveRange = DebugExplosiveRange(),
-    DebugBooster = DebugBooster(),
-    DebugHealth = DebugHealth(),
+    DebugPhysics(),
+    DebugEntityId(),
+    DebugGraphicStatus(),
+    DebugExplosiveRange(),
+    DebugBooster(),
+    DebugHealth(),
 }
+
+debug.names = {
+    "DebugPhysics",
+    "DebugEntityId",
+    "DebugGraphicStatus",
+    "DebugExplosiveRange",
+    "DebugBooster",
+    "DebugHealth",
+}
+
 
 return debug

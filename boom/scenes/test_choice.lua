@@ -42,7 +42,7 @@ function test_choice:keyreleased(key)
    elseif key == 'down' then
       selection = (selection + 1)%3
    elseif key == 'return' or key == ' ' then
-      local info = GameRoomInfo("test_network", 2,
+      local info = utils.GameRoomInfo("test_network", 2,
                                 5, 1,
                                 "yuge", "yuge",
                                 {
@@ -52,15 +52,12 @@ function test_choice:keyreleased(key)
                                 }
                               )
       if(selection == 0) then
-        my_name = "yuge"
         info.my_id = "yuge"
       end
       if(selection == 1) then
-        my_name = "hako"
         info.my_id = "hako"
       end
       if(selection == 2) then
-        my_name = "lsm"
         info.my_id = "lsm"
       end
       local test_network = require "boom.scenes.test_network"

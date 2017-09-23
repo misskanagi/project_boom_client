@@ -38,8 +38,8 @@ function test_place:enter()
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    --self.map = map("maps/as_snow/as_snow.lua")
-    self.map = map("maps/as_snow_network/base.lua")
+    self.map = map("maps/as_snow/as_snow.lua")
+    --self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -66,7 +66,7 @@ function test_place:enter()
       end
     end
     local sun = require "boom.entities.Sun" -- add sun
-    engine:addEntity(sun(self.map, self.shader))
+    --engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
@@ -110,7 +110,7 @@ function test_place:draw()
         -- draw ECS engine
         engine:draw()
     end)
-    
+
     -- draw HUD
     HUD_canvas:draw()
     -- draw debug
