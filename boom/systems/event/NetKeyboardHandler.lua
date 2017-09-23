@@ -5,6 +5,7 @@ function NetKeyboardHandler:fireNetPressedEvent(event)
         if entity:get("PlayerName").name == event.name then
             local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
             local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
+            local lcmd = entity:get("Launchable") and entity:get("Launchable").cmd or nil
             if event.key == "w" and dcmd then
                 dcmd.forward=true
             elseif event.key == "s" and dcmd then

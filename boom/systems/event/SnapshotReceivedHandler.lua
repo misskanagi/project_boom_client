@@ -5,7 +5,7 @@ local function lerp(a, b, k) --smooth transitions
   if a == b then
     return a
   else
-    if math.abs(a-b) < 0.005 then return b else return a * (1-k) + b * k end
+    if math.abs(a-b) < 0.05 then return b else return a * (1-k) + b * k end
   end
 end
 
@@ -25,7 +25,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
             local oor = physic_body:getAngle()
             local ovx, ovy = physic_body:getLinearVelocity()
             local ova = physic_body:getAngularVelocity()
-            local C = 0.3
+            local C = 0.2
             physic_body:setPosition(lerp(ox, x, C), lerp(oy, y, C))
             physic_body:setAngle(lerp(oor, r, C))
             physic_body:setLinearVelocity(lerp(ovx, vx, C), lerp(ovy, vy, C))

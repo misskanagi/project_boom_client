@@ -3,7 +3,7 @@ local timer = require("libs.hump.timer")
 local SendPhysicSnapshot = class("SendPhysicSnapshot", System)
 
 local elapsed = 0.0
-local every = 0.050
+local every = 0.080
 
 function SendPhysicSnapshot:update(dt)
     elapsed = elapsed + dt
