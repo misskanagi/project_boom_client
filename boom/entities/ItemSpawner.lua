@@ -2,13 +2,22 @@ local Spawnable = require "boom.components.control.Spawnable"
 local Light = require("boom.components.graphic.Light")
 local Physic = require "boom.components.physic.Physic"
 
-local default_list = {
+--[[local default_list = {
     "AdvancedShellItem", "AdvancedShellItem", "AdvancedShellItem", "AdvancedShellItem", "AdvancedShellItem",
     "BoosterItem",  "BoosterItem",  "BoosterItem",  "BoosterItem",  "BoosterItem",
     "HealShellItem",  "HealShellItem",  "HealShellItem",  "HealShellItem",  "HealShellItem",
     "HealthBoxItem",  "HealthBoxItem",  "HealthBoxItem",  "HealthBoxItem",  "HealthBoxItem",  "HealthBoxItem",  "HealthBoxItem",
     "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",  "LandmineItem",
     "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",  "NormalShellItem",
+    "NuclearShellItem",
+}]]
+local default_list = {
+    "AdvancedShellItem",
+    "BoosterItem",
+    "HealShellItem",
+    "HealthBoxItem",
+    "LandmineItem",
+    "NormalShellItem",
     "NuclearShellItem",
 }
 
@@ -19,10 +28,15 @@ local createItemSpawner = function(x, y, w, h, r, item_list, world, light_world)
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     local item_list = item_list or default_list
+    local start_spawn = 0
+    local spawn_index_func = function()
+        start_spawn = (start_spawn + 1) % 7 + 1
+        return start_spawn
+    end
     fixture:setSensor(true)
     e:add(Spawnable(item_list,
         function(dt)
-            return math.random(#item_list)
+            return spawn_index_func()
         end,
         function(dt)
             for _, e in pairs(e.children) do
