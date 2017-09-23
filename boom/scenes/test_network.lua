@@ -32,12 +32,12 @@ local debug_canvas = require "boom.systems.debug.debug_canvas"
 local particle_canvas = require "boom.systems.graphic.particle_canvas"
 
 --network
---net:connect("172.28.37.19", 8080)
+net:connect("172.28.37.19", 8080)
 --net:connect("192.168.1.101", 8080)
-net:connect("114.212.83.208", 8080)
+--net:connect("114.212.83.208", 8080)
 net:startReceiving()
 
-function test_network:enter()
+function test_network:enter(pre, info)
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module

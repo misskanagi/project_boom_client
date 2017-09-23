@@ -1,4 +1,5 @@
 local Vector = require("libs.hump.vector")
+local events = require("boom.events")
 local GunFireSync = class("GunFireSync", System)
 
 local elapsed = 0.0
@@ -44,7 +45,7 @@ function GunFireSync:update(dt)
             -- update hit entity
             local rv = Vector(0, -1)
             rv:rotateInplace(r)
-            local hx, hy, hr = self:findHitEntity(fire, cx, cy, cx+rv.x*fire.fire_range,
+            local hx, hy, hr = self:findHitEntity(entity, fire, cx, cy, cx+rv.x*fire.fire_range,
                                                   cy+rv.y*fire.fire_range, r+math.pi/2)
             -- add to hit set
             if hx then
@@ -67,11 +68,12 @@ function GunFireSync:update(dt)
     end
 end
 
-function GunFireSync:findHitEntity(fire_comp, x1, y1, x2, y2, r)
+function GunFireSync:findHitEntity(src_entity, fire_comp, x1, y1, x2, y2, r)
     local closestFraction = 1
     local hit_x = nil
     local hit_y = nil
     local hit_r = r
+    local closet_entity = nil
     for _, entity in pairs(engine:getEntitiesWithComponent("Physic")) do
         local body = entity:get("Physic").body
         for _, fix in pairs(body:getFixtureList()) do
@@ -79,10 +81,21 @@ function GunFireSync:findHitEntity(fire_comp, x1, y1, x2, y2, r)
             local xn, yn, fraction = fix:rayCast(x1, y1, x2, y2, 1)
             if xn then
                 if fraction < closestFraction then
+                    closet_entity = entity
                     closestFraction = fraction
                     hit_x, hit_y = x1 + (x2 - x1) * fraction, y1 + (y2 - y1) * fraction
                 end
             end
+        end
+    end
+    if closet_entity and closet_entity:has("Health") then
+        if src_entity:has("Physic") and closet_entity:has("Physic") then
+            local x1, y1 = src_entity:get("Physic").body:getWorldCenter()
+            local x2, y2 = closet_entity:get("Physic").body:getWorldCenter()
+            local dist = math.sqrt(math.pow(x1-x2, 2) + math.pow(y1-y2, 2))
+            local dmg = src_entity:get("Firable").fire_dmg
+            local range = src_entity:get("Firable").fire_range
+            eventmanager:fireEvent(events.Damage(src_entity, closet_entity, dmg, dist, range))
         end
     end
     return hit_x, hit_y, hit_r

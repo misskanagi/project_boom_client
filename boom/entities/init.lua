@@ -78,7 +78,6 @@ function EntityManager:createEntity(type, ...)
   if e and e:has("EntityId") then
     local gid = e:get("EntityId").id
     self.entity_list[gid] = e
-    print(#self.entity_list)
   end
   return e
 end

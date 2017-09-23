@@ -2,6 +2,7 @@ local test_choice = class("test_choice")
 local game_state = require("libs.hump.gamestate")
 local utf8 = require("utf8")
 local selection = 0
+local utils = require("boom.utils")
 
 function test_choice:update(dt)
 
@@ -41,17 +42,29 @@ function test_choice:keyreleased(key)
    elseif key == 'down' then
       selection = (selection + 1)%3
    elseif key == 'return' or key == ' ' then
+      local info = GameRoomInfo("test_network", 2,
+                                5, 1,
+                                "yuge", "yuge",
+                                {
+                                  {player_id = "yuge", group_id = 1, tank_type = 1},
+                                  {player_id = "hako", group_id = 2, tank_type = 1},
+                                  {player_id = "lsm", group_id = 2, tank_type = 1},
+                                }
+                              )
       if(selection == 0) then
         my_name = "yuge"
+        info.my_id = "yuge"
       end
       if(selection == 1) then
         my_name = "hako"
+        info.my_id = "hako"
       end
       if(selection == 2) then
         my_name = "lsm"
+        info.my_id = "lsm"
       end
       local test_network = require "boom.scenes.test_network"
-      game_state.switch(test_network)
+      game_state.switch(test_network, info)
    end
 end
 
