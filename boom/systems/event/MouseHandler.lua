@@ -25,7 +25,7 @@ function MouseHandler:fireMovedEvent(event)
       v.x, v.y = tx, ty
       v:rotateInplace(math.pi/2)
       --print(v:angleTo(nv))
-      body:applyAngularImpulse(0.1 * body:getInertia() * v:angleTo(nv))
+      body:applyAngularImpulse(0.2 * body:getInertia() * v:angleTo(nv))
       --发给Server
       event.tx = tx
       event.ty = ty
