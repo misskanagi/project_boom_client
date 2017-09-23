@@ -609,7 +609,7 @@ begin_game = function()
     return
   end
   --检查是否是已经全员到齐且全员ready
-  if #PlayerInfos[2] == playersPerGroup and #PlayerInfos[1] == playersPerGroup then
+  --if #PlayerInfos[2] == playersPerGroup and #PlayerInfos[1] == playersPerGroup then
     for k, v in pairs(PlayerInfos[2]) do
       if not v["playerStatus"] == 1 then
         return
@@ -620,9 +620,9 @@ begin_game = function()
         return
       end
     end
-  else
-    return
-  end
+  --else
+  --  return
+  --end
   if not test_on_windows then
     net:requestGameBegin(roomId)
   end
