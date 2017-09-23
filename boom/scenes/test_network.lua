@@ -52,6 +52,7 @@ function test_network:enter(pre, info)
     local layer = self.map.layers["entity_layer_1"]
     EM:init(layer, self.map, self.world, self.shader)
     local player_info_index = 1
+    local max_player_num = #info.players_info
     for _, o in pairs(layer.objects) do
         local type = o.properties["type"]
         local x, y, w, h = o.x, o.y, o.width, o.height
@@ -60,23 +61,24 @@ function test_network:enter(pre, info)
             local t = e and engine:addEntity(e)
         else
             if o.properties["type"] == "playerspawner" or o.properties["type"] == "PlayerSpawner" then
-              local player_info = info.players_info[player_info_index]
-              local id = 1000000+player_info_index
-              player_info_index = player_info_index + 1
-              local player_id = player_info.player_id
-              local group_id = player_info.group_id
-              local tank_type = player_info.tank_type
-              local myself_flag = false
-              local room_master_flag = false
-
-              if player_id == my_name then
-                  myself_flag = true
+              if player_info_index <= max_player_num then
+                  local player_info = info.players_info[player_info_index]
+                  local id = 1000000+player_info_index
+                  player_info_index = player_info_index + 1
+                  local player_id = player_info.player_id
+                  local group_id = player_info.group_id
+                  local tank_type = player_info.tank_type
+                  local myself_flag = false
+                  local room_master_flag = false
+                  if player_id == my_name then
+                      myself_flag = true
+                  end
+                  if player_id == info.room_master_id then
+                      room_master_flag = true
+                  end
+                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id)
+                  local t = e and engine:addEntity(e)
               end
-              if player_id == info.room_master_id then
-                  room_master_flag = true
-              end
-              local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id)
-              local t = e and engine:addEntity(e)
             else
               local e = EM:createEntity(type, x, y, w, h, 0.0)
               local t = e and engine:addEntity(e)

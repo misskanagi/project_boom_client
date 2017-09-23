@@ -445,6 +445,7 @@ get_gamebegin_broadcast = function(roomid)
           group_id = group_id,
           tank_type = group[i].tankType,
         }
+        print(group[i].playerId, group_id, group[i].tankType)
       end
     end
 
