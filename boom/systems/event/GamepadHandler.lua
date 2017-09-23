@@ -9,7 +9,7 @@ local l2_used = false --l2键之前被按下过
 local rightstick_timer = 0
 local fire_interval = 0.02   --采集鼠标当前位置的时间间隔
 local v = Vector(0, 0)
-local nv = Vector(1, 0) 
+local nv = Vector(1, 0)
 
 -- locally pressed
 function GamepadHandler:firePressedEvent(event)
@@ -111,13 +111,27 @@ function GamepadHandler:fireRightStickMovedEvent(event)
       --本地施加炮台旋转
       local body = turret.body
       --local tx, ty = body:getLocalPoint(event.x, event.y)
-     -- print(event.x, event.y)
-      v.x, v.y = event.x, -event.y
-      v:rotateInplace(math.pi/2)
-      --print(v:angleTo(nv))
-      body:applyAngularImpulse(0.1 * body:getInertia() * v:angleTo(nv))
-      --发给Server
-      
+      -- print(event.x, event.y)
+      turret.gp_x = 0
+      turret.gp_y = 0
+      if event.x > 0.5 or event.x < -0.5 or event.y > 0.5 or event.y < -0.5 then
+        turret.gp_x = event.x
+        turret.gp_y = event.y
+        --print(event.x, event.y)
+        --local tx, ty = body:getLocalPoint(10*event.x, 10*event.y)
+        --print("tx", "ty", tx, ty)
+        local cx, cy = body:getWorldCenter()
+        local mx, my = cx+event.x, cy+event.y
+        local tx, ty = body:getLocalPoint(mx, my)
+        v.x, v.y = tx, ty
+        v:rotateInplace(math.pi/2)
+        --print(v:toPolar())
+        --print(v:angleTo(nv))
+        body:applyAngularImpulse(0.8 * body:getInertia() * v:angleTo(nv))
+        
+        --发给Server
+        
+      end
     end
   end
 end
@@ -151,7 +165,7 @@ function GamepadHandler:update(dt)
       local x = rightx
       local y = righty
       --print(x,y)
-      --GamepadHandler:fireRightStickMovedEvent(events.GamepadRightStickMoved(x, y))
+      GamepadHandler:fireRightStickMovedEvent(events.GamepadRightStickMoved(x, y))
     end
     
     --处理l2
