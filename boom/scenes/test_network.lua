@@ -64,6 +64,7 @@ function test_network:enter(pre, info)
                 if my_name == "yuge" then
                   e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", true, true, 1000001)
                   net:loginTest("yuge")
+                  net:requestEnterRoom("yuge", "yuge")
                 else
                   e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", false, true, 1000001)
                 end
@@ -71,6 +72,7 @@ function test_network:enter(pre, info)
                 if my_name == "hako" then
                   e = EM:createEntity(type, x, y, w, h, 0.0, "hako", true, false, 1000002)
                   net:loginTest("hako")
+                  net:requestEnterRoom("yuge", "hako")
                 else
                   e = EM:createEntity(type, x, y, w, h, 0.0, "hako", false, false, 1000002)
                 end
@@ -78,6 +80,7 @@ function test_network:enter(pre, info)
                 if my_name == "lsm" then
                   e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", true, false, 1000003)
                   net:loginTest("lsm")
+                  net:requestEnterRoom("yuge", "lsm")
                 else
                   e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", false, false, 1000003)
                 end
