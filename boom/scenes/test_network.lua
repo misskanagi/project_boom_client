@@ -35,10 +35,10 @@ local particle_canvas = require "boom.systems.graphic.particle_canvas"
 local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
 
 --network
-net:connect("172.28.37.19", 8080)
+--net:connect("172.28.37.19", 8080)
 --net:connect("192.168.1.101", 8080)
 --net:connect("114.212.83.208", 8080)
-net:startReceiving()
+--net:startReceiving()
 
 function test_network:enter(pre, info)
     local my_name = info.my_id

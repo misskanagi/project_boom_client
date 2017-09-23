@@ -178,7 +178,7 @@ function room:enter(pre, init_table)
   lbl_group2 = gooi.newLabel({text = "GROUP2", x = lbl_group2_x, y = lbl_group2_y, w = lbl_group2_w, h = lbl_group2_h}):center()
   table.insert(gooi_widgets, lbl_group1)
   table.insert(gooi_widgets, lbl_group2)
-  
+
   --创建groupId==1的显示列表
   grid_1 = gooi.newPanel({x = grid_1_x, y = grid_1_y, w = grid_1_w, h = grid_1_h, layout = "grid 4x2"})
   for i = 1, 8 do
@@ -192,7 +192,7 @@ function room:enter(pre, init_table)
     players_widgets[1][#players_widgets[1]+1] = lbl_1_item
     table.insert(gooi_widgets, lbl_1_item)
   end
-  
+
   --创建groupId==1的显示列表
   grid_2 = gooi.newPanel({x = grid_2_x, y = grid_2_y, w = grid_2_w, h = grid_2_h, layout = "grid 4x2"})
   for i = 1, 8 do
@@ -379,7 +379,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
     isready = false
     game_state.switch(roomlist, init_table)
   end
-  
+
   local delete_groupId = 1
   if isMaster then
     local init_table = {}
@@ -397,7 +397,7 @@ get_quitroom_broadcast = function(isMaster, playerId)
         end
       end
     end
-   end 
+   end
   ::delete_player:: do
     --执行删除玩家的操作
     local group_players = PlayerInfos[delete_groupId]
@@ -425,17 +425,17 @@ get_gamebegin_broadcast = function(roomid)
       init_table["isMaster"] = false
     end
     local test_network = require "boom.scenes.test_network"
-    
+
     local info = utils.GameRoomInfo(
       "test_network", playersPerGroup, lifeNumber, gameMode,
-                                roomMasterId, myId,
+                                roomMasterId, myId
                                 --[[{
                                   {player_id = "yuge", group_id = 1, tank_type = 1},
                                   {player_id = "hako", group_id = 2, tank_type = 1},
                                   {player_id = "lsm", group_id = 2, tank_type = 1},
                                 }]]--
                               )
-    
+
     info.players_info = {}
     for group_id = 1, 2 do
       local group = PlayerInfos[group_id]
@@ -447,8 +447,8 @@ get_gamebegin_broadcast = function(roomid)
         }
       end
     end
-    
-    
+
+
     game_state.switch(test_network, info)
   else
     gui:feedback("Cannot begin game!")
