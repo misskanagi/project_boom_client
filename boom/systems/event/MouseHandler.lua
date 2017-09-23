@@ -14,19 +14,22 @@ function MouseHandler:fireMovedEvent(event)
   --此处处理监听到的鼠标移动事件
   local mx = event.x
   local my = event.y
+  --print(mx, my)
   for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
     local turret = entity:get("Turret") or nil
     if turret then
       --本地施加炮台旋转
       local body = turret.body
       local tx, ty = body:getLocalPoint(mx, my)
-      print(tx, ty)
+      --print(tx, ty)
       v.x, v.y = tx, ty
       v:rotateInplace(math.pi/2)
       --print(v:angleTo(nv))
       body:applyAngularImpulse(0.1 * body:getInertia() * v:angleTo(nv))
       --发给Server
-      
+      event.tx = tx
+      event.ty = ty
+      MouseHandler:fireMovedEventToNetwork(event)
     end
   end
 end
@@ -37,7 +40,7 @@ function MouseHandler:fireMovedEventToNetwork(event)
       local name = e:get("PlayerName").name
       if net then
         --net:sendKey(name, true, event.isrepeat, event.key)
-        --net:sendMouse(name, true, )
+        net:sendMouse(name, event.tx, event.ty)
       end
       break
     end
@@ -50,9 +53,9 @@ function MouseHandler:update(dt)
     timer = 0
     --获取当前鼠标的参数
     local mx, my = camera:mousePosition()
-    if (love.joystick.getJoysticks()) == nil then
+    --if (love.joystick.getJoysticks()) == nil then
       eventmanager:fireEvent(events.MouseMoved(mx, my))
-    end
+    --end
     
   end
 end

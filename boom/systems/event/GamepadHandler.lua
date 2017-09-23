@@ -151,7 +151,7 @@ function GamepadHandler:update(dt)
       local x = rightx
       local y = righty
       --print(x,y)
-      GamepadHandler:fireRightStickMovedEvent(events.GamepadRightStickMoved(x, y))
+      --GamepadHandler:fireRightStickMovedEvent(events.GamepadRightStickMoved(x, y))
     end
     
     --处理l2

@@ -7,8 +7,8 @@ message PlayerCommand{
     bool pressedOrReleased=1;
     bool isRepeat = 2;
     string key = 3;
-    int32 x
-    int32 y
+    float tx
+    float ty
 }
 
 message CommandQueue {

@@ -2,6 +2,7 @@ local KeyboardHandler = require "boom.systems.event.KeyboardHandler"
 local MouseHandler = require "boom.systems.event.MouseHandler"
 local GamepadHandler = require "boom.systems.event.GamepadHandler"
 local NetKeyboardHandler = require "boom.systems.event.NetKeyboardHandler"
+local NetMouseHandler = require "boom.systems.event.NetMouseHandler"
 local NetGamepadHandler = require "boom.systems.event.NetGamepadHandler"
 local SnapshotReceivedHandler = require "boom.systems.event.SnapshotReceivedHandler"
 local CollisionHandler = require "boom.systems.event.CollisionHandler"
@@ -11,6 +12,7 @@ local KeyboardHandler = KeyboardHandler()
 local MouseHandler = MouseHandler()
 local GamepadHandler = GamepadHandler()
 local NetKeyboardHandler = NetKeyboardHandler()
+local NetMouseHandler = NetMouseHandler()
 local NetGamepadHandler = NetGamepadHandler()
 local SnapshotReceivedHandler = SnapshotReceivedHandler()
 local CollisionHandler = CollisionHandler()
@@ -24,6 +26,7 @@ eventmanager:addListener("GamepadPressed", GamepadHandler, GamepadHandler.firePr
 eventmanager:addListener("GamepadReleased", GamepadHandler, GamepadHandler.fireReleasedEvent)
 eventmanager:addListener("NetKeyPressed", NetKeyboardHandler, NetKeyboardHandler.fireNetPressedEvent)
 eventmanager:addListener("NetKeyReleased", NetKeyboardHandler, NetKeyboardHandler.fireNetReleasedEvent)
+eventmanager:addListener("NetMouseMoved", NetMouseHandler, NetMouseHandler.fireNetMouseMovedEvent)
 eventmanager:addListener("NetGamepadPressed", NetGamepadHandler, NetGamepadHandler.fireNetPressedEvent)
 eventmanager:addListener("NetGamepadReleased", NetGamepadHandler, NetGamepadHandler.fireNetReleasedEvent)
 eventmanager:addListener("SnapshotReceived", SnapshotReceivedHandler, SnapshotReceivedHandler.fireSnapshotReceived)

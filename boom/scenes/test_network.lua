@@ -34,15 +34,15 @@ local particle_canvas = require "boom.systems.graphic.particle_canvas"
 --network
 --net:connect("172.28.37.19", 8080)
 --net:connect("192.168.1.101", 8080)
-net:connect("114.212.83.208", 8080)
-net:startReceiving()
+--net:connect("114.212.83.208", 8080)
+--net:startReceiving()
 
 function test_network:enter(pre, init_table)
     --解出玩家自己的id
     --my_name = init_table and init_table["myId"]    --玩家的id即my_name
     --isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
-    isMaster = true
-    my_name = "yuge"
+    --isMaster = true
+    --my_name = "yuge"
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module

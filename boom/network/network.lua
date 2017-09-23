@@ -107,6 +107,10 @@ function network:updateReceive(dt)
                 events.NetGamepadPressed(button, playerId) or
                 events.NetGamepadReleased(button, playerId)
               )
+            elseif inputDevType == 3 then
+              local tx = cmd.tx
+              local ty = cmd.ty
+              eventmanager:fireEvent(events.NetMouseMoved(tx, ty, playerId))
             end
           end
         end
@@ -215,6 +219,12 @@ function network:sendButton(playerId, pressedOrReleased, button)
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
+function network:sendMouse(playerId, tx, ty)
+    if not self.is_connected or self.playerId == nil then return end
+    data = {playerId = self.playerId, roomId = "yuge",
+            playerCommands = {{inputDevType = 3, tx = tx, ty = ty},}}
+    self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
+end
 
 local i = 0
 function network:sendSnapshot(snapshot_entities)
