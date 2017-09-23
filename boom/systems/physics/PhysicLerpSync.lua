@@ -22,10 +22,9 @@ function PhysicLerpSync:update(dt)
                 local C = 5
                 physic_body:setPosition(lerp(ox, l.x, C*dt), lerp(oy, l.y, C*dt))
                 physic_body:setAngle(lerp(oor, l.r, C*dt))
-                physic_body:setLinearVelocity(lerp(ovx, l.vx, C*dt), lerp(ovy, l.vy, C*dt))
-                physic_body:setAngularVelocity(lerp(ova, l.va, C*dt))
+                --physic_body:setLinearVelocity(lerp(ovx, l.vx, C*dt), lerp(ovy, l.vy, C*dt))
+                --physic_body:setAngularVelocity(lerp(ova, l.va, C*dt))
             end
-            P.lerp = nil
         end
     end
 end
