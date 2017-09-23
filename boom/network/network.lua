@@ -207,7 +207,7 @@ end
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
     data = {playerId=self.playerId, roomId = "yuge",
-            playerCommands = {{inputDevType = 1, pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key},}}
+            playerCommands = {{inputDevType = 1, pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key,tx = 0, ty = 0},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
@@ -215,7 +215,7 @@ end
 function network:sendButton(playerId, pressedOrReleased, button)
     if not self.is_connected or self.playerId == nil then return end
     data = {playerId=self.playerId, roomId = "yuge",
-            playerCommands = {{inputDevType = 2, pressedOrReleased=pressedOrReleased, isRepeat=false, key=button},}}
+            playerCommands = {{inputDevType = 2, pressedOrReleased=pressedOrReleased, isRepeat=false, key=button, tx = 0, ty = 0},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
