@@ -1,9 +1,17 @@
 local Player = require "boom.entities.Player"
+local PlayerSpawner = require "boom.entities.PlayerSpawner"
 local Barrier = require "boom.entities.Barrier"
+local BarrierWreckage = require "boom.entities.BarrierWreckage"
+local DefaultWreckage = require "boom.entities.DefaultWreckage"
 local Light = require "boom.entities.Light"
 local Sun = require "boom.entities.Sun"
 local Wall = require "boom.entities.Wall"
-local Shell = require "boom.entities.Shell"
+local NormalShell = require "boom.entities.NormalShell"
+local HealShell = require "boom.entities.HealShell"
+local AdvancedShell = require "boom.entities.AdvancedShell"
+local NuclearShell = require "boom.entities.NuclearShell"
+local Landmine = require "boom.entities.Landmine"
+local ItemManager = require "boom.entities.items"
 
 local EntityManager = {}
 
@@ -13,6 +21,7 @@ function EntityManager:init(layer, map, world, shader)
   self.map = map
   self.world = world
   self.shader = shader
+  ItemManager:init(layer, map, world, shader)
 end
 
 function EntityManager:removeEntityFromList(gid)
@@ -26,9 +35,16 @@ function EntityManager:createEntity(type, ...)
   if type == "Player" or type == "player" then
     local player_id, is_myself, is_room_master = args[6], args[7], args[8]
     e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master)
+  elseif type == "PlayerSpawner" or type == "playerspawner" then
+    local player_id, is_myself, is_room_master = args[6], args[7], args[8]
+    e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master)
   elseif type == "Barrier" or type == "barrier" then
     local object = args[1]
     e = Barrier(object, self.map, self.world, self.shader)
+  elseif type == "BarrierWreckage" or type == "barrierwreckage" then
+    e = BarrierWreckage(x, y)
+  elseif type == "DefaultWreckage" or type == "defaultwreckage" then
+    e = DefaultWreckage(x, y)
   elseif type == "Light" or type == "light" then
     local r, g, b, range = args[6], args[7], args[8], args[9]
     e = Light(x, y, w, h, r, self.world, self.shader, r, g, b, range)
@@ -36,10 +52,25 @@ function EntityManager:createEntity(type, ...)
     e = Sun(self.map, self.shader)
   elseif type == "Wall" or type == "wall" then
     e = Wall(x, y, w, h, r, self.world, self.shader)
-  elseif type == "Shell" or type == "shell" then
-    e = Shell(x, y, w, h, r, self.world, self.shader)
+  elseif type == "NormalShell" or type == "normalshell" then
+    local dmg, range = args[6], args[7]
+    e = NormalShell(x, y, w, h, r, dmg, range, self.world, self.shader)
+  elseif type == "HealShell" or type == "healshell" then
+    local heal, range = args[6], args[7]
+    e = HealShell(x, y, w, h, r, heal, range, self.world, self.shader)
+  elseif type == "AdvancedShell" or type == "advancedshell" then
+    local dmg, range = args[6], args[7]
+    e = AdvancedShell(x, y, w, h, r, dmg, range, self.world, self.shader)
+  elseif type == "NuclearShell" or type == "nuclearshell" then
+    local dmg, range = args[6], args[7]
+    e = NuclearShell(x, y, w, h, r, dmg, range, self.world, self.shader)
+  elseif type == "Landmine" or type == "landmine" then
+    local dmg, range = args[6], args[7]
+    e = Landmine(x, y, w, h, r, dmg, range, self.world, self.shader)
+  else
+    e = ItemManager:createItem(type, ...)
   end
-  if e then
+  if e and e:has("GlobalEntityId") then
     local gid = e:get("GlobalEntityId").id
     self.entity_list[gid] = e
   end

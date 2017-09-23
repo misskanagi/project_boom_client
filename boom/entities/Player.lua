@@ -6,6 +6,7 @@ local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 local IsMyself = require("boom.components.identifier.IsMyself")
 local IsRoomMaster = require("boom.components.identifier.IsRoomMaster")
 local PlayerName = require("boom.components.identifier.PlayerName")
+local HasWreckage = require("boom.components.identifier.HasWreckage")
 
 local Drivable = require "boom.components.control.Drivable"
 local Firable = require "boom.components.control.Firable"
@@ -38,6 +39,7 @@ local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_m
     sdt = light_world and e:add(Light(light_world, sx, sy, 4))
     e:get("Light").light:setAngle(math.pi/4)
     e:get("Light").light:setGlowStrength(1.0)
+    e:add(HasWreckage("DefaultWreckage"))
     e:add(IsPlayer())
     e:add(Drivable())
     e:add(Firable(light_world))

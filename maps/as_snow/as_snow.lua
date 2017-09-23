@@ -8,7 +8,7 @@ return {
   height = 61,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 201,
+  nextobjectid = 209,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -1097,7 +1097,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "PlayerSpawner"
           }
         },
         {
@@ -1282,7 +1282,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["type"] = "Player"
+            ["type"] = "PlayerSpawner"
           }
         },
         {
@@ -1780,6 +1780,111 @@ return {
           gid = 55,
           visible = true,
           properties = {}
+        },
+        {
+          id = 201,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 960,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "AdvancedShellItem"
+          }
+        },
+        {
+          id = 202,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 896,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "LandmineItem"
+          }
+        },
+        {
+          id = 203,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 832,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "HealShellItem"
+          }
+        },
+        {
+          id = 204,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 768,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "BoosterItem"
+          }
+        },
+        {
+          id = 206,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "HealthBoxItem"
+          }
+        },
+        {
+          id = 207,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1088,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "NuclearShellItem"
+          }
+        },
+        {
+          id = 208,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 704,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "NormalShellItem"
+          }
         }
       }
     }

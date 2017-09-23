@@ -52,6 +52,9 @@ function test_place:enter()
           if o.name == "spawn_point_1" then
             local e = EM:createEntity(type, x, y, w, h, 0.0, "me", true)
             local t = e and engine:addEntity(e)
+          elseif o.name == "spawn_point_2" then
+            local e = EM:createEntity(type, x, y, w, h, 0.0, "enemy1", false)
+            local t = e and engine:addEntity(e)
           else
             local e = EM:createEntity(type, x, y, w, h, 0.0)
             local t = e and engine:addEntity(e)

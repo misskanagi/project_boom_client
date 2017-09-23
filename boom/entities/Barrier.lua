@@ -3,6 +3,8 @@ local Physic = require "boom.components.physic.Physic"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local DrawableSTIObject = require("boom.components.graphic.DrawableSTIObject")
 local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
+local Explosive = require("boom.components.vehicle.Explosive")
+local HasWreckage = require("boom.components.identifier.HasWreckage")
 
 local Health = require("boom.components.logic.Health")
 
@@ -24,6 +26,9 @@ local createBarrier = function(object, map, world, light_world)
     e:add(DrawableSTIObject(world, o, "dynamic", is_multi_part, other_objects))
     local body = e:get("DrawableSTIObject").body
     t = light_world and e:add(ShaderPolygon(light_world, body, 4))
+    local cx, cy = body:getWorldCenter()
+    e:add(HasWreckage("BarrierWreckage"))
+    e:add(Explosive(cx, cy, 0, 0))
     e:add(Physic(body))
     e:add(Health(20))
     e:add(GlobalEntityId())

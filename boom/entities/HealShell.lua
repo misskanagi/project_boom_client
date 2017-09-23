@@ -1,5 +1,6 @@
+local PSM = require "boom.particle"
 local Physic = require "boom.components.physic.Physic"
-local ShaderCircle = require("boom.components.graphic.ShaderCircle")
+local DrawablePolygon = require "boom.components.graphic.DrawablePolygon"
 local ShaderPolygon = require("boom.components.graphic.ShaderPolygon")
 local Light = require("boom.components.graphic.Light")
 local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
@@ -11,11 +12,17 @@ local events = require("boom.events")
 local camera = require("boom.camera")
 
 -- shell entity
-local createShell = function(x, y, w, h, r, world, light_world)
+local createHealShell = function(x, y, w, h, r, heal, range, world, light_world)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
-    e:add(Explosive(world, sx, sy, w, h, r))
-    local body = e:get("Explosive").body
+    local body = love.physics.newBody(world, sx, sy, "dynamic")
+    local shape = love.physics.newRectangleShape(w, h)
+    local fixture = love.physics.newFixture(body, shape)
+    local heal_to_dmg = heal or 100
+    body:setAngle(r or 0)
+    fixture:setSensor(true)
+    e:add(DrawablePolygon({body:getWorldPoints(shape:getPoints())}, {r=0, g=255, b=0}, "fill"))
+    e:add(Explosive(sx, sy, -heal_to_dmg, range, PSM:createParticleSystem("heal_explosion")))
     e:add(Booster(body))
     e:add(Physic(body, nil, nil, nil, 0.01))
     --local t = light_world and e:add(ShaderPolygon(light_world, body))
@@ -28,15 +35,15 @@ local createShell = function(x, y, w, h, r, world, light_world)
                 -- explode!
                 e:get("Explosive").is_exploded = true
                 e:get("Explosive").explosion_ps:start()
-                camera:instance():shake(20, true)
-                -- damage to every body
+                --camera:instance():shake(20, true)
+                -- heal to every body
                 local x1, y1 = body:getWorldCenter()
                 local range = e:get("Explosive").range_radius
-                local dmg = e:get("Explosive").damage
+                local heal = e:get("Explosive").damage
                 for _, entity in pairs(e:get("Explosive").in_range_entity) do
                     local x2, y2 = entity:get("Physic").body:getWorldCenter()
                     local dist = math.sqrt(math.pow(x1-x2, 2) + math.pow(y1-y2, 2))
-                    eventmanager:fireEvent(events.Damage(e, entity, dmg, dist, range))
+                    eventmanager:fireEvent(events.Damage(e, entity, heal, dist, range))
                 end
                 light_world:remove(e:get("Light").light)
             end
@@ -45,4 +52,4 @@ local createShell = function(x, y, w, h, r, world, light_world)
     body:setUserData(e)
     return e
 end
-return createShell
+return createHealShell

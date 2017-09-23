@@ -3,6 +3,10 @@ local BoosterSync = class("BoosterSync", System)
 function BoosterSync:update(dt)
     for index, entity in pairs(self.targets) do
         local booster = entity:get("Booster")
+        --init
+        if not booster.init then
+            booster.init_func()
+        end
         local bfps = booster.booster_fire_ps
         bfps:update(dt)
 

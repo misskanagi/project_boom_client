@@ -7,8 +7,10 @@ local GlobalEntityId = require("boom.components.identifier.GlobalEntityId")
 local createWalls = function(x, y, w, h, r, world, light_world)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
-    e:add(DrawablePolygon(world, sx, sy, w, h, "static", e, false))
-    local body, fixture, shape = e:get("DrawablePolygon").body, e:get("DrawablePolygon").fixture, e:get("DrawablePolygon").shape
+    local body = love.physics.newBody(world, sx, sy, "static")
+    local shape = love.physics.newRectangleShape(w, h)
+    local fixture = love.physics.newFixture(body, shape)
+    body:setAngle(r or 0)
     t = light_world and e:add(ShaderPolygon(light_world, body, 4))
     e:add(Physic(body))
     e:add(GlobalEntityId())

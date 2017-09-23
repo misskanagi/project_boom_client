@@ -3,12 +3,14 @@ local NetKeyboardHandler = require "boom.systems.event.NetKeyboardHandler"
 local SnapshotReceivedHandler = require "boom.systems.event.SnapshotReceivedHandler"
 local CollisionHandler = require "boom.systems.event.CollisionHandler"
 local DamageHandler = require "boom.systems.event.DamageHandler"
+local EntityDestroyHandler = require "boom.systems.event.EntityDestroyHandler"
 
-local KeyboardHandler = KeyboardHandler()
-local NetKeyboardHandler = NetKeyboardHandler()
-local SnapshotReceivedHandler = SnapshotReceivedHandler()
-local CollisionHandler = CollisionHandler()
-local DamageHandler = DamageHandler()
+KeyboardHandler = KeyboardHandler()
+NetKeyboardHandler = NetKeyboardHandler()
+SnapshotReceivedHandler = SnapshotReceivedHandler()
+CollisionHandler = CollisionHandler()
+DamageHandler = DamageHandler()
+EntityDestroyHandler = EntityDestroyHandler()
 
 eventmanager:addListener("KeyPressed", KeyboardHandler, KeyboardHandler.firePressedEvent)
 eventmanager:addListener("KeyReleased", KeyboardHandler, KeyboardHandler.fireReleasedEvent)
@@ -20,6 +22,7 @@ eventmanager:addListener("EndContact", CollisionHandler, CollisionHandler.fireEn
 eventmanager:addListener("PreSolve", CollisionHandler, CollisionHandler.firePreSolve)
 eventmanager:addListener("PostSolve", CollisionHandler, CollisionHandler.firePostSolve)
 eventmanager:addListener("Damage", DamageHandler, DamageHandler.fireDamage)
+eventmanager:addListener("EntityDestroy", EntityDestroyHandler, EntityDestroyHandler.fireEntityDestroy)
 
 local event = {
   --KeyboardHandler = KeyboardHandler,

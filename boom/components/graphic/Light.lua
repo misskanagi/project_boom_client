@@ -1,6 +1,6 @@
 local Light = Component.create("Light")
 
-function Light:initialize(light_world, x, y, z, r, g, b, range, glow, meter)
+function Light:initialize(light_world, x, y, z, r, g, b, range, glow)
     self.x = x or 0
     self.y = y or 0
     self.z = z or 1
@@ -8,7 +8,7 @@ function Light:initialize(light_world, x, y, z, r, g, b, range, glow, meter)
     self.g = g or 127
     self.b = b or 63
     self.range = range or 500
-    self.meter = meter or 32
+    self.meter = love.physics.getMeter()
     -- new light
     self.light = light_world:newLight(x, y, r, g, b, range)
     self.light:setGlowStrength(glow or 0.3)

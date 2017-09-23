@@ -2,11 +2,12 @@ local PolygonDraw = class("PolygonDraw", System)
 
 function PolygonDraw:draw()
     for index, entity in pairs(self.targets) do
-        if entity:get("DrawablePolygon").visible then
-          --love.graphics.setColor(255, 0, 0, 128)
-          love.graphics.polygon("fill", entity:get("DrawablePolygon").body:getWorldPoints(
-              entity:get("DrawablePolygon").shape:getPoints()))
+        local rec = entity:get("DrawablePolygon")
+        love.graphics.setColor(rec.color.r, rec.color.g, rec.color.b)
+        if #rec.points > 0 then
+            love.graphics.polygon(rec.mode, unpack(rec.points))
         end
+        love.graphics.setColor(255, 255, 255, 255)
     end
 end
 

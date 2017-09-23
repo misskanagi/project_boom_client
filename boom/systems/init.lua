@@ -3,6 +3,7 @@ local graphic = require "boom.systems.graphic"
 local event = require "boom.systems.event" -- event system's initialization is different
 local control = require "boom.systems.control"
 local network = require "boom.systems.network"
+local logic = require "boom.systems.logic"
 local debug = require "boom.systems.debug"
 
 local modules = {
@@ -12,6 +13,7 @@ local modules = {
     debug = debug,
     network = network,
     control = control,
+    logic = logic,
 }
 
 local system_manager = {

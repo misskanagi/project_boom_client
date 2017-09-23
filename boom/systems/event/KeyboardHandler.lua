@@ -32,7 +32,6 @@ function KeyboardHandler:firePressedEvent(event)
             camera:instance():shake(5)
         elseif event.key == "q" and lcmd then
             lcmd.launch = true
-            camera:instance():shake(20, true)
         end
         break
     end

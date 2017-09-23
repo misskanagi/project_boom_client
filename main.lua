@@ -23,6 +23,10 @@ eventmanager = EventManager()
 
 -- end global variables(only)
 
+-- 加载资源
+local AM = require("assets")
+local AssetsManager = AM:instance()
+
 -- game state
 local game_state = require("libs.hump.gamestate")
 

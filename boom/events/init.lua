@@ -21,6 +21,7 @@ local EndContact = require("boom.events.EndContact")
 local PreSolve = require("boom.events.PreSolve")
 local PostSolve = require("boom.events.PostSolve")
 local Damage = require("boom.events.Damage")
+local EntityDestroy = require("boom.events.EntityDestroy")
 
 local events = {
     KeyPressed = KeyPressed,
@@ -46,5 +47,6 @@ local events = {
     PreSolve = PreSolve,
     PostSolve = PostSolve,
     Damage = Damage,
+    EntityDestroy = EntityDestroy,
 }
 return events
