@@ -46,8 +46,8 @@ function test_network:enter(pre, init_table)
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    self.map = map("maps/as_snow_network/as_snow.lua")
-    --self.map = map("maps/as_snow_network/base.lua")
+    --self.map = map("maps/as_snow_network/as_snow.lua")
+    self.map = map("maps/as_snow_network/base.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
