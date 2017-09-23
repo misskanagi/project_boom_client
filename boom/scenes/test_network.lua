@@ -32,22 +32,16 @@ local debug_canvas = require "boom.systems.debug.debug_canvas"
 local particle_canvas = require "boom.systems.graphic.particle_canvas"
 
 --network
---net:connect("172.28.37.19", 8080)
+net:connect("172.28.37.19", 8080)
 --net:connect("192.168.1.101", 8080)
 --net:connect("114.212.83.208", 8080)
---net:startReceiving()
+net:startReceiving()
 
-function test_network:enter(pre, init_table)
-    --解出玩家自己的id
-    --my_name = init_table and init_table["myId"]    --玩家的id即my_name
-    --isMaster = init_table and init_table["isMaster"] or false  --玩家是否是master
-    --isMaster = true
-    --my_name = "yuge"
+function test_network:enter(pre, info)
     -- init physics module
     self.world = world_module()
     -- init sti (map loader) module
-    --self.map = map("maps/as_snow_network/as_snow.lua")
-    self.map = map("maps/as_snow_network/base.lua")
+    self.map = map("maps/as_snow_network/as_snow.lua")
     -- init Shader
     self.shader = shader()
     -- init ECS engine
@@ -64,42 +58,40 @@ function test_network:enter(pre, init_table)
               local e = nil
               if o.name == "spawn_point_1" then
                 if my_name == "yuge" then
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", true, true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", true, true)
                   net:loginTest("yuge")
                 else
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "yuge", false, true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "yuge", false, true)
                 end
               elseif o.name == "spawn_point_2" then
                 if my_name == "hako" then
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "hako", true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", true)
                   net:loginTest("hako")
                 else
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "hako", false)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "hako", false)
                 end
               elseif o.name == "spawn_point_3" then
                 if my_name == "lsm" then
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", true)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", true)
                   net:loginTest("lsm")
                 else
-                  e = EM:createEntity(type, x, y, w, h, 0.0, "lsm", false)
+                  e = entity:createEntity(type, x, y, w, h, 0.0, "lsm", false)
                 end
               end
               local t = e and engine:addEntity(e)
             else
-              local e = EM:createEntity(type, x, y, w, h, 0.0)
+              local e = entity:createEntity(type, x, y, w, h, 0.0)
               local t = e and engine:addEntity(e)
             end
         end
     end
-
-	local sun = require "boom.entities.Sun" -- add sun
-    engine:addEntity(sun(self.map, self.shader))
+    local sun = require "boom.entities.Sun" -- add sun
+    --engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    --self.camera:lookAt(1280, 1664)
-    self.camera:lookAt(1968,1524)
+    self.camera:lookAt(1280, 1664)
 end
 
 function test_network:update(dt)

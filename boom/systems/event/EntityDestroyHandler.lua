@@ -19,7 +19,7 @@ function EntityDestroyHandler:fireEntityDestroy(event)
             light_world:remove(p)
         end
     end
-    --step 4: if need wreckage then generate it
+    --step 3: if need wreckage then generate it
     if entity:has("HasWreckage") then
         local wreckage_name = entity:get("HasWreckage").wreckage_name
         local cx, cy = entity:get("Physic").body:getWorldCenter()
@@ -28,15 +28,18 @@ function EntityDestroyHandler:fireEntityDestroy(event)
             engine:addEntity(e)
         end
     end
-    --step 3: remove physical body and entity
-    if entity:has("EntityId") and entity:has("Physic") then
-        local gid = entity:get("EntityId").id
+    --step 4: remove physical body and entity id
+    if entity:has("Physic") then
         local body = entity:get("Physic").body
         body:setUserData(nil)
         body:destroy()
-        EntityManager:removeEntityFromList(gid)
-        engine:removeEntity(entity)
     end
+    if entity:has("EntityId") then
+        local gid = entity:get("EntityId").id
+        EntityManager:removeEntityFromList(gid)
+    end
+    --step 5: remove entity
+    engine:removeEntity(entity)
 end
 
 return EntityDestroyHandler
