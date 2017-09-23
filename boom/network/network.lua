@@ -146,6 +146,9 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.GAME_BEGIN_BROADCAST then
         print("got GAME_BEGIN_BROADCAST")
         eventmanager:fireEvent(events.GameBeginBroadcast(data.roomId))
+      elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
+        print("got GAME_OVER_BROADCAST")
+        --eventmanager:fireEvent(events.GameOverBroadcast(...))
       end
     end
   end
