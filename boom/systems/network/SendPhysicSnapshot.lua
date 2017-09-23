@@ -12,7 +12,7 @@ function SendPhysicSnapshot:update(dt)
       for _, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
           if e:get("IsRoomMaster") then
             self:sendSnapshot()
-            print("i can send snapshot")
+            --print("i can send snapshot")
           end
           break
       end
