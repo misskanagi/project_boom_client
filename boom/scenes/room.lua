@@ -3,6 +3,7 @@ local room = class("room")
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
+local utils = require("boom.utils")
 local scrollview = require("libs.Gspot_ext.scrollview")
 require "./libs/gooi"
 local game_state = require("libs.hump.gamestate")
@@ -424,7 +425,31 @@ get_gamebegin_broadcast = function(roomid)
       init_table["isMaster"] = false
     end
     local test_network = require "boom.scenes.test_network"
-    game_state.switch(test_network, init_table)
+    
+    local info = utils.GameRoomInfo(
+      "test_network", playersPerGroup, lifeNumber, gameMode,
+                                roomMasterId, myId,
+                                --[[{
+                                  {player_id = "yuge", group_id = 1, tank_type = 1},
+                                  {player_id = "hako", group_id = 2, tank_type = 1},
+                                  {player_id = "lsm", group_id = 2, tank_type = 1},
+                                }]]--
+                              )
+    
+    info.players_info = {}
+    for group_id = 1, 2 do
+      local group = PlayerInfos[group_id]
+      for i = 1, #group do
+        info.players_info[#info.players_info+1] = {
+          player_id = group[i].playerId,
+          group_id = group_id,
+          tank_type = group[i].tankType,
+        }
+      end
+    end
+    
+    
+    game_state.switch(test_network, info)
   else
     gui:feedback("Cannot begin game!")
   end
