@@ -4,6 +4,10 @@ local HUD_canvas = require "boom.systems.HUD.HUD_canvas"
 local group_hudassist = 102
 local HUDAssist = class("HUDAssist", System)
 local img_sight = love.graphics.newImage("/assets/sight.png")
+local camera = require "boom.camera"
+--战车头上的hp条
+local mini_hp_width = 60
+local mini_hp_height = 7
 
 function HUDAssist:draw()
   --print("HUDMyInfo draw()")
@@ -18,12 +22,24 @@ function HUDAssist:draw()
   for k, entity in pairs(self.targets) do
     --love.graphics.print("hahahah")
     local turret = entity:get("Turret") or nil
+    local max_hp = entity:get("Health").max_value
+    local hp = entity:get("Health").value
     if turret then
       local body = turret.body
       local cx, cy = body:getWorldCenter()
-      local sight_x = turret.gp_x * 200 + cx
-      local sight_y = turret.gp_y * 200 + cy
-      love.graphics.draw(img_sight, sight_x-16, sight_y-16)
+      --如果是本人玩家，则绘制准星
+      if entity:has("IsMyself") then
+        local sight_x = turret.sight_x --cx + turret.gp_x
+        local sight_y = turret.sight_y --cy + turret.gp_y
+        love.graphics.draw(img_sight, sight_x-16, sight_y-16)
+      end
+      --绘制血条
+      local r,g,b,a = love.graphics.getColor()
+      love.graphics.setColor(0,255,0,255)
+      love.graphics.rectangle("fill", cx - mini_hp_width/2, cy - 40, mini_hp_width*hp/max_hp, mini_hp_height)
+      love.graphics.setColor(255,255,255,255)
+      love.graphics.rectangle("line", cx - mini_hp_width/2, cy - 40, mini_hp_width, mini_hp_height)
+      love.graphics.setColor(r,g,b,a)
     end
   end
   gooi.draw(group_hudassist)
@@ -33,7 +49,7 @@ end
 
 
 function HUDAssist:requires()
-  return {"IsMyself"}
+  return {"IsPlayer"}
 end
 
 return HUDAssist

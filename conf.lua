@@ -6,7 +6,7 @@ function love.conf(t)
 	t.window.vsync = true
 	t.window.height = 640
 	t.window.width = 960
-	t.window.fullscreen = false
+	t.window.fullscreen = true
 	--t.window.fullscreentype = "exclusive"
   t.modules.image = true
   t.modules.timer = true

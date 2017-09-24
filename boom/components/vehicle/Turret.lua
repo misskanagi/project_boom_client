@@ -24,8 +24,8 @@ function Turret:initialize(world, x, y)
     self.spin_torque = 2000
     
     --lsm for test
-    self.gp_x = 0
-    self.gp_y = 0
+    self.sight_x = 0
+    self.sight_y = 0
 end
 
 function Turret:updateSpin(controlState)

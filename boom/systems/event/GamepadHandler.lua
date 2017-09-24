@@ -115,8 +115,6 @@ function GamepadHandler:fireRightStickMovedEvent(event)
       turret.gp_x = 0
       turret.gp_y = 0
       if event.x > 0.5 or event.x < -0.5 or event.y > 0.5 or event.y < -0.5 then
-        turret.gp_x = event.x
-        turret.gp_y = event.y
         --print(event.x, event.y)
         --local tx, ty = body:getLocalPoint(10*event.x, 10*event.y)
         --print("tx", "ty", tx, ty)
@@ -128,7 +126,8 @@ function GamepadHandler:fireRightStickMovedEvent(event)
         --print(v:toPolar())
         --print(v:angleTo(nv))
         body:applyAngularImpulse(0.8 * body:getInertia() * v:angleTo(nv))
-        
+        turret.sight_x = event.x * 200 + cx
+        turret.sight_y = event.y * 200 + cy
         --发给Server
         
       end
