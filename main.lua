@@ -28,10 +28,10 @@ if not test_on_windows then
 end
 --暂时在这里建立网络连接
 if not test_on_windows then
-    net:connect("192.168.1.108", 8080)
+    --net:connect("192.168.1.108", 8080)
     --net:connect("172.28.37.19", 8080)
     --net:connect("114.212.83.208", 8080)
-    net:startReceiving()
+    --net:startReceiving()
 end
 --event manager
 eventmanager = EventManager()
@@ -88,5 +88,5 @@ function love.load()
     game_state.switch(login)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
-    --game_state.switch(test_place)
+    game_state.switch(test_place)
 end
