@@ -151,7 +151,7 @@ function gameover:enter(pre, init_table)
   table_battle:add(lbl_title_dead_blue, "2,8")
   table.insert(gooi_widgets, table_battle)
   --镜头
-  --camera:zoomTo(1.0)
+  camera:zoomTo(1.0)
   camera:lookAt(window_w/2, window_h/2)
 end
 

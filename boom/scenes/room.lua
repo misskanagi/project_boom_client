@@ -122,6 +122,7 @@ function room:enter(pre, init_table)
     --gui:setOriginSize(love.graphics.getWidth(), love.graphics.getHeight())
     camera:zoomTo(zoom)
   end]]--
+  camera:zoomTo(1.0)
   camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)

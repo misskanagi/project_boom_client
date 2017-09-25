@@ -145,6 +145,8 @@ function create_room:enter(prev, init_table)
     --需要缩放
     local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
     camera:zoomTo(zoom)
+  else
+    camera:zoomTo(1.0)
   end
   
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
