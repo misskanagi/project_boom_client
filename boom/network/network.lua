@@ -204,14 +204,19 @@ function network:requestGameBegin(roomId)
   local result = self:send(self.cmd_code.GAME_BEGIN_REQ, {roomId = roomId})
 end
 
-
+-- 使用一个单独的线程调用该函数
 function network:connect(address, port)
     self.is_connected = netLib.Lua_connect(address, port)
 end
 
+-- 测试网络的连接
+function network:testConnect()
+    return self.is_connected
+end
+
 function network:sendKey(playerId, pressedOrReleased, isRepeat, key)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId=self.playerId, roomId = "yuge",
+    data = {playerId=self.playerId, roomId = self.roomId,
             playerCommands = {{inputDevType = 1, pressedOrReleased=pressedOrReleased, isRepeat=isRepeat, key=key,tx = 0, ty = 0},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
@@ -219,14 +224,14 @@ end
 --手柄适配
 function network:sendButton(playerId, pressedOrReleased, button)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId=self.playerId, roomId = "yuge",
+    data = {playerId=self.playerId, roomId = self.roomId,
             playerCommands = {{inputDevType = 2, pressedOrReleased=pressedOrReleased, isRepeat=false, key=button, tx = 0, ty = 0},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end
 
 function network:sendMouse(playerId, tx, ty)
     if not self.is_connected or self.playerId == nil then return end
-    data = {playerId = self.playerId, roomId = "yuge",
+    data = {playerId = self.playerId, roomId = self.roomId,
             playerCommands = {{inputDevType = 3, tx = tx, ty = ty, isRepeat=false, key="",pressedOrReleased = false},}}
     self:send(self.cmd_code.PLAYER_COMMAND_REPORT, data)
 end

@@ -76,7 +76,11 @@ function test_network:enter(pre, info)
                   if player_id == info.room_master_id then
                       room_master_flag = true
                   end
-                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id)
+                  print("before!!!!!!!!!! group_id:"..group_id)
+                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id, group_id)
+                  --player_info.is_room_master = room_master_flag
+                  --player_info.is_myself = myself_flag
+                  --local e = EM:createEntity(type, x, y, w, h, 0.0, id, player_info)
                   local t = e and engine:addEntity(e)
               end
             else

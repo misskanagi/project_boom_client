@@ -1,6 +1,6 @@
-local IsPlayer = Component.create("IsPlayer")
+local IsDynamic = Component.create("IsDynamic")
 
-function IsPlayer:initialize()
+function IsDynamic:initialize()
 end
 
-return IsPlayer
+return IsDynamic

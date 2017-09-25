@@ -48,12 +48,11 @@ function HUDMyInfo:draw()
     local hp = entity:get("Health").value
     --计算hp/max_hp
     pb_hp.value = hp/max_hp
-    
+    --绘制炮弹种类以及余量信息
     local launchable = entity:get("Launchable")
-    --local launchable_img = launchable.
-    --local launchable_count = launchable.count
-    
-    lbl_shell:setIcon(img):setText("X 10")
+    local launchable_num = launchable.shell_count
+    local launchable_name = launchable.shell_name
+    lbl_shell:setIcon(img):setText(launchable_name.." Rest : "..launchable_num)
     
   end
   gooi.draw(group_hudmyinfo)

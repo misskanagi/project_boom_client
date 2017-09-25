@@ -11,6 +11,8 @@ local camera_shaking_interval = 1  --shake一次的时间长度
 local camera_shaking_account = 0   --已经shake了多久
 local camera_shaking = false
 local camera_start_shake, camera_stop_shake, camera_update
+local network = require("boom.network")
+net = network:instance()   --全局变量
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
@@ -343,10 +345,16 @@ login_pressed = function()
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
     myId = str_id
-    processbar_login:increaseAt(0.2)
-    logining = true  --进入正在登陆中的状态
+    
     if not test_on_windows then
-      net:requestLogin(str_id, str_psw)
+      if net:testConnect() then  -- 如果此时网络已经连接，那么发送登录请求给Server
+        net:requestLogin(str_id, str_psw)
+        processbar_login:increaseAt(0.2)
+        logining = true  --进入正在登陆中的状态
+      else  --此时网络还未连接，开启connect_thread.lua去连接，并显示网络还未连接的提示信息
+        love.thread.newThread("boom/network/connect_thread.lua"):start()
+        current_state = "focous_id"  --回到原来的状态
+      end
     else
       --模拟一个通过情况
       --[[for k,v in pairs(comps) do
@@ -366,8 +374,14 @@ processbar_login_update = function()
   local info3 = "Good luck."
   if processbar_login:getValue() >= 0.2 and not login_feedback1 then
     if not got_login_response then  --当没有获取到Server响应时先卡住
-      --现在需要让进度条卡在0.2的位置，不再继续下去
-      processbar_login:increaseAt(0)
+      if net:testConnect() then  --此时网络还是好的
+        --现在需要让进度条卡在0.2的位置，不再继续下去
+        processbar_login:increaseAt(0)
+      else  --已经断网了
+        current_state = "focous_id"
+        processbar_login.value = 0
+        processbar_login.increaseAt(0)
+      end
     elseif login_success then  --获取了响应且成功了以后
       camera_start_shake(100, 3)
       gui:feedback(info1)
@@ -539,6 +553,7 @@ states.transfer = function(button)
 end
 
 function login:enter()
+  love.thread.newThread("boom/network/connect_thread.lua"):start()
   --注册事件监听函数
   print("login:enter()")
   gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
@@ -664,7 +679,8 @@ function login:enter()
   -- camera operations
 
   --local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-  --camera:zoom(zm)
+  camera:zoomTo(1)
+  --camera_start_shake(0.8, 20)
   camera:lookAt(window_w/2, window_h/2)
   --camera_start_shake(0.2, 5)
 end
@@ -707,7 +723,6 @@ function login:draw()
   lg.draw(bgimg,0,0)
   camera:attach()
 
-
   --绘制一个矩形框将框内信息框住
   if current_state == "kb_id" or current_state == "kb_psw" then
     local r,g,b,a = lg.getColor()
@@ -733,6 +748,10 @@ function login:draw()
   camera:detach()
 
   if debug_on then lg.print(text) end
+  local r,g,b,a = lg.getColor()
+  lg.setColor(255,0,0,200)
+  if not net:testConnect() then lg.print("network unconnected!",10, 10) end
+  lg.setColor(r,g,b,a)
 end
 
 function login:keypressed(key, scancode)

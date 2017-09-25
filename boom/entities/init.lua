@@ -36,11 +36,13 @@ function EntityManager:createEntity(type, ...)
   local x, y, w, h, r = args[1], args[2], args[3], args[4], args[5]
   if type == "Player" or type == "player" then
     -- player need entity id from parameter!
-    local player_id, is_myself, is_room_master, id = args[6], args[7], args[8], args[9]
-    e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id)
+    local player_id, is_myself, is_room_master, id, group_id = args[6], args[7], args[8], args[9], args[10]
+    --print("_____!!!!!!!!!!group_id = "..group_id)
+    e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id, group_id)
   elseif type == "PlayerSpawner" or type == "playerspawner" then
-    local player_id, is_myself, is_room_master, id = args[6], args[7], args[8], args[9]
-    e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id)
+    local player_id, is_myself, is_room_master, id, group_id = args[6], args[7], args[8], args[9], args[10]
+    --print("_____!!!!!!!!!!group_id = "..group_id)
+    e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id, group_id)
   elseif type == "Barrier" or type == "barrier" then
     local object = args[1]
     e = Barrier(object, self.map, self.world, self.shader)
@@ -62,6 +64,7 @@ function EntityManager:createEntity(type, ...)
     e = NormalShell(x, y, w, h, r, dmg, range, self.world, self.shader)
   elseif type == "HealShell" or type == "healshell" then
     local heal, range = args[6], args[7]
+    --print("heal:"..heal..", range"..range)
     e = HealShell(x, y, w, h, r, heal, range, self.world, self.shader)
   elseif type == "AdvancedShell" or type == "advancedshell" then
     local dmg, range = args[6], args[7]

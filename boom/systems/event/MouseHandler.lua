@@ -1,5 +1,4 @@
 --处理鼠标事件
-
 local camera = require "boom.camera"
 local Vector = require "libs.hump.vector"
 local events = require "boom.events"
@@ -29,6 +28,8 @@ function MouseHandler:fireMovedEvent(event)
       --发给Server
       event.tx = tx
       event.ty = ty
+      turret.sight_x = mx
+      turret.sight_y = my
       MouseHandler:fireMovedEventToNetwork(event)
     end
   end
