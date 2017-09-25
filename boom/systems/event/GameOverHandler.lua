@@ -20,6 +20,7 @@ function GameOverHandler:fireGameOver(event)
         if player_info.player_id == myId then --找到了本人自己
           if group_component.lives > 0 then
             winOrLose = true
+            break
           end
         end
       end

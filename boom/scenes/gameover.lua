@@ -12,7 +12,6 @@ function gameover:enter(pre, init_table)
   winOrLose = init_table and init_table["winOrLose"]
 end
 
-
 function gameover:update(dt)
   
 end
@@ -22,7 +21,7 @@ function gameover:draw()
   if winOrLose then
     love.graphics.print("you win!")
   else
-    love.graphics.print("you win!")
+    love.graphics.print("you lose!")
   end
 end
 
