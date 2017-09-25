@@ -1,18 +1,22 @@
 --local netLib = require "library"
 local netLib = require "libtcp"
 local json = require "libs.json"
---[[load some tool modules
+--load some tool modules
 log = require("libs.log")
 --require("alien")
 log.newfreshlog("logfile_receive.txt")
-log.logswitch(true)  --关闭log开关]]
+log.logswitch(true)  --关闭log开关
 local c = love.thread.getChannel("network_receive")
 while true do
   local data = {netLib.Lua_receive()}
   --log.debug(data)
   --合并data
   for _, json_string in pairs(data) do
-      c:supply(json.decode(json_string))
+      local t = love.timer.getTime()
+      local ddd = json.decode(json_string)
+      local dt = love.timer.getTime() - t
+      log.debug(dt)
+      c:supply(ddd)
   end
   --查看有没有关闭消息
   local msg = c:peek()
