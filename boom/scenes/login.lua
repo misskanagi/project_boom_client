@@ -679,7 +679,8 @@ function login:enter()
   -- camera operations
 
   --local zm = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-  camera:zoomTo(zm)
+  camera:zoomTo(1)
+  --camera_start_shake(0.8, 20)
   camera:lookAt(window_w/2, window_h/2)
   --camera_start_shake(0.2, 5)
 end

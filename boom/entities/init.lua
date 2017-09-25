@@ -64,6 +64,7 @@ function EntityManager:createEntity(type, ...)
     e = NormalShell(x, y, w, h, r, dmg, range, self.world, self.shader)
   elseif type == "HealShell" or type == "healshell" then
     local heal, range = args[6], args[7]
+    --print("heal:"..heal..", range"..range)
     e = HealShell(x, y, w, h, r, heal, range, self.world, self.shader)
   elseif type == "AdvancedShell" or type == "advancedshell" then
     local dmg, range = args[6], args[7]

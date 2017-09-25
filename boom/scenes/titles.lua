@@ -5,11 +5,12 @@ local cam = require("boom.camera")
 local camera = cam:instance()
 local img_advise = love.graphics.newImage("/assets/title_advise.jpg")
 local img_studio9 = love.graphics.newImage("/assets/title_studio9.png")
+local img_tank = love.graphics.newImage("/assets/title_tank.jpg")
 
 local phases
 local current_phase = "phase1"
-local window_w = 960
-local window_h = 640
+local window_w = 1280--960
+local window_h = 720--640
 
 --合理游戏说明
 function titles.phase1_update(dt)
@@ -21,10 +22,10 @@ function titles.phase1_update(dt)
     current_phase = cp.nextphase
   else
     --此时进行更新
-    if cp.timer < cp.duration / 2 then --第一阶段
-      local delta_alpha = dt * 255 / (2*cp.duration/3)
+    if cp.timer < cp.duration / 3 then --第一阶段
+      local delta_alpha = dt * 255 / (cp.duration/3)
       cp.alpha = cp.alpha - delta_alpha
-    else
+    elseif cp.timer > cp.duration * 2 / 3 then
       local delta_alpha = dt * 255 / (cp.duration/3)
       cp.alpha = cp.alpha + delta_alpha
     end
@@ -40,10 +41,10 @@ function titles.phase2_update(dt)
     current_phase = cp.nextphase
   else
     --此时进行更新
-    if cp.timer < cp.duration / 2 then --第一阶段
-      local delta_alpha = dt * 255 / (2*cp.duration/3)
+    if cp.timer < cp.duration / 3 then --第一阶段
+      local delta_alpha = dt * 255 / (cp.duration/3)
       cp.alpha = cp.alpha - delta_alpha
-    else
+    elseif cp.timer > cp.duration * 2 / 3 then
       local delta_alpha = dt * 255 / (cp.duration/3)
       cp.alpha = cp.alpha + delta_alpha
     end
@@ -60,6 +61,13 @@ function titles.phase3_update(dt)
     current_phase = cp.nextphase
   else
     --此时进行更新
+    if cp.timer < cp.duration / 3 then --第一阶段
+      local delta_alpha = dt * 255 / (cp.duration/3)
+      cp.alpha = cp.alpha - delta_alpha
+    elseif cp.timer > cp.duration * 2 / 3 then
+      local delta_alpha = dt * 255 / (cp.duration/3)
+      cp.alpha = cp.alpha + delta_alpha
+    end
   end
 end
 
@@ -86,13 +94,24 @@ function titles.phase2_draw()
 end
 
 function titles.phase3_draw()
+  --local w = img_tank:getWidth()
+  --local h = img_tank:getHeight()
+  
+  love.graphics.setBackgroundColor(0,0,0,255)
+  local r,g,b,a = love.graphics.getColor()
+  love.graphics.draw(img_tank)
+  --加一个透明蒙板盖在上面
+  local cp = phases["phase3"]
+  love.graphics.setColor(0, 0, 0, cp.alpha)
+  love.graphics.rectangle("fill", 0, 0, window_w, window_h)
+  love.graphics.setColor(r,g,b,a)
 end
 
 
 phases = {--有哪些阶段
   phase1 = {update = titles.phase1_update, draw = titles.phase1_draw, nextphase = "phase2", alpha = 255, timer = 0, duration = 6},  --合理游戏说明
   phase2 = {update = titles.phase2_update, draw = titles.phase2_draw, nextphase = "phase3", alpha = 255, timer = 0, duration = 6},  --studio9 logo
-  phase3 = {update = titles.phase3_update, draw = titles.phase3_draw, nextphase = "endphase", alpha = 255, timer = 0, duration = 3},  --游戏title
+  phase3 = {update = titles.phase3_update, draw = titles.phase3_draw, nextphase = "endphase", alpha = 255, timer = 0, duration = 6},  --游戏title
   endphase = {},  --用于终结},  
 }  
 
@@ -127,4 +146,10 @@ function titles:draw()
   end
 end
 
+function titles:keypressed(key, scancode)
+  if key == "space" then
+    local login = require "boom.scenes.login"
+    game_state.switch(login)
+  end
+end
 return titles
