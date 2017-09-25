@@ -84,6 +84,12 @@ end
 function roomlist:enter(prev, init_table)
   gui:setOriginSize(window_w, window_h)
   camera:lookAt(window_w/2, window_h/2)
+  --[[if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
+    --需要缩放
+    local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
+    camera:zoomTo(zoom)
+  end]]--
+  
   eventmanager:addListener("GetRoomListRes", roomlist_net_handler, roomlist_net_handler.fireGetRoomListResEvent)
   eventmanager:addListener("EnterRoomRes", roomlist_net_handler, roomlist_net_handler.fireEnterRoomResEvent)
   eventmanager:addListener("RoomListInputPressed", input_handler, input_handler.firePressedEvent)

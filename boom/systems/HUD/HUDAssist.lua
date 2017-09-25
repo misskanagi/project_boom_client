@@ -44,9 +44,17 @@ function HUDAssist:draw()
       else  --绿色的，有问题
         love.graphics.setColor(0,255,0,255)
       end
-      love.graphics.rectangle("fill", cx - mini_hp_width/2, cy - 40, mini_hp_width*hp/max_hp, mini_hp_height)
+      local blood_x = cx - mini_hp_width/2
+      local blood_y = cy - 40
+      --[[if entity:has("IsMyself") then
+        blood_x, blood_y = camera:instance():position()
+        blood_x = blood_x - mini_hp_width/2
+        blood_y = blood_y - 40
+      end]]
+      
+      love.graphics.rectangle("fill", blood_x, blood_y, mini_hp_width*hp/max_hp, mini_hp_height)
       love.graphics.setColor(255,255,255,255)
-      love.graphics.rectangle("line", cx - mini_hp_width/2, cy - 40, mini_hp_width, mini_hp_height)
+      love.graphics.rectangle("line", blood_x, blood_y, mini_hp_width, mini_hp_height)
       love.graphics.setColor(r,g,b,a)
     end
   end

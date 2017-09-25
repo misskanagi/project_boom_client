@@ -140,6 +140,12 @@ submit_request = function()
 end
 
 function create_room:enter(prev, init_table)
+  current_select_class = "mode"
+  if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
+    --需要缩放
+    local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
+    camera:zoomTo(zoom)
+  end
   camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
