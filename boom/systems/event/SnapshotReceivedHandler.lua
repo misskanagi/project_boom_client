@@ -15,7 +15,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local oldTimeSnapshot = event.timeSnapshot
     local snapshot_entities = event.entities
     local delta_t = 0.001 * (network:instance():getTime() - oldTimeSnapshot)
-    print(delta_t)
+    print(oldTimeSnapshot, network:instance():getTime(), delta_t)
     if delta_t < 0 then
         print("fuck!!!")
         delta_t = 0

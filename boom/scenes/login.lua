@@ -686,7 +686,6 @@ function login:enter()
 end
 
 function login:update(dt)
-  print(love.timer.getTime())
   if logining then
     --检查channel是否有已经有了返回值，如果有，检查是否登陆成功
     if got_login_response then  --已经获取到了Server的响应
