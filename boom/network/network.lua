@@ -90,7 +90,7 @@ function network:updateReceive(dt)
       if json_string == nil or json_string == "" then
         break
       end
-      print(json_string)
+      --print(json_string)
       data = json.decode(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
@@ -226,10 +226,10 @@ function network:requestGameOver(winGroupId)
 end
 
 function network:requestToRoomMasterPing()
-  print("requestToRoomMasterPing: playerId -- ", self.playerId)
+  --print("requestToRoomMasterPing: playerId -- ", self.playerId)
   --local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
   local result = self:send(704, {playerId = self.playerId})
-  print("requestToRoomMasterPing: send it")
+  --print("requestToRoomMasterPing: send it")
 end
 
 -- 使用一个单独的线程调用该函数
