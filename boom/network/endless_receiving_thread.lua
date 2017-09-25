@@ -12,9 +12,9 @@ while true do
   --log.debug(data)
   --合并data
   for _, json_string in pairs(data) do
-      local t = love.timer.getTime()
+      local t = netLib.Lua_getTime()
       local ddd = json.decode(json_string)
-      local dt = love.timer.getTime() - t
+      local dt = netLib.Lua_getTime() - t
       log.debug(dt)
       c:supply(ddd)
   end
