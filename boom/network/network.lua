@@ -58,8 +58,11 @@ local network = {
 
     --UPLOAD_GAME_ACHIEVEMENT = 701,
     --UPLOAD_GAME_ACHIEVEMENT_RES = 702,
+    CHECK_PING_TO_ROOMMASTER_REQ = 704,
+    CHECK_PING_TO_ROOMMASTER_RES = 705,
   },
-  is_connected = false
+  is_connected = false,
+  delta_t = 0,
 }
 
 function network:new(o)
@@ -122,8 +125,7 @@ function network:updateReceive(dt)
         --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
-        print("received time: ", data.timeSnapshot)
-        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.timeSnapshot, data.entities))
+        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
@@ -154,6 +156,8 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
         --eventmanager:fireEvent(events.GameOverBroadcast(...))
+      elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES then
+        self.delta_t = data.ping
       end
     end
   end
@@ -214,6 +218,9 @@ function network:requestGameOver(winGroupId)
   local result = self:send(self.cmd_code.GAME_OVER_REQ, {roomId = self.roomId, winGroupId = winGroupId})
 end
 
+function network:requestToRoomMasterPing()
+  local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
+end
 
 -- 使用一个单独的线程调用该函数
 function network:connect(address, port)
@@ -250,7 +257,7 @@ end
 local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
-    data = {roomId = self.roomId, timeSnapshot = netLib.Lua_getTime(), entities = snapshot_entities}
+    data = {roomId = self.roomId, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
     --print(("snapshot: %d"):format(i))

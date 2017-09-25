@@ -81,6 +81,8 @@ map_gamepad_with_guid(osx_joystick_guid)
 map_gamepad_with_guid(win_joystick_guid)
 
 function love.load()
+    local w, h = love.graphics.getDimensions()
+    love.window.setMode( (480/h)*w, 480, {fullscreen = true, fullscreentype = "exclusive"} )
     love.mouse.setVisible(false)
     print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
