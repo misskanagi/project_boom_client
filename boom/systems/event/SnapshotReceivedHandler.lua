@@ -63,7 +63,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
             physic_body:setLinearVelocity(lerp(ovx, vx, C), lerp(ovy, vy, C))
             physic_body:setAngularVelocity(lerp(ova, va, C))]]
             physic_body:setPosition(x + vx*delta_t, y + vy*delta_t)
-            physic_body:setAngle(va + va*delta_t)
+            physic_body:setAngle(r + va*delta_t)
             physic_body:setLinearVelocity(vx, vy)
             physic_body:setAngularVelocity(va)
           end
