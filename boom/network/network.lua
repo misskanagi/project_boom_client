@@ -87,8 +87,11 @@ function network:updateReceive(dt)
   local msg = self:receive()
   if msg then
     for _, json_string in pairs(msg) do
+      if json_string == nil or json_string == "" then
+        break
+      end
+      print(json_string)
       data = json.decode(json_string)
-      --print(json_string)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
@@ -156,6 +159,10 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
         --eventmanager:fireEvent(events.GameOverBroadcast(...))
+      elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ then
+        local playerId = data.playerId
+        local checkTime = data.checkTime
+        local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES, {playerId = playerId, checkTime = checkTime})
       elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES then
         self.delta_t = data.ping
       end
