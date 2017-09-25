@@ -50,11 +50,11 @@ function SendPhysicSnapshot:sendSnapshot()
       end
       -- send kill and death info
       -- update Kill and Death
-      if e:has("IsPlayer") then
+      if entity:has("IsPlayer") then
         for _, g in pairs(engine:getEntitiesWithComponent("Group")) do
             local find = false
             for _, p in pairs(g:get("Group").players_info) do
-                if p.player_id == e:get("PlayerName").name then
+                if p.player_id == entity:get("PlayerName").name then
                     find = true
                     snapshot_entity.killCount = p.kill
                     snapshot_entity.deathCount = p.death

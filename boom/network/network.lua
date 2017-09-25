@@ -118,7 +118,7 @@ function network:updateReceive(dt)
         --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
-        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
+        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.timeSnapshot, data.entities))
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
@@ -245,7 +245,7 @@ end
 local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
-    data = {roomId = self.roomId, timeSnapshot = 0, entities = snapshot_entities}
+    data = {roomId = self.roomId, timeSnapshot = love.timer.getTime(), entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
     --print(("snapshot: %d"):format(i))
