@@ -26,10 +26,10 @@ if not test_on_windows then
   --暂时在这里建立网络连接
   network = require("boom.network")
   net = network:instance()
-  --net:connect("192.168.1.105", 8080)
+  net:connect("192.168.1.105", 8080)
   --net:connect("172.28.37.19", 8080)
   --net:connect("114.212.83.208", 8080)
-  --net:startReceiving()
+  net:startReceiving()
 end
 --event manager
 eventmanager = EventManager()
@@ -85,7 +85,7 @@ function love.load()
     print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
     --local titles = require "boom.scenes.titles"
-    --[[local gameover = require "boom.scenes.gameover"
+    local gameover = require "boom.scenes.gameover"
     local init_table = {}
     init_table.myId = "lsm"
     init_table.winOrLose = true
@@ -98,7 +98,7 @@ function love.load()
       [2] = {
         {player_id = "yuge", kill = 8, death = 2}
       },
-    }]]--
+    }
     --game_state.switch(gameover, init_table)
     --game_state.switch(titles)
     --game_state.switch(test_choice)
