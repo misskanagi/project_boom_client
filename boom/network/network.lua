@@ -227,7 +227,8 @@ end
 
 function network:requestToRoomMasterPing()
   print("requestToRoomMasterPing: playerId -- ", self.playerId)
-  local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
+  --local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
+  local result = self:send(704, {playerId = self.playerId})
   print("requestToRoomMasterPing: send it")
 end
 
