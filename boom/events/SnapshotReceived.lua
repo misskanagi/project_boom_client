@@ -1,8 +1,7 @@
 local SnapshotReceived = class("SnapshotReceived")
 
-function SnapshotReceived:initialize(roomId, timeSnapshot, entities)
+function SnapshotReceived:initialize(roomId, entities)
     self.roomId = roomId
-    self.timeSnapshot = timeSnapshot
     self.entities = entities
 end
 

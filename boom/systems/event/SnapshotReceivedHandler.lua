@@ -12,10 +12,9 @@ end
 
 function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local roomId = event.roomId
-    local oldTimeSnapshot = event.timeSnapshot
     local snapshot_entities = event.entities
-    local delta_t = 0.001 * (network:instance():getTime() - oldTimeSnapshot)
-    print(oldTimeSnapshot, network:instance():getTime(), delta_t)
+    local delta_t = 0.001 * network:instance().delta_t
+    --print("delta_t: ", delta_t)
     if delta_t < 0 then
         print("fuck!!!")
         delta_t = 0
@@ -24,7 +23,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
       local id = se.entityId
       local e = entity_manager.entity_list[id]
       -- update every body of this entity
-      if e then
+      if e and e:has("IsPlayer") then
           -- update health
           if e:has("Health") then
             e:get("Health").value = se.health
@@ -64,12 +63,14 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
             physic_body:setLinearVelocity(lerp(ovx, vx, C), lerp(ovy, vy, C))
             physic_body:setAngularVelocity(lerp(ova, va, C))]]
             physic_body:setPosition(x + vx*delta_t, y + vy*delta_t)
-            physic_body:setAngle(va + va*delta_t)
+            physic_body:setAngle(r + va*delta_t)
             physic_body:setLinearVelocity(vx, vy)
             physic_body:setAngularVelocity(va)
           end
       end
     end
+    --request ping
+    network:instance():requestToRoomMasterPing()
 end
 
 return SnapshotReceivedHandler

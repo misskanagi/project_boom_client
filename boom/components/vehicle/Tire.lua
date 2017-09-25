@@ -22,7 +22,7 @@ function Tire:initialize(world, x, y)
 
     -- for impulse
     self.max_drive_impulse_constant = 10
-    self.torque_impulse_constant = 20
+    self.torque_impulse_constant = 22
 end
 
 function Tire:getLateralVelocity()

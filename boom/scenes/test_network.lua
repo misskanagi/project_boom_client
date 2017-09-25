@@ -98,7 +98,8 @@ function test_network:enter(pre, info)
     self.system_manager.addAllSystemsToEngine() -- add all systems to engine
     -- init camera
     self.camera = camera:instance()
-    self.camera:lookAt(1280, 1664)
+    self.camera:zoomTo(1.0)
+    --self.camera:lookAt(1280, 1664)
 end
 
 function test_network:update(dt)
