@@ -152,15 +152,28 @@ function HUDBattle:draw()
   --绘制具体的内容
   for _, entity in pairs(self.targets) do
     local group_component = entity:get("Group")
+    local group_id = group_component.id
     local group_players_info = group_component.players_info
-    for i = 1, #group_players_info do
-      local player_info = group_players_info[i]
-      if player_info then
-        lbl_ids_red[i]:setText(player_info.player_id)
-        lbl_kills_red[i]:setText(player_info.kill)
-        lbl_deads_red[i]:setText(player_info.death)
+    if group_id == 1 then
+      for i = 1, #group_players_info do
+        local player_info = group_players_info[i]
+        if player_info then
+          lbl_ids_red[i]:setText(player_info.player_id)
+          lbl_kills_red[i]:setText(player_info.kill)
+          lbl_deads_red[i]:setText(player_info.death)
+        end
       end
-    end
+    else
+      for i = 1, #group_players_info do
+        local player_info = group_players_info[i]
+        if player_info then
+          lbl_ids_blue[i]:setText(player_info.player_id)
+          lbl_kills_blue[i]:setText(player_info.kill)
+          lbl_deads_blue[i]:setText(player_info.death)
+        end
+      end
+    end 
+    
   end
   
   gooi.draw(group_hudbattle)
