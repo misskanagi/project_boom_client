@@ -21,16 +21,16 @@ local default_list = {
     "NuclearShellItem",
 }
 
-local createItemSpawner = function(x, y, w, h, r, item_list, world, light_world)
+local createItemSpawner = function(x, y, w, h, r, item_list, world, light_world, every, red, green, blue)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     local body = love.physics.newBody(world, sx, sy, "static")
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     local item_list = item_list or default_list
-    local start_spawn = (x + y) % 7 + 1
+    local start_spawn = (x + y) % #item_list + 1
     local spawn_index_func = function()
-        start_spawn = (start_spawn + 1) % 7 + 1
+        start_spawn = (start_spawn + 1) % #item_list + 1
         return start_spawn
     end
     fixture:setSensor(true)
@@ -45,11 +45,13 @@ local createItemSpawner = function(x, y, w, h, r, item_list, world, light_world)
                 end
             end
             return true
-        end, 10,
+        end, every or 10,
         x, y, w, h, r, player_id, is_myself, is_room_master
     ))
     e:add(Physic(body))
-    local r, g, b = math.random(255), math.random(255), math.random(255)
+    local r = red or math.random(255)
+    local g = green or math.random(255)
+    local b = blue or math.random(255)
     local t = light_world and e:add(Light(light_world, sx, sy, 16, r, g, b, 64))
     return e
 end

@@ -49,6 +49,8 @@ function EntityManager:createEntity(type, ...)
     e = Barrier(object, self.map, self.world, self.shader)
   elseif type == "BarrierWreckage" or type == "barrierwreckage" then
     e = BarrierWreckage(x, y)
+  elseif type == "BloodSpring" or type == "bloodspring" then
+    e = ItemSpawner(x, y, w, h, r, {"BloodSpringItem"}, self.world, self.shader, 0.5, 255, 0, 0)
   elseif type == "DefaultWreckage" or type == "defaultwreckage" then
     e = DefaultWreckage(x, y)
   elseif type == "Light" or type == "light" then

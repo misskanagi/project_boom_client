@@ -5,6 +5,7 @@ local LandmineItem = require "boom.entities.items.LandmineItem"
 local AdvancedShellItem = require "boom.entities.items.AdvancedShellItem"
 local HealthBoxItem = require "boom.entities.items.HealthBoxItem"
 local NuclearShellItem = require "boom.entities.items.NuclearShellItem"
+local BloodSpringItem = require "boom.entities.items.BloodSpringItem"
 
 local ItemManager = {}
 
@@ -23,6 +24,8 @@ function ItemManager:createItem(type, ...)
     e = NormalShellItem(x, y, r, self.world, self.shader)
   elseif type == "BoosterItem" or type == "boosteritem" then
     e = BoosterItem(x, y, r, self.world, self.shader)
+  elseif type == "BloodSpringItem" or type == "bloodspringitem" then
+    e = BloodSpringItem(x, y, r, self.world, self.shader)
   elseif type == "HealShellItem" or type == "healshellitem" then
     e = HealShellItem(x, y, r, self.world, self.shader)
   elseif type == "LandmineItem" or type == "landmineitem" then

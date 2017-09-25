@@ -26,6 +26,21 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
             e:get("Launchable").shell_name = se.shellName
             e:get("Launchable").shell_count = se.shellCount
           end
+          -- update Kill and Death
+          if e:has("IsPlayer") then
+            for _, g in pairs(engine:getEntitiesWithComponent("Group")) do
+                local find = false
+                for _, p in pairs(g:get("Group").players_info) do
+                    if p.player_id == e:get("PlayerName").name then
+                        find = true
+                        p.kill = se.killCount
+                        p.death = se.deathCount
+                        break
+                    end
+                end
+                if find then break end
+            end
+          end
           -- update bodies
           for _, b in pairs(se.bodies) do
             local bodyId = b.bodyId

@@ -32,18 +32,39 @@ function SendPhysicSnapshot:sendSnapshot()
         status = 1,
         bodies = {},
         health = 0.0,
+        killCount = 0,
+        deathCount = 0,
         shellName = "NormalShell",
         shellCount = 0,
       }
+      -- send health
       if entity:has("Health") then
         local H = entity:get("Health")
         snapshot_entity.health = H.value
       end
+      -- send shell info
       if entity:has("Launchable") then
         local L = entity:get("Launchable")
         snapshot_entity.shellName = L.shell_name
         snapshot_entity.shellCount = L.shell_count
       end
+      -- send kill and death info
+      -- update Kill and Death
+      if e:has("IsPlayer") then
+        for _, g in pairs(engine:getEntitiesWithComponent("Group")) do
+            local find = false
+            for _, p in pairs(g:get("Group").players_info) do
+                if p.player_id == e:get("PlayerName").name then
+                    find = true
+                    snapshot_entity.killCount = p.kill
+                    snapshot_entity.deathCount = p.death
+                    break
+                end
+            end
+            if find then break end
+        end
+      end
+      -- send physic body
       for k, b in pairs(entity:get("Physic").bodies) do
         local x, y = b:getWorldCenter()
         local r = b:getAngle()
