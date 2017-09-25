@@ -11,8 +11,8 @@ local data = {}
 local type = 0
 while true do
   type = c:demand()
-  string_data = c:demand()
-  local result = netLib.Lua_send(type, string_data)
+  data = c:demand()
+  local result = netLib.Lua_send(type, json.encode(data))
   --log.debug(data)
   --合并data
   --c:supply(data)

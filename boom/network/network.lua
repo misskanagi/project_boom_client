@@ -86,12 +86,10 @@ end
 function network:updateReceive(dt)
   local msg = self:receive()
   if msg then
-    for _, json_string in pairs(msg) do
-      if json_string == nil or json_string == "" then
-        break
-      end
+    --for _, json_string in pairs(msg) do
       --print(json_string)
-      data = json.decode(json_string)
+      --data = json.decode(json_string)
+      local data = msg
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
@@ -162,7 +160,7 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES then
         self.delta_t = data.ping
       end
-    end
+    --end
   end
 end
 
@@ -278,7 +276,8 @@ function network:send(type, data)
         end
         local c = love.thread.getChannel("network_send")
         c:push(type)
-        c:push(json.encode(data))
+        --c:push(json.encode(data))
+        c:push(data)
     end
     return true
 end

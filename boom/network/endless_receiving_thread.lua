@@ -11,7 +11,9 @@ while true do
   local data = {netLib.Lua_receive()}
   --log.debug(data)
   --合并data
-  c:supply(data)
+  for _, json_string in pairs(data) do
+      c:supply(json.decode(json_string))
+  end
   --查看有没有关闭消息
   local msg = c:peek()
   if msg and msg == "stop" then
