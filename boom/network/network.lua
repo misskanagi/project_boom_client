@@ -251,7 +251,6 @@ local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
     data = {roomId = self.roomId, timeSnapshot = netLib.Lua_getTime(), entities = snapshot_entities}
-    print(data.timeSnapshot)
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
     --print(("snapshot: %d"):format(i))

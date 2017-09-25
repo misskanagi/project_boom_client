@@ -29,7 +29,7 @@ if not test_on_windows then
   net:connect("192.168.1.105", 8080)
   --net:connect("172.28.37.19", 8080)
   --net:connect("114.212.83.208", 8080)
-  --net:startReceiving()
+  net:startReceiving()
 end
 --event manager
 eventmanager = EventManager()
