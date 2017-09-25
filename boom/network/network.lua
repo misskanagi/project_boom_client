@@ -219,7 +219,9 @@ function network:requestGameOver(winGroupId)
 end
 
 function network:requestToRoomMasterPing()
+  print("requestToRoomMasterPing: playerId -- ", self.playerId)
   local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
+  print("requestToRoomMasterPing: send it")
 end
 
 -- 使用一个单独的线程调用该函数
