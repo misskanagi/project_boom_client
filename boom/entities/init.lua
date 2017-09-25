@@ -37,17 +37,11 @@ function EntityManager:createEntity(type, ...)
   if type == "Player" or type == "player" then
     -- player need entity id from parameter!
     local player_id, is_myself, is_room_master, id, group_id = args[6], args[7], args[8], args[9], args[10]
-    --local id = args[6]
-    --local player_info = args[7]
-    --local player_id = player_info.player_id
-    --local is_room_master = player_info.is_room_master
-    --local is_myself = player_info.is_myself
-    --local group_id = player_info.group_id
     --print("_____!!!!!!!!!!group_id = "..group_id)
     e = Player(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id, group_id)
   elseif type == "PlayerSpawner" or type == "playerspawner" then
     local player_id, is_myself, is_room_master, id, group_id = args[6], args[7], args[8], args[9], args[10]
-    print("_____!!!!!!!!!!group_id = "..group_id)
+    --print("_____!!!!!!!!!!group_id = "..group_id)
     e = PlayerSpawner(x, y, w, h, r, self.world, self.shader, player_id, is_myself, is_room_master, id, group_id)
   elseif type == "Barrier" or type == "barrier" then
     local object = args[1]
