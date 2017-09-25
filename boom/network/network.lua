@@ -90,6 +90,7 @@ function network:updateReceive(dt)
       --print(json_string)
       --data = json.decode(json_string)
       local data = msg
+      print(data)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
