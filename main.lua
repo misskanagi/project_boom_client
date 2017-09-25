@@ -86,7 +86,7 @@ function love.load()
     love.mouse.setVisible(false)
     print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
-    --local titles = require "boom.scenes.titles"
+    local titles = require "boom.scenes.titles"
     local gameover = require "boom.scenes.gameover"
     local init_table = {}
     init_table.myId = "lsm"
@@ -101,8 +101,8 @@ function love.load()
         {player_id = "yuge", kill = 8, death = 2}
       },
     }
-    game_state.switch(gameover, init_table)
-    --game_state.switch(titles)
+    --game_state.switch(gameover, init_table)
+    game_state.switch(titles)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
     --game_state.switch(test_place)

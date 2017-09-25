@@ -151,7 +151,13 @@ function gameover:enter(pre, init_table)
   table_battle:add(lbl_title_dead_blue, "2,8")
   table.insert(gooi_widgets, table_battle)
   --镜头
-  camera:zoomTo(1.0)
+  if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
+    --需要缩放
+    local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
+    camera:zoomTo(zoom)
+  else
+    camera:zoomTo(1.0)
+  end
   camera:lookAt(window_w/2, window_h/2)
 end
 

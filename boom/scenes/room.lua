@@ -116,13 +116,13 @@ local setup_tankbag
 ]]--
 function room:enter(pre, init_table)
   gui:setOriginSize(window_w, window_h)
-  --[[if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
+  if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
     --需要缩放
     local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
-    --gui:setOriginSize(love.graphics.getWidth(), love.graphics.getHeight())
     camera:zoomTo(zoom)
-  end]]--
-  camera:zoomTo(1.0)
+  else
+    camera:zoomTo(1.0)
+  end
   camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
