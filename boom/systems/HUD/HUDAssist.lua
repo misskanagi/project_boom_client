@@ -34,8 +34,16 @@ function HUDAssist:draw()
         love.graphics.draw(img_sight, sight_x-16, sight_y-16)
       end
       --绘制血条
+      local group_id = entity:get("Group").group_id
+      --print("!!!!!!group_id = "..group_id)
       local r,g,b,a = love.graphics.getColor()
-      love.graphics.setColor(0,255,0,255)
+      if group_id == 1 then   --红队的
+        love.graphics.setColor(255,0,0,255)
+      elseif group_id == 2 then  --蓝色的
+        love.graphics.setColor(0,0,255,255)
+      else  --绿色的，有问题
+        love.graphics.setColor(0,255,0,255)
+      end
       love.graphics.rectangle("fill", cx - mini_hp_width/2, cy - 40, mini_hp_width*hp/max_hp, mini_hp_height)
       love.graphics.setColor(255,255,255,255)
       love.graphics.rectangle("line", cx - mini_hp_width/2, cy - 40, mini_hp_width, mini_hp_height)

@@ -1,4 +1,5 @@
 local Physic = require "boom.components.physic.Physic"
+local Group = require "boom.components.group.Group"
 local CollisionCallbacks = require("boom.components.physic.CollisionCallbacks")
 
 local IsPlayer = require "boom.components.identifier.IsPlayer"
@@ -24,7 +25,7 @@ local Health = require("boom.components.logic.Health")
 
 
 -- player entity
-local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id)
+local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id, group_id)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     local tire = Tire(world, sx, sy)
@@ -39,6 +40,7 @@ local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_m
     sdt = light_world and e:add(Light(light_world, sx, sy, 4))
     e:get("Light").light:setAngle(math.pi/4)
     e:get("Light").light:setGlowStrength(1.0)
+    e:add(Group(group_id))
     e:add(HasWreckage("DefaultWreckage"))
     e:add(IsPlayer())
     e:add(Drivable())

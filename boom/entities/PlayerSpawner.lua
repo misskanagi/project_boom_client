@@ -3,7 +3,7 @@ local PlayerName = require("boom.components.identifier.PlayerName")
 local Light = require("boom.components.graphic.Light")
 local Physic = require "boom.components.physic.Physic"
 
-local createPlayerSpawner = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id)
+local createPlayerSpawner = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id, group_id)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
     local body = love.physics.newBody(world, sx, sy, "static")
@@ -22,7 +22,7 @@ local createPlayerSpawner = function(x, y, w, h, r, world, light_world, player_i
             end
             return true
         end, 1,
-        x, y, w, h, r, player_id, is_myself, is_room_master, id
+        x, y, w, h, r, player_id, is_myself, is_room_master, id, group_id
     ))
     e:add(PlayerName(player_id))
     e:add(Physic(body))

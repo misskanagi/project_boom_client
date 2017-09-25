@@ -132,7 +132,7 @@ function HUDBattle:draw()
   local red_i = 1
   local blue_i = 1
   for k, entity in pairs(self.targets) do
-      --判断玩家是属于哪一个team的
+      --判断玩家是属于哪一个group的
       
       --获取到每一个玩家的Id/kill/dead数
       local id = "test_id"

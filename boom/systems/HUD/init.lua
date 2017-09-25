@@ -5,15 +5,15 @@ local HUDUpdate = require "boom.systems.HUD.HUDUpdate"
 
 local HUD = {
   HUDMyInfo(),
-  HUDBattle(),
   HUDAssist(),
+  HUDBattle(),
   HUDUpdate(),
 }
 
 HUD.names = {
   "HUDMyInfo",
-  "HUDBattle",
   "HUDAssist",
+  "HUDBattle",
   "HUDUpdate",
 }
 
