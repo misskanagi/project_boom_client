@@ -345,7 +345,7 @@ login_pressed = function()
     --------------------------------------------------
     --本地的输入检查已经完成，将string name|string password发送到S  --str_id,str_psw交给Server
     myId = str_id
-    
+
     if not test_on_windows then
       if net:testConnect() then  -- 如果此时网络已经连接，那么发送登录请求给Server
         net:requestLogin(str_id, str_psw)
@@ -591,7 +591,7 @@ function login:enter()
   :setColspan(4, 2, 2)
   --pGrid:fg(component.colors.blue)
   local img_bullet = lg.newImage("assets/sign_bullet.png")
-  
+
   text_id = gooi.newText({w = 300, group = group_dl}):bg({209,209,209,0}):setText(""):setTooltip("please enter your honourable id :)") -- 输入id的文本框
   text_psw = gooi.newText({w = 300, group = group_dl, inputtype = "ciphertext"}):bg({209,209,209,0}):setText(""):setTooltip("please enter your powerful password :o"):fg({255,255,255,255}) -- 输入password的文本框
   label_id = gooi.newLabel({text = "enter your id:", group = group_dl}):left():setIcon(img_bullet)
@@ -719,7 +719,7 @@ end
 
 function login:draw()
   --设置一个背景图片
-  
+
   lg.draw(bgimg,0,0)
   camera:attach()
 
@@ -823,7 +823,7 @@ camera_update = function(dt)
     if camera_shaking_account > camera_shaking_interval then
       --别再shake了
       camera_stop_shake()
-    else 
+    else
       camera_shaking_account = camera_shaking_account + dt
     end
   end
