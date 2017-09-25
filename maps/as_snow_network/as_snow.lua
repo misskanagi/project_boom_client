@@ -1191,6 +1191,86 @@ return {
           }
         },
         {
+          id = 151,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1312,
+          y = 1632,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 60,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 155,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1280,
+          y = 1600,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 54,
+          visible = true,
+          properties = {
+            ["is_main_part"] = true,
+            ["is_multi_part"] = true,
+            ["other_parts_count"] = 3,
+            ["other_parts_id_1"] = 156,
+            ["other_parts_id_2"] = 157,
+            ["other_parts_id_3"] = 151,
+            ["type"] = "Barrier"
+          }
+        },
+        {
+          id = 156,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1312,
+          y = 1600,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 55,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 157,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1280,
+          y = 1632,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 59,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 164,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1184,
+          y = 1568,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
           id = 166,
           name = "spawn_point_2",
           type = "",
@@ -1204,6 +1284,598 @@ return {
           properties = {
             ["type"] = "PlayerSpawner"
           }
+        },
+        {
+          id = 202,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 992,
+          y = 1568,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 205,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 704,
+          y = 1376,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 206,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 672,
+          y = 1408,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 207,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 704,
+          y = 1408,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 208,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 672,
+          y = 1376,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 209,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 512,
+          y = 1536,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 210,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 515.694,
+          y = 1272.53,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 211,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 352,
+          y = 1024,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 212,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 128,
+          y = 768,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 213,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 128,
+          y = 1248,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 214,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 1216,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 215,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 1216,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 216,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 416,
+          y = 96,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 217,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 96,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 218,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 416,
+          y = 128,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 219,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 128,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 220,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 736,
+          y = 384,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 221,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 320,
+          y = 800,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 222,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 128,
+          y = 512,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 223,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 128,
+          y = 544,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 224,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 512,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 225,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 544,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 226,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 992,
+          y = 1280,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 227,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 1280,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 228,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 1248,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 229,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1248,
+          y = 928,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 230,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1248,
+          y = 1024,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 231,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1248,
+          y = 896,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 232,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1184,
+          y = 1184,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 233,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 576,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 234,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1024,
+          y = 544,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 235,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1056,
+          y = 544,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 236,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1056,
+          y = 576,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 150,
+          visible = true,
+          properties = {
+            ["type"] = "barrier"
+          }
+        },
+        {
+          id = 237,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 288,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 54,
+          visible = true,
+          properties = {
+            ["is_main_part"] = true,
+            ["is_multi_part"] = true,
+            ["other_parts_count"] = 3,
+            ["other_parts_id_1"] = 238,
+            ["other_parts_id_2"] = 239,
+            ["other_parts_id_3"] = 240,
+            ["type"] = "Barrier"
+          }
+        },
+        {
+          id = 238,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 288,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 55,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 239,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 320,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 60,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 240,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 160,
+          y = 320,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 59,
+          visible = true,
+          properties = {}
         },
         {
           id = 241,

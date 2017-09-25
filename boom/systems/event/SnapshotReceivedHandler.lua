@@ -23,7 +23,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
       local id = se.entityId
       local e = entity_manager.entity_list[id]
       -- update every body of this entity
-      if e then
+      if e and e:has("IsPlayer") then
           -- update health
           if e:has("Health") then
             e:get("Health").value = se.health
