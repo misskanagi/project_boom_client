@@ -1,8 +1,8 @@
 --gameover以后播放的画面
 
 local gameover = class("gameover")
-local window_w = 800
-local window_h = 600
+local window_w = 960
+local window_h = 720
 local myId = nil
 local winOrLose = nil
 local group_info = nil
@@ -23,7 +23,7 @@ local lbl_title_dead_red = nil
 local lbl_title_dead_blue = nil
 local lbl_winorlose_x = 0
 local lbl_winorlose_y = 0
-local lbl_winorlose_w = 800
+local lbl_winorlose_w = 960
 local lbl_winorlose_h = 60
 local table_battle_x = 0
 local table_battle_y = 70
@@ -35,6 +35,7 @@ local table_battle_rows = 0
 local table_battle_cols = 0
 local players_per_group = nil --每一个队里有几个人
 local group_gameover = 4
+local gooi_widgets = {}
 local bgimg = love.graphics.newImage("assets/bgimg.jpg")
 
 
@@ -43,11 +44,11 @@ function gameover:enter(pre, init_table)
   winOrLose = init_table and init_table["winOrLose"]
   group_info = init_table and init_table["group_info"]
   
-  --font_big = love.graphics.newFont("assets/font/Arimo-Bold.ttf", 26)
-  font_small = love.graphics.newFont("assets/font/Arimo-Bold.ttf", 20)
+  font_big = love.graphics.newFont("assets/font/Arimo-Bold.ttf", 26)
+  font_small = love.graphics.newFont("assets/font/Arimo-Bold.ttf", 18)
   font_current = love.graphics.getFont()
   style = {
-      font = font_small,
+      font = font_big,
       radius = 5,
       innerRadius = 3,
       showBorder = true,
@@ -59,6 +60,13 @@ function gameover:enter(pre, init_table)
   
   lbl_winorlose = gooi.newLabel({text = "", x = lbl_winorlose_x, y = lbl_winorlose_y, w = lbl_winorlose_w, h = lbl_winorlose_h, group = group_gameover}):center()
   
+  if winOrLose then
+    lbl_winorlose:setText("You Win!")
+  else
+    lbl_winorlose:setText("You Lose!")
+  end
+  table.insert(gooi_widgets, lbl_winorlose)
+  style.font = font_small
   --计算出players_per_group
   for k, v in pairs(group_info) do
     if v then
@@ -69,14 +77,12 @@ function gameover:enter(pre, init_table)
       end
     end
   end
-  
+
   table_battle_rows = players_per_group+2
-  local window_w = love.graphics.getWidth()
-  local window_h = love.graphics.getHeight()
   table_battle_w = table_battle_item_w * 8
   table_battle_h = table_battle_item_h * table_battle_rows
-  table_battle_x = (window_w - table_battle_w) / 2
-  table_battle_y = (window_h - table_battle_h) / 2
+  --table_battle_x = (window_w - table_battle_w) / 2
+  --table_battle_y = (window_h - table_battle_h) / 2
     
   table_battle = gooi.newPanel({x = table_battle_x, y = table_battle_y , w = table_battle_w, h = table_battle_h, layout = "grid "..table_battle_rows.."x8", group = group_gameover})
   --调整一下表格
@@ -98,6 +104,14 @@ function gameover:enter(pre, init_table)
   lbl_title_kill_blue = gooi.newLabel({text = "kill", group = group_gameover}):center()
   lbl_title_dead_red = gooi.newLabel({text = "dead", group = group_gameover}):center()
   lbl_title_dead_blue = gooi.newLabel({text = "dead", group = group_gameover}):center()
+  table.insert(gooi_widgets, lbl_title_group_red)
+  table.insert(gooi_widgets, lbl_title_group_blue)
+  table.insert(gooi_widgets, lbl_title_id_red)
+  table.insert(gooi_widgets, lbl_title_id_blue)
+  table.insert(gooi_widgets, lbl_title_kill_red)
+  table.insert(gooi_widgets, lbl_title_kill_blue)
+  table.insert(gooi_widgets, lbl_title_dead_red)
+  table.insert(gooi_widgets, lbl_title_dead_blue)
   lbl_ids_red = {} --key是行号
   lbl_kills_red = {} --key是行号
   lbl_deads_red = {}
@@ -119,6 +133,12 @@ function gameover:enter(pre, init_table)
     table_battle:add(lbl_ids_blue[i], (i+2)..",5")
     table_battle:add(lbl_kills_blue[i], (i+2)..",7")
     table_battle:add(lbl_deads_blue[i], (i+2)..",8")
+    table.insert(gooi_widgets, lbl_ids_red[i])
+    table.insert(gooi_widgets, lbl_kills_red[i])
+    table.insert(gooi_widgets, lbl_deads_red[i])
+    table.insert(gooi_widgets, lbl_ids_blue[i])
+    table.insert(gooi_widgets, lbl_kills_blue[i])
+    table.insert(gooi_widgets, lbl_deads_blue[i])
   end
   
   table_battle:add(lbl_title_group_red, "1,1")
@@ -129,8 +149,16 @@ function gameover:enter(pre, init_table)
   table_battle:add(lbl_title_id_blue, "2,5")
   table_battle:add(lbl_title_kill_blue, "2,7")
   table_battle:add(lbl_title_dead_blue, "2,8")
+  table.insert(gooi_widgets, table_battle)
   --镜头
+  --camera:zoomTo(1.0)
   camera:lookAt(window_w/2, window_h/2)
+end
+
+function gameover:leave()
+  for k, v in pairs(gooi_widgets) do
+    gooi.removeComponent(v)
+  end
 end
 
 function gameover:update(dt)
@@ -158,19 +186,12 @@ function gameover:update(dt)
       end
     end 
   end
-  
-  if winOrLose then
-    lbl_winorlose:setText("You Win!")
-  else
-    lbl_winorlose:setText("You Lose!")
-  end
   gooi.update(dt)
 end
 
 function gameover:draw()
-  --camera:attach()
   love.graphics.draw(bgimg,0,0)
-  
+  camera:attach()
   --绘制图表
   local r,g,b,a = love.graphics.getColor()
   --画一个竖线
@@ -204,7 +225,7 @@ function gameover:draw()
   love.graphics.setColor(r,g,b,a)
   
   gooi.draw(group_gameover)
-  --camera:detach()
+  camera:detach()
 end
 
 function gameover:keypressed(key, scancode)

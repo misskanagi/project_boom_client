@@ -99,10 +99,10 @@ function love.load()
         {player_id = "yuge", kill = 8, death = 2}
       },
     }
-    --game_state.switch(gameover, init_table)
+    game_state.switch(gameover, init_table)
     --game_state.switch(titles)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
     --game_state.switch(test_place)
-    game_state.switch(login)
+    --game_state.switch(login)
 end
