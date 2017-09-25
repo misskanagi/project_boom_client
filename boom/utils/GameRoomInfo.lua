@@ -15,4 +15,8 @@ function GameRoomInfo:initialize(map_name, players_per_team,
     self.players_info = players_info
 end
 
+function GameRoomInfo:addPlayerInfo(player_id, group_id, tank_type)
+    self.players_info[#self.players_info+1] = {player_id = player_id, group_id = group_id, tank_type = tank_type}
+end
+
 return GameRoomInfo

@@ -12,7 +12,7 @@ local mini_hp_height = 7
 function HUDAssist:draw()
   --print("HUDMyInfo draw()")
   if not self.is_init then
-    
+
     self.is_init = true
   end
   local cvs = love.graphics.getCanvas()
@@ -34,7 +34,7 @@ function HUDAssist:draw()
         love.graphics.draw(img_sight, sight_x-16, sight_y-16)
       end
       --绘制血条
-      local group_id = entity:get("Group").group_id
+      --local group_id = entity:get("Group").group_id
       --print("!!!!!!group_id = "..group_id)
       local r,g,b,a = love.graphics.getColor()
       if group_id == 1 then   --红队的

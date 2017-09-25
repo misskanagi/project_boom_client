@@ -38,7 +38,47 @@ function EntityDestroyHandler:fireEntityDestroy(event)
         local gid = entity:get("EntityId").id
         EntityManager:removeEntityFromList(gid)
     end
-    --step 5: remove entity
+    --step 5: if it is player
+    if entity:has("IsPlayer") then
+        -- update group
+        local src_dmg_entity = entity:get("Health").src_dmg_entity
+        local src_player_name = nil
+        if src_dmg_entity:has("IsPlayer") then
+            src_player_name = src_dmg_entity:get("PlayerName").name
+        end
+        -- decrease group lives and add player death
+        local dst_group_id = 1
+        for _, g in pairs(engine:getEntitiesWithComponent("Group")) do
+            local find = false
+            for _, p in pairs(g:get("Group").players_info) do
+                if p.player_id == entity:get("PlayerName").name then
+                    find = true
+                    g:get("Group").lives = g:get("Group").lives - 1
+                    p.death = p.death + 1
+                    dst_group_id = g:get("Group").id
+                    break
+                end
+            end
+            if find then break end
+        end
+        -- let src player kill + 1
+        local src_group_id = 1
+        for _, g in pairs(engine:getEntitiesWithComponent("Group")) do
+            local find = false
+            for _, p in pairs(g:get("Group").players_info) do
+                if p.player_id == src_player_name then
+                    find = true
+                    src_group_id = g:get("Group").id
+                    if dst_group_id ~= src_group_id then
+                        p.kill = p.kill + 1
+                    end
+                    break
+                end
+            end
+            if find then break end
+        end
+    end
+    --step 6: remove entity
     engine:removeEntity(entity)
 end
 
