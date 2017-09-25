@@ -1,4 +1,5 @@
 local entity_manager = require "boom.entities"
+local network = require "boom.network"
 local SnapshotReceivedHandler = class("SnapshotReceivedHandler", System)
 
 local function lerp(a, b, k) --smooth transitions
@@ -13,7 +14,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local roomId = event.roomId
     local oldTimeSnapshot = event.timeSnapshot
     local snapshot_entities = event.entities
-    local delta_t = love.timer.getTime() - oldTimeSnapshot
+    local delta_t = 0.001 * (network:instance():getTime() - oldTimeSnapshot)
     print(delta_t)
     if delta_t < 0 then
         print("fuck!!!")
