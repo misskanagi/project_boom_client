@@ -88,8 +88,8 @@ function test_network:enter(pre, info)
             end
         end
     end
-    local g1 = EM:createEntity("group", 1, info.players_per_team, info.players_info) -- create group 1
-    local g2 = EM:createEntity("group", 2, info.players_per_team, info.players_info) -- create group 2
+    local g1 = EM:createEntity("group", 1, info.lives_per_team, info.players_info) -- create group 1
+    local g2 = EM:createEntity("group", 2, info.lives_per_team, info.players_info) -- create group 2
     engine:addEntity(g1)
     engine:addEntity(g2)
     local sun = require "boom.entities.Sun" -- add sun

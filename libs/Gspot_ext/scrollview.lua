@@ -183,6 +183,7 @@ function scrollview.createObject(init_table, gui_obj)
   end
   
   sv_obj.scrollDown = function(self)
+    if selected_index >= #sv_obj.scroll_items then return end
     self:begin_move("down")
   end
 

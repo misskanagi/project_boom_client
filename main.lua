@@ -27,7 +27,7 @@ if not test_on_windows then
   network = require("boom.network")
   net = network:instance()
   --net:connect("192.168.1.105", 8080)
-  --net:connect("172.28.37.19", 8080)
+  net:connect("172.28.37.19", 8080)
   --net:connect("114.212.83.208", 8080)
   --net:startReceiving()
 end
@@ -85,9 +85,9 @@ function love.load()
     print(love.filesystem.getSaveDirectory())
     game_state.registerEvents()
     --local titles = require "boom.scenes.titles"
-    --game_state.switch(login)
+    game_state.switch(login)
     --game_state.switch(titles)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
-    game_state.switch(test_place)
+    --game_state.switch(test_place)
 end

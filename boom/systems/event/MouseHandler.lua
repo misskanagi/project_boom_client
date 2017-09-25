@@ -28,8 +28,8 @@ function MouseHandler:fireMovedEvent(event)
       --发给Server
       event.tx = tx
       event.ty = ty
-      turret.sight_x = mx
-      turret.sight_y = my
+      --turret.sight_x = mx
+      --turret.sight_y = my
       MouseHandler:fireMovedEventToNetwork(event)
     end
   end
@@ -49,11 +49,19 @@ end
 
 function MouseHandler:update(dt)
   --print("MouseHandler:update(dt)")
+  --获取当前鼠标的参数
+  local mx, my = camera:mousePosition()
+  for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
+    local turret = entity:get("Turret") or nil
+    if turret then
+      turret.sight_x = mx
+      turret.sight_y = my
+      break
+    end
+  end
   timer = timer + dt
   if timer > fire_interval then
     timer = 0
-    --获取当前鼠标的参数
-    local mx, my = camera:mousePosition()
     --if (love.joystick.getJoysticks()) == nil then
     eventmanager:fireEvent(events.MouseMoved(mx, my))
     --end

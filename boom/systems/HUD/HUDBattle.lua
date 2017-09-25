@@ -22,7 +22,7 @@ local table_battle_item_w = 80
 local table_battle_item_h = 60
 local table_battle_rows = 0
 local table_battle_cols = 0
-local players_per_group = 0 --每一个队里有几个人
+local players_per_group = nil --每一个队里有几个人
 
 function HUDBattle:draw()
   if not self.is_init then
@@ -37,7 +37,18 @@ function HUDBattle:draw()
     gooi.desktopMode()
     gooi.shadow()
     --一波数值先计算出来
-    for _,__ in pairs(self.targets) do players_per_group = players_per_group+1 end
+    
+    --先获取每队玩家个数
+    for _, entity in pairs(self.targets) do
+      local group_component = entity:get("Group")
+      local group_players_per_group = #group_component.players_info
+      if not players_per_group then
+        players_per_group = group_players_per_group
+      elseif players_per_group < group_players_per_group then
+        players_per_group = group_players_per_group
+      end
+    end
+
     --players_per_group = #self.targets / 2
     table_battle_rows = players_per_group+2
     local window_w = love.graphics.getWidth()
@@ -81,6 +92,12 @@ function HUDBattle:draw()
       lbl_ids_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
       lbl_kills_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
       lbl_deads_blue[i] = gooi.newLabel({text = "", group = group_hudbattle}):center()
+      table_battle:add(lbl_ids_red[i], (i+2)..",1")
+      table_battle:add(lbl_kills_red[i], (i+2)..",3")
+      table_battle:add(lbl_deads_red[i], (i+2)..",4")
+      table_battle:add(lbl_ids_blue[i], (i+2)..",5")
+      table_battle:add(lbl_kills_blue[i], (i+2)..",7")
+      table_battle:add(lbl_deads_blue[i], (i+2)..",8")
     end
     
     table_battle:add(lbl_title_group_red, "1,1")
@@ -93,7 +110,7 @@ function HUDBattle:draw()
     table_battle:add(lbl_title_dead_blue, "2,8")
     self.is_init = true
   end
-  
+  --绘制部分
   local cvs = love.graphics.getCanvas()
   love.graphics.setCanvas(HUD_canvas:getCanvas())
   love.graphics.push()
@@ -129,16 +146,34 @@ function HUDBattle:draw()
   love.graphics.rectangle("fill", table_battle_x+table_battle_w/2, table_battle_y+2*table_battle_item_h, table_battle_w/2, table_battle_item_h*players_per_group)
 
   love.graphics.setColor(r,g,b,a)
-  local red_i = 1
-  local blue_i = 1
-  for k, entity in pairs(self.targets) do
-      --判断玩家是属于哪一个group的
-      
-      --获取到每一个玩家的Id/kill/dead数
-      local id = "test_id"
-      local kill = 1
-      local dead = 2
-      
+  
+  
+  
+  --绘制具体的内容
+  for _, entity in pairs(self.targets) do
+    local group_component = entity:get("Group")
+    local group_id = group_component.id
+    local group_players_info = group_component.players_info
+    if group_id == 1 then
+      for i = 1, #group_players_info do
+        local player_info = group_players_info[i]
+        if player_info then
+          lbl_ids_red[i]:setText(player_info.player_id)
+          lbl_kills_red[i]:setText(player_info.kill)
+          lbl_deads_red[i]:setText(player_info.death)
+        end
+      end
+    else
+      for i = 1, #group_players_info do
+        local player_info = group_players_info[i]
+        if player_info then
+          lbl_ids_blue[i]:setText(player_info.player_id)
+          lbl_kills_blue[i]:setText(player_info.kill)
+          lbl_deads_blue[i]:setText(player_info.death)
+        end
+      end
+    end 
+    
   end
   
   gooi.draw(group_hudbattle)
@@ -150,7 +185,7 @@ end
 
 
 function HUDBattle:requires()
-  return {"IsPlayer"}--, "Health", "Launchable"}
+  return {"Group"}
 end
 
 return HUDBattle

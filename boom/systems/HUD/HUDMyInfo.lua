@@ -5,10 +5,9 @@ local group_hudmyinfo = 101
 local HUDMyInfo = class("HUDMyInfo", System)
 local img = love.graphics.newImage("/assets/backup/sign_bullet.png")
 local img_heart = love.graphics.newImage("/assets/heart.png")
+local img_blank = love.graphics.newImage("/assets/backup/blank_32.png")
 local pb_hp = nil  --血条
 local lbl_shell = nil --导弹仓
-local lbl_life = nil --生命数
-local grid_life = nil
 
 function HUDMyInfo:draw()
   --print("HUDMyInfo draw()")
@@ -27,18 +26,12 @@ function HUDMyInfo:draw()
     pb_hp = gooi.newBar({x = 10, y = 10, w = 320, h = 10, value = 1, group = group_hudmyinfo})
     :bg({255, 255, 255, 60})
     :fg({0, 255, 0, 150})
-    --创建全队生命示意图
-    grid_life = gooi.newPanel({x = 10, y = 30, w = 320, h = 32, layout = "grid 1x10", group = group_hudmyinfo})
-    for i = 1, 10 do
-      local lbl_item = gooi.newLabel({text = "", group = group_hudmyinfo}):setIcon(img_heart)
-      grid_life:add(lbl_item, "1,"..i)
-    end
     
-    
-    lbl_shell = gooi.newLabel({x = 10, y = 70, text = "", group = group_hudmyinfo}):left()
-    
+    lbl_shell = gooi.newLabel({x = 10, y = 100, text = "", group = group_hudmyinfo}):left()
     self.is_init = true
   end
+  
+  --常规draw
   local cvs = love.graphics.getCanvas()
   love.graphics.setCanvas(HUD_canvas:getCanvas())
   love.graphics.push()
@@ -52,14 +45,15 @@ function HUDMyInfo:draw()
     local launchable = entity:get("Launchable")
     local launchable_num = launchable.shell_count
     local launchable_name = launchable.shell_name
-    lbl_shell:setIcon(img):setText(launchable_name.." Rest : "..launchable_num)
-    
+    lbl_shell:setIcon(img):setText(launchable_name.." : "..launchable_num)
   end
   gooi.draw(group_hudmyinfo)
-  --love.graphics.setColor(255,255,255,255)
-  --love.graphics.rectangle("fill", 0, 0, 200, 200)
   love.graphics.pop()
   love.graphics.setCanvas(cvs)
+end
+
+function HUDMyInfo:update_widgets()
+  
 end
 
 

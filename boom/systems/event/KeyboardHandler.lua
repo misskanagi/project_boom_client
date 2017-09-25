@@ -8,7 +8,7 @@ function KeyboardHandler:firePressedEvent(event)
         local system_manager = require "boom.systems"
         system_manager.toggleModule("debug")
         --debug.debug()
-    elseif event.key == "f1" then
+    elseif event.key == "tab" then
       engine:toggleSystem("HUDBattle")
     end
     for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
@@ -52,6 +52,10 @@ function KeyboardHandler:firePressedEventToNetwork(event)
 end
 
 function KeyboardHandler:fireReleasedEvent(event)
+    if event.key == "tab" then
+      --关闭HUDBattle的信息
+      engine:toggleSystem("HUDBattle")
+    end
     for index, entity in pairs(engine:getEntitiesWithComponent("IsMyself")) do
         local dcmd = entity:get("Drivable") and entity:get("Drivable").cmd or nil
         local fcmd = entity:get("Firable") and entity:get("Firable").cmd or nil
