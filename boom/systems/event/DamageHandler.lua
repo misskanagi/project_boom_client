@@ -11,8 +11,17 @@ function DamageHandler:fireDamage(event)
     local dmg = event.dmg
     local range = event.range
     local true_dmg = (range*dmg - dmg*dist) / range
+    --print("true damage: ", true_dmg)
     if dst:has("Health") then
+        local max_value = dst:get("Health").max_value
         dst:get("Health").value = dst:get("Health").value - true_dmg
+        dst:get("Health").src_dmg_entity = src
+        if dst:get("Health").value < 0 then
+            dst:get("Health").value = 0
+        end
+        if dst:get("Health").value > max_value then
+            dst:get("Health").value = max_value
+        end
     end
     -- give push force
     if true_dmg > 0 then -- 如果伤害为负数，说明是治疗，不用去推这个entity

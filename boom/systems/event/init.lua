@@ -8,6 +8,7 @@ local SnapshotReceivedHandler = require "boom.systems.event.SnapshotReceivedHand
 local CollisionHandler = require "boom.systems.event.CollisionHandler"
 local DamageHandler = require "boom.systems.event.DamageHandler"
 local EntityDestroyHandler = require "boom.systems.event.EntityDestroyHandler"
+local GameOverHandler = require "boom.systems.event.GameOverHandler"
 
 KeyboardHandler = KeyboardHandler()
 NetKeyboardHandler = NetKeyboardHandler()
@@ -19,6 +20,7 @@ MouseHandler = MouseHandler()
 GamepadHandler = GamepadHandler()
 NetMouseHandler = NetMouseHandler()
 NetGamepadHandler = NetGamepadHandler()
+GameOverHandler = GameOverHandler()
 
 eventmanager:addListener("KeyPressed", KeyboardHandler, KeyboardHandler.firePressedEvent)
 eventmanager:addListener("MouseMoved", MouseHandler, MouseHandler.fireMovedEvent)
@@ -38,6 +40,7 @@ eventmanager:addListener("PreSolve", CollisionHandler, CollisionHandler.firePreS
 eventmanager:addListener("PostSolve", CollisionHandler, CollisionHandler.firePostSolve)
 eventmanager:addListener("Damage", DamageHandler, DamageHandler.fireDamage)
 eventmanager:addListener("EntityDestroy", EntityDestroyHandler, EntityDestroyHandler.fireEntityDestroy)
+eventmanager:addListener("GameOver", GameOverHandler, GameOverHandler.fireGameOver)
 
 local event = {
   --KeyboardHandler = KeyboardHandler,

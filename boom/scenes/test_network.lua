@@ -76,8 +76,7 @@ function test_network:enter(pre, info)
                   if player_id == info.room_master_id then
                       room_master_flag = true
                   end
-                  print("before!!!!!!!!!! group_id:"..group_id)
-                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id, group_id)
+                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id)
                   --player_info.is_room_master = room_master_flag
                   --player_info.is_myself = myself_flag
                   --local e = EM:createEntity(type, x, y, w, h, 0.0, id, player_info)
@@ -89,6 +88,10 @@ function test_network:enter(pre, info)
             end
         end
     end
+    local g1 = EM:createEntity("group", 1, info.lives_per_team, info.players_info) -- create group 1
+    local g2 = EM:createEntity("group", 2, info.lives_per_team, info.players_info) -- create group 2
+    engine:addEntity(g1)
+    engine:addEntity(g2)
     local sun = require "boom.entities.Sun" -- add sun
     --engine:addEntity(sun(self.map, self.shader))
     self.system_manager = system_manager
