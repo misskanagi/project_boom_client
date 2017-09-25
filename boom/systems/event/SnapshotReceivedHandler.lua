@@ -14,6 +14,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local oldTimeSnapshot = event.timeSnapshot
     local snapshot_entities = event.entities
     local delta_t = love.timer.getTime() - oldTimeSnapshot
+    print(delta_t)
     if delta_t < 0 then
         print("fuck!!!")
         delta_t = 0
