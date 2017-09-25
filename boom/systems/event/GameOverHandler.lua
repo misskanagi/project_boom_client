@@ -6,11 +6,12 @@ function GameOverHandler:fireGameOver(event)
     local myId = net.playerId
     local masterId = net.roomId  --房主Id和房间Id一致
     local winOrLose = false --是否赢了
-    
+    local group_info = {}
     local winGroupId = nil
     local entities = engine:getEntitiesWithComponent("Group")
     for _, entity in pairs(entities) do 
       local group_component = entity:get("Group")
+      group_info[group_component.id] = group_component.players_info
       --可以获取两队的kd数据
       if group_component.lives > 0 then
         winGroupId = group_component.id
@@ -34,6 +35,7 @@ function GameOverHandler:fireGameOver(event)
     end
     init_table["myId"] = myId
     init_table["winOrLose"] = winOrLose
+    init_table["group_info"] = group_info
     game_state.switch(gameover, init_table)
 end
 

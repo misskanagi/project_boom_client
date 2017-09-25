@@ -146,7 +146,7 @@ function create_room:enter(prev, init_table)
     local zoom = math.min(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
     camera:zoomTo(zoom)
   end
-  camera:lookAt(window_w/2, window_h/2)
+  
   eventmanager:addListener("CreateRoomRes", create_room_net_handler, create_room_net_handler.fireCreateRoomResEvent)
   eventmanager:addListener("CreateRoomInputPressed", input_handler, input_handler.firePressedEvent)
   myId = init_table and init_table["myId"]
@@ -193,6 +193,7 @@ function create_room:enter(prev, init_table)
   choose_table:add(lbl_people_value, "2,2")
   choose_table:add(lbl_life_value, "3,2")
   choose_table:add(lbl_map_value, "4,2")
+  camera:lookAt(window_w/2, window_h/2)
 end
 
 function create_room:update(dt)
