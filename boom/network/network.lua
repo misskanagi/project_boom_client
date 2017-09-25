@@ -204,6 +204,12 @@ function network:requestGameBegin(roomId)
   local result = self:send(self.cmd_code.GAME_BEGIN_REQ, {roomId = roomId})
 end
 
+--请求结束游戏
+function network:requestGameOver(winGroupId)
+  local result = self:send(self.cmd_code.GAME_OVER_REQ, {roomId = self.roomId, winGroupId = winGroupId})
+end
+
+
 -- 使用一个单独的线程调用该函数
 function network:connect(address, port)
     self.is_connected = netLib.Lua_connect(address, port)

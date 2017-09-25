@@ -65,9 +65,6 @@ local entering = false
 local roomNumbers = 0  --房间数量
 local RoomInfos = {} --从服务器上拉下来的最新房间信息数据
 
-
-
-
 function roomlist:leave()
   --
   room_selected_index = 1
@@ -82,6 +79,8 @@ end
 
 
 function roomlist:enter(prev, init_table)
+  refreshing = false
+  entering = false
   gui:setOriginSize(window_w, window_h)
   camera:lookAt(window_w/2, window_h/2)
   --[[if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
