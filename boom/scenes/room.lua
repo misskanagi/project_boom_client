@@ -115,6 +115,7 @@ local setup_tankbag
 2.create_room:带入roomId,groupId,roomMasterId,gameMode,mapType,lifeNumber,playersPerGroup,roomState
 ]]--
 function room:enter(pre, init_table)
+  camera:lookAt(window_w/2, window_h/2)
   gui:setOriginSize(window_w, window_h)
   if window_w > love.graphics.getWidth() or window_h > love.graphics.getHeight() then
     --需要缩放
@@ -123,7 +124,6 @@ function room:enter(pre, init_table)
   else
     camera:zoomTo(1.0)
   end
-  camera:lookAt(window_w/2, window_h/2)
   eventmanager:addListener("EnterRoomBroadcast", room_net_handler, room_net_handler.fireEnterRoomBroadcastEvent)
   eventmanager:addListener("GameBeginBroadcast", room_net_handler, room_net_handler.fireGameBeginBroadcastEvent)
   eventmanager:addListener("GameCancelReadyBroadcast", room_net_handler, room_net_handler.fireGameCancelReadyBroadcastEvent)
