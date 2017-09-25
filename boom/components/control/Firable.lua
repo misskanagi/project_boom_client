@@ -8,7 +8,7 @@ function Firable:initialize(light_world)
     self.fire_ps = PSM:createParticleSystem("gun")
     self.fire_light = light_world:newLight(0, 0, 255, 205, 200, 50)
     self.fire_range = 300*32
-    self.fire_dmg = 0.1
+    self.fire_dmg = 0.15
     --self.fire_light:setAngle(math.pi/8)
     self.fire_light:setGlowStrength(2.0)
     self.height = 5

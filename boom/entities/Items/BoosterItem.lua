@@ -29,7 +29,7 @@ local createBoosterItem = function(x, y, r, world, light_world)
             if that_entity:has("IsPlayer") and that_entity:has("Physic") then
                 local body = that_entity:get("Physic").body
                 local booster = require("boom.components.vehicle.booster")
-                that_entity:add(booster(body))
+                that_entity:add(booster(body, nil, 5))
                 e:get("Explosive").is_exploded = true
                 e:get("Explosive").explosion_ps:start()
             end

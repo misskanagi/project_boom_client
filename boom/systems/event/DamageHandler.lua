@@ -30,8 +30,10 @@ function DamageHandler:fireDamage(event)
             local x2, y2 = dst:get("Physic").body:getWorldCenter()
             v.x, v.y = x2-x1, y2-y1
             v:normalizeInplace()
-            local force = true_dmg*50
-            dst:get("Physic").body:applyForce(force * v.x, force * v.y, x2, y2)
+            --local force = true_dmg*50
+            --dst:get("Physic").body:applyForce(force * v.x, force * v.y, x2, y2)
+            local impulse = true_dmg
+            dst:get("Physic").body:applyLinearImpulse(-impulse * v.x, -impulse * v.y, x2, y2)
         end
     end
 end

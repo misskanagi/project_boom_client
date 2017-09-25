@@ -3,11 +3,23 @@ local Vector = require "libs.hump.vector"
 local camera = require "boom.camera"
 local LaunchableSync = class("LaunchableSync", System)
 
+local iv = Vector(0, 0)
+
+local elapsed = 0.0
+
 function LaunchableSync:update(dt)
     for k, entity in pairs(self.targets) do
         local L = entity:get("Launchable")
-        if L.cmd.launch then
+        if L.need_cool_down then
+            elapsed = elapsed + dt
+            if elapsed > L.cool_down_time then
+                elapsed = 0.0
+                L.need_cool_down = false
+            end
+        end
+        if L.cmd.launch and not L.need_cool_down then
             L.cmd.launch = false
+            L.need_cool_down = true
             if L.shell_count > 0 then
                 L.shell_count = L.shell_count - 1
                 -- shake camera
@@ -26,8 +38,10 @@ function LaunchableSync:update(dt)
                     local p_body = entity:get("Physic").body
                     local cx, cy = body:getWorldCenter()
                     local nx, ny = body:getWorldVector(0, 1)
-                    local force = e:get("Booster").thrust_force
-                    p_body:applyForce(force * nx, force * ny, cx, cy)
+                    local impulse_constant = e:get("Booster").backlash_impulse_constant
+                    local ix, iy = body:getMass() * impulse_constant * nx,
+                                  body:getMass() * impulse_constant * ny
+                    p_body:applyLinearImpulse(ix, iy, cx, cy)
                 end
             end
         end

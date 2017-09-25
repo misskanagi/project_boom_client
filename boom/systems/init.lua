@@ -40,7 +40,7 @@ local system_manager = {
   addAllSystemsToEngine = function()
     for _, module in pairs(modules) do
       for _, system in ipairs(module) do
-        print(system)
+        --print(system)
         engine:addSystem(system)
       end
     end

@@ -49,7 +49,7 @@ function test_place:enter()
     for _, o in pairs(layer.objects) do
       local type = o.properties["type"]
       local x, y, w, h = o.x, o.y, o.width, o.height
-      if type == "Barrier" or type == "barrier" then
+      if type == "Barrier" or type == "barrier" or type == "BarrierExplosive" or type == "barrierexplosive" then
           local e = EM:createEntity(type, o)
           local t = e and engine:addEntity(e)
       else

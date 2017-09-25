@@ -5,7 +5,7 @@ function Friction:update(dt)
     -- Syncs the Position with the Physic. Physic is the primary component.
     for k, entity in pairs(self.targets) do
         local p = entity:get("Physic")
-        local m = p.maxLateralImpulse
+        local m = p.maxFrictionImpulse
         local a = p.angularFrictionConstant
         local r = p.rollFrictionConstant
         self:updateFriction(entity:get("Physic").body, m, a, r)
@@ -28,14 +28,14 @@ function Friction:getForwardVelocity(body)
     return (nx*sx+ny*sy)*nx, (nx*sx+ny*sy)*ny
 end
 
-function Friction:updateFriction(body, maxLateralImpulse, angularFrictionConstant, rollFrictionConstant)
+function Friction:updateFriction(body, maxFrictionImpulse, angularFrictionConstant, rollFrictionConstant)
     -- vanish lateral speed
     local lx, ly = self:getLateralVelocity(body)
     local ix, iy = body:getMass() * -lx, body:getMass() * -ly
     local cx, cy = body:getWorldCenter()
     local impulseLength = math.sqrt(ix*ix+iy*iy)
-    if impulseLength > maxLateralImpulse then
-      local h = maxLateralImpulse / impulseLength
+    if impulseLength > maxFrictionImpulse then
+      local h = maxFrictionImpulse / impulseLength
       ix, iy = ix * h, iy * h
     end
     body:applyLinearImpulse(ix, iy, cx, cy)
@@ -43,9 +43,16 @@ function Friction:updateFriction(body, maxLateralImpulse, angularFrictionConstan
     body:applyAngularImpulse(angularFrictionConstant * body:getInertia() * -body:getAngularVelocity())
     -- vanish roll speed
     local nx, ny = self:getForwardVelocity(body)
-    local forwardSpeed = math.sqrt(nx*nx+ny*ny)
-    local dragForceMagnitude = -rollFrictionConstant * forwardSpeed
-    body:applyForce(dragForceMagnitude * nx, dragForceMagnitude * ny, cx, cy)
+    --local forwardSpeed = math.sqrt(nx*nx+ny*ny)
+    --local dragForceMagnitude = -rollFrictionConstant * forwardSpeed
+    ix, iy = body:getMass() * -nx, body:getMass() * -ny
+    impulseLength = math.sqrt(ix*ix+iy*iy)
+    if impulseLength > maxFrictionImpulse then
+      local h = maxFrictionImpulse / impulseLength
+      ix, iy = ix * h, iy * h
+    end
+    --body:applyForce(dragForceMagnitude * nx * dt, dragForceMagnitude * ny * dt, cx, cy)
+    body:applyLinearImpulse(ix, iy, cx, cy)
 end
 
 function Friction:updateFrictionForAngular(body, angularFrictionConstant)

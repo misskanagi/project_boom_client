@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="209">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="47" height="61" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="210">
  <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
   <image source="cs2dnorm.bmp" trans="ff00ff" width="544" height="480"/>
  </tileset>
@@ -584,6 +584,11 @@
   <object id="208" x="608" y="1536" width="32" height="32">
    <properties>
     <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="209" gid="137" x="608" y="1280" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierexplosive"/>
    </properties>
   </object>
  </objectgroup>

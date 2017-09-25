@@ -18,7 +18,7 @@ local createHealShell = function(x, y, w, h, r, heal, range, world, light_world)
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     local heal_to_dmg = heal or 100
-    print(heal_to_dmg)
+    --print(heal_to_dmg)
     body:setAngle(r or 0)
     fixture:setSensor(true)
     e:add(DrawablePolygon({body:getWorldPoints(shape:getPoints())}, {r=0, g=255, b=0}, "fill"))

@@ -8,7 +8,7 @@ return {
   height = 61,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 209,
+  nextobjectid = 210,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -1884,6 +1884,22 @@ return {
           visible = true,
           properties = {
             ["type"] = "ItemSpawner"
+          }
+        },
+        {
+          id = 209,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 608,
+          y = 1280,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          gid = 137,
+          visible = true,
+          properties = {
+            ["type"] = "barrierexplosive"
           }
         }
       }

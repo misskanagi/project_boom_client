@@ -5,7 +5,7 @@ function Physic:initialize(body, other_bodies, mli, afc, rfc)
     self.body = body
     self.root_body_id = 1
     -- friction
-    self.maxLateralImpulse = mli or 5
+    self.maxFrictionImpulse = mli or 3
     self.angularFrictionConstant = afc or 0.05
     self.rollFrictionConstant = rfc or 0.05
     -- none root bodies

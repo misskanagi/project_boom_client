@@ -1,4 +1,7 @@
+local Vector = require "libs.hump.vector"
 local BoosterSync = class("BoosterSync", System)
+
+local v = Vector(0, 0)
 
 function BoosterSync:update(dt)
     for index, entity in pairs(self.targets) do
@@ -15,7 +18,10 @@ function BoosterSync:update(dt)
             local force = -booster.thrust_force
             local nx, ny = body:getWorldVector(0, 1)
             local cx, cy = body:getWorldCenter()
-            body:applyForce( force * nx, force * ny, cx, cy)
+            local ix, iy = 0, body:getMass() * booster.thrust_impulse_constant * -1
+            v.x, v.y = ix, iy
+            v:rotateInplace(body:getAngle())
+            body:applyLinearImpulse( v.x, v.y, cx, cy)
             booster.fuel = booster.fuel - booster.fuel_usage_per_sec * dt
             body:setMass(body:getMass() - booster.fuel_usage_per_sec * dt * booster.mass_per_unit_fuel)
             if bfps:isStopped() then

@@ -1,6 +1,7 @@
 local Player = require "boom.entities.Player"
 local PlayerSpawner = require "boom.entities.PlayerSpawner"
 local Barrier = require "boom.entities.Barrier"
+local BarrierExplosive = require "boom.entities.BarrierExplosive"
 local BarrierWreckage = require "boom.entities.BarrierWreckage"
 local DefaultWreckage = require "boom.entities.DefaultWreckage"
 local Light = require "boom.entities.Light"
@@ -49,6 +50,9 @@ function EntityManager:createEntity(type, ...)
     e = Barrier(object, self.map, self.world, self.shader)
   elseif type == "BarrierWreckage" or type == "barrierwreckage" then
     e = BarrierWreckage(x, y)
+  elseif type == "BarrierExplosive" or type == "barrierexplosive" then
+    local object = args[1]
+    e = BarrierExplosive(object, self.map, self.world, self.shader)
   elseif type == "BloodSpring" or type == "bloodspring" then
     e = ItemSpawner(x, y, w, h, r, {"BloodSpringItem"}, self.world, self.shader, 0.5, 255, 0, 0)
   elseif type == "DefaultWreckage" or type == "defaultwreckage" then

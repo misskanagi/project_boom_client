@@ -7,6 +7,8 @@ function Launchable:initialize()
     }
     self.shell_name = "NormalShell"
     self.shell_count = 10
+    self.cool_down_time = 1
+    self.need_cool_down = false
 end
 
 return Launchable
