@@ -157,6 +157,8 @@ function network:updateReceive(dt)
         eventmanager:fireEvent(events.GameBeginBroadcast(data.roomId))
       elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES then
         self.delta_t = data.ping
+      elseif data.cmdType == 703 then
+        print("CHECK_PING_RES data.ping: ", data.ping)
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
         eventmanager:fireEvent(events.GameOverBroadcast(data.roomId, data.winGroupId))
@@ -225,6 +227,10 @@ function network:requestToRoomMasterPing()
   --local result = self:send(self.cmd_code.CHECK_PING_TO_ROOMMASTER_REQ, {playerId = self.playerId})
   local result = self:send(704, {playerId = self.playerId})
   --print("requestToRoomMasterPing: send it")
+end
+
+function network:test702()
+  local result = self:send(702, {playerId = self.playerId, currentTime = netLib.Lua_getTime()})
 end
 
 -- 使用一个单独的线程调用该函数
