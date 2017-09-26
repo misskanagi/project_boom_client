@@ -49,8 +49,25 @@ local system_manager = {
         engine:stopSystem(s)
     end
     -- disable HUDBattle system first
-    engine:toggleSystem("HUDBattle")
+    engine:stopSystem("HUDBattle")
   end,
+  
+  removeAllEntities = function(self, root)
+    print("system.reset")
+    --local root = engine:getRootEntity()
+    --engine:removeEntity(root, true)
+    --engine:getEntitiesWithComponent("Group")
+    for k, v in pairs(root.children) do
+      self:removeAllEntities(v)
+    end
+    engine:removeEntity(root, false)
+  end, 
+  
+  --[[removeSpawners = function()
+    for k, v in pairs(engine:getEntitiesWithComponent("Spawnable")) do
+      engine:removeEntity(v, true)
+    end
+  end]]--
 }
 
 return system_manager

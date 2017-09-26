@@ -41,6 +41,7 @@ eventmanager:addListener("PostSolve", CollisionHandler, CollisionHandler.firePos
 eventmanager:addListener("Damage", DamageHandler, DamageHandler.fireDamage)
 eventmanager:addListener("EntityDestroy", EntityDestroyHandler, EntityDestroyHandler.fireEntityDestroy)
 eventmanager:addListener("GameOver", GameOverHandler, GameOverHandler.fireGameOver)
+eventmanager:addListener("GameOverBroadcast", GameOverHandler, GameOverHandler.fireGameOverBroadcast)
 
 local event = {
   --KeyboardHandler = KeyboardHandler,
