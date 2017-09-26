@@ -28,6 +28,9 @@ function GunFireSync:update(dt)
             if fps:isStopped() then
                 fps:start()
             end
+            if fire.gun_fire_sound:isStopped() then
+                fire.gun_fire_sound:play()
+            end
             -- update light
             local turret_body = entity:get("Turret").body
             local cx, cy = turret_body:getWorldCenter()

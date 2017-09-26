@@ -1,7 +1,7 @@
 --local netLib = require "library"
 local netLib = require "libtcp"
---local json = require "libs.json"
-local json = require "cjson"
+local json = require "libs.json"
+--local json = require "cjson"
 --load some tool modules
 --log = require("libs.log")
 --require("alien")

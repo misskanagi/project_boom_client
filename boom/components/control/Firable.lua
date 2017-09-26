@@ -24,6 +24,7 @@ function Firable:initialize(light_world)
     end
     self.hit_curr = 1
     self.hit_active = 0
+    self.gun_fire_sound = assets.sound.gun_fire
 end
 
 return Firable
