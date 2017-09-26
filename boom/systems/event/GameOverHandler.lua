@@ -75,7 +75,11 @@ function GameOverHandler:fireGameOverBroadcast(event)
     init_table["group_info"] = group_info
     local system_manager = require("boom.systems")
     --system_manager.removeSpawners()
-    system_manager:removeAllEntities(engine:getRootEntity())
+    --system_manager:removeAllEntities(engine:getRootEntity())
+    system_manager:removeAllEntities(engine.rootEntity)
+    --system_manager.removeAllEntities_norec(engine.rootEntity)
+    
+    engine:stopSystem("SpawnableSync")
     game_state.switch(gameover, init_table)
 end
 

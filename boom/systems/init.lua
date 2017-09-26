@@ -57,17 +57,19 @@ local system_manager = {
     --local root = engine:getRootEntity()
     --engine:removeEntity(root, true)
     --engine:getEntitiesWithComponent("Group")
+    --[[if root:has("Spawnable") then
+      print("Remove entity who has a Spawnable Component")
+    end]]--
     for k, v in pairs(root.children) do
       self:removeAllEntities(v)
     end
-    engine:removeEntity(root, false)
+    engine:removeEntity(root, true)
   end, 
   
-  --[[removeSpawners = function()
-    for k, v in pairs(engine:getEntitiesWithComponent("Spawnable")) do
-      engine:removeEntity(v, true)
-    end
-  end]]--
+  removeAllEntities_norec = function(root)
+    engine:removeEntity(root, true)
+  end,
+  
 }
 
 return system_manager
