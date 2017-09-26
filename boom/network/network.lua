@@ -155,11 +155,11 @@ function network:updateReceive(dt)
       elseif data.cmdType == self.cmd_code.GAME_BEGIN_BROADCAST then
         print("got GAME_BEGIN_BROADCAST")
         eventmanager:fireEvent(events.GameBeginBroadcast(data.roomId))
-      elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
-        print("got GAME_OVER_BROADCAST")
-        --eventmanager:fireEvent(events.GameOverBroadcast(...))
       elseif data.cmdType == self.cmd_code.CHECK_PING_TO_ROOMMASTER_RES then
         self.delta_t = data.ping
+      elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
+        print("got GAME_OVER_BROADCAST")
+        eventmanager:fireEvent(events.GameOverBroadcast(data.roomId, data.winGroupId))
       end
     --end
   end
@@ -318,6 +318,7 @@ function network:receive()
 end
 -- 无限循环receive，另开一个线程
 function network:startReceiving()
+    print("startreceiving")
     assert(self.is_connected==true)
     if self.is_connected then
         if self.receive_thread == nil then

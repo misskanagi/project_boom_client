@@ -35,8 +35,11 @@ local PostSolve = require("boom.events.PostSolve")
 local Damage = require("boom.events.Damage")
 local EntityDestroy = require("boom.events.EntityDestroy")
 local GameOver = require("boom.events.GameOver")
+<<<<<<< HEAD
 local PlaySound = require("boom.events.PlaySound")
+=======
 local GameOverBroadcast = require("boom.events.GameOverBroadcast")
+>>>>>>> 18efcf5b7e5d650175c2957b13e7f644e339d797
 
 local events = {
     KeyPressed = KeyPressed,
@@ -76,7 +79,10 @@ local events = {
     Damage = Damage,
     EntityDestroy = EntityDestroy,
     GameOver = GameOver,
+<<<<<<< HEAD
     PlaySound = PlaySound,
+=======
     GameOverBroadcast = GameOverBroadcast,
+>>>>>>> 18efcf5b7e5d650175c2957b13e7f644e339d797
 }
 return events

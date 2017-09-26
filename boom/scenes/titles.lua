@@ -12,6 +12,11 @@ local current_phase = "phase1"
 local window_w = 1280--960
 local window_h = 720--640
 
+local network = require("boom.network")
+net = network:instance()   --全局变量，需要传递给connect_thread
+local channel_connect = love.thread.getChannel("channel_connect")
+
+
 --合理游戏说明
 function titles.phase1_update(dt)
   local cp = phases["phase1"]
@@ -52,7 +57,7 @@ function titles.phase2_update(dt)
 end
 
 function titles.phase3_update(dt)
-  print("phase3_update()")
+  --print("phase3_update()")
   local cp = phases["phase3"]
   --cp中记录了当前phase1需要的各种数据
   cp.timer = cp.timer + dt
@@ -116,28 +121,36 @@ phases = {--有哪些阶段
 }  
 
 function titles:enter()
-  print("titles:enter()")
+  love.thread.newThread("boom/network/connect_thread.lua"):start()
   local zm = math.max(love.graphics.getWidth()/window_w, love.graphics.getHeight()/window_h)
   camera:zoom(zm)
   camera:lookAt(window_w/2, window_h/2)
 end
 
 function titles:update(dt)
-  print("titles:update()")
+  --查一下连接好的net好了没
+  local is_connected = channel_connect:pop()
+  if is_connected then
+    net.is_connected = true
+    net:startReceiving()
+  end
+  --print("titles:update()")
   local cp = phases[current_phase]
-  print(current_phase)
+  --print(current_phase)
   if cp["update"] then 
-    print("cp.update()")
+    --print("cp.update()")
     cp.update(dt)
   else
     local login = require "boom.scenes.login"
-    game_state.switch(login)
+    if net:testConnect() then
+      game_state.switch(login)
+    end
   end
 end
 
 
 function titles:draw()
-  love.graphics.print(current_phase)
+  --love.graphics.print(current_phase)
   local cp = phases[current_phase]
   if cp["draw"] then 
     camera:attach()
@@ -149,7 +162,9 @@ end
 function titles:keypressed(key, scancode)
   if key == "space" then
     local login = require "boom.scenes.login"
-    game_state.switch(login)
+    if net:testConnect() then
+      game_state.switch(login)
+    end
   end
 end
 return titles
