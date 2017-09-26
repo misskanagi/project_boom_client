@@ -1,7 +1,7 @@
 local PSM = require "boom.particle"
 local Booster = Component.create("Booster")
 
-function Booster:initialize(body, thrust_force, thrust_impulse_constant)
+function Booster:initialize(body, thrust_force, thrust_impulse_constant, boost_sound)
     self.body_to_boost = body
     self.fuel = 200
     self.mass_per_unit_fuel = 0.025
@@ -14,6 +14,7 @@ function Booster:initialize(body, thrust_force, thrust_impulse_constant)
           self.init = true
         end
     end
+    self.boost_sound = boost_sound or assets.sound.boost
     self.thrust_force = thrust_force or 2000
     self.thrust_impulse_constant = thrust_impulse_constant or 10
     self.backlash_impulse_constant = 800

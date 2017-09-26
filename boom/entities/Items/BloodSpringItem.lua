@@ -7,16 +7,16 @@ local PSM = require "boom.particle"
 
 local createBloodSpringItem = function(x, y, r, world, light_world)
     local e = Entity()
-    local w, h = image:getWidth(), image:getHeight()
+    local meter = love.physics.getMeter()
+    local w, h = 3 * meter, 3 * meter
     local sx, sy = x + w/2, y + h/2
     local body = love.physics.newBody(world, sx, sy, "dynamic")
     body:setAngle(r)
-    local meter = love.physics.getMeter()
-    local shape = love.physics.newRectangleShape(3 * meter, 3 * meter)
+    local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     fixture:setSensor(true)
     e:add(IsItem())
-    e:add(Explosive(sx, sy, -5, 3 * meter, PSM:createParticleSystem("heal_explosion")))
+    e:add(Explosive(sx, sy, -5, 3 * meter, PSM:createParticleSystem("heal_explosion"), assets.sound.item_get))
     e:add(Physic(body))
     e:add(CollisionCallbacks(
         function(that_entity, coll)

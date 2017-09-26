@@ -1,6 +1,7 @@
 local EM = require "boom.entities"
 local ExplosiveSync = class("ExplosiveSync", System)
 local events = require("boom.events")
+local camera = require("boom.camera")
 
 function ExplosiveSync:update(dt)
 
@@ -31,8 +32,19 @@ function ExplosiveSync:update(dt)
         if exp.is_exploded then
             local exp = entity:get("Explosive")
             exp.explosion_ps:update(dt)
-            if exp.explosion_ps:isStopped() then
+            if not exp.exploded_callback_executed then
+                --explode
+                local cx, cy = camera:position()
+                local meter = love.physics.getMeter()*audio_distance_scale
+                local dist = math.sqrt(math.pow(x1-cx, 2) + math.pow(y1-cy, 2))
+                --print(dist, 50 * love.physics.getMeter())
+                exp.exploded_sound:setPosition( (cx - x1)/meter, (cy - y1)/meter, 0 )
+                --exp.exploded_sound:setAttenuationDistances( dist, 50 * love.physics.getMeter() )
+                exp.exploded_sound:play()
                 exp.exploded_callback(entity)
+                exp.exploded_callback_executed = true
+            end
+            if exp.explosion_ps:isStopped() then
                 eventmanager:fireEvent(events.EntityDestroy(entity))
             end
         end

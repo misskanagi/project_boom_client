@@ -1,4 +1,4 @@
-local AssetsManager = require("assets")
+--local AssetsManager = require("assets")
 local ParticleSystemManager = {}
 
 function ParticleSystemManager:createParticleSystem(type)
@@ -29,7 +29,7 @@ function ParticleSystemManager:createParticleSystem(type)
 end
 
 function ParticleSystemManager:createGatlinParticleSystem()
-    local tex = AssetsManager:instance().images.particle_line2px
+    local tex = assets.particles.line2px
     local emitter = love.graphics.newParticleSystem(tex,32)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",1,2)
@@ -54,7 +54,7 @@ function ParticleSystemManager:createGatlinParticleSystem()
 end
 
 function ParticleSystemManager:createGatlinHitParticleSystem()
-    local tex = AssetsManager:instance().images.particle_spark
+    local tex = assets.particles.spark
     local emitter = love.graphics.newParticleSystem(tex,64)
     emitter:setDirection(0)
     emitter:setAreaSpread("normal",1,3.0999999046326)
@@ -79,7 +79,7 @@ function ParticleSystemManager:createGatlinHitParticleSystem()
 end
 
 function ParticleSystemManager:createBoosterFireParicleSystem()
-    local tex = AssetsManager:instance().images.particle_circle
+    local tex = assets.particles.circle
     local emitter = love.graphics.newParticleSystem(tex,32)
     emitter:setDirection(0)
     emitter:setAreaSpread("none",0,0)
@@ -104,7 +104,7 @@ function ParticleSystemManager:createBoosterFireParicleSystem()
 end
 
 function ParticleSystemManager:createExplosionParticleSystem()
-    local tex = AssetsManager:instance().images.particle_circle
+    local tex = assets.particles.circle
     local emitter = love.graphics.newParticleSystem(tex,64)
     emitter:setDirection(0)
     emitter:setAreaSpread("normal",8,8)
@@ -129,7 +129,7 @@ function ParticleSystemManager:createExplosionParticleSystem()
 end
 
 function ParticleSystemManager:createHealExplosionParticleSystem()
-    local tex = AssetsManager:instance().images.particle_cross
+    local tex = assets.particles.cross
     local emitter = love.graphics.newParticleSystem(tex,8)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",16,16)
@@ -154,7 +154,7 @@ function ParticleSystemManager:createHealExplosionParticleSystem()
 end
 
 function ParticleSystemManager:createAdvancedExplosionParticleSystem()
-    local tex = AssetsManager:instance().images.particle_circle
+    local tex = assets.particles.circle
     local emitter = love.graphics.newParticleSystem(tex,128)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",16,16)
@@ -179,7 +179,7 @@ function ParticleSystemManager:createAdvancedExplosionParticleSystem()
 end
 
 function ParticleSystemManager:createNuclearExplosionParticleSystem()
-    local tex = AssetsManager:instance().images.particle_twirl
+    local tex = assets.particles.twirl
     local emitter = love.graphics.newParticleSystem(tex,256)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",48,48)
@@ -204,7 +204,7 @@ function ParticleSystemManager:createNuclearExplosionParticleSystem()
 end
 
 function ParticleSystemManager:createLandmineExplosionParticleSystem()
-    local tex = AssetsManager:instance().images.particle_circle
+    local tex = assets.particles.circle
     local emitter = love.graphics.newParticleSystem(tex,128)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",24,24)
@@ -229,7 +229,7 @@ function ParticleSystemManager:createLandmineExplosionParticleSystem()
 end
 
 function ParticleSystemManager:createItemDestroyParticleSystem()
-    local tex = AssetsManager:instance().images.particle_spark
+    local tex = assets.particles.spark
     local emitter = love.graphics.newParticleSystem(tex,64)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",16,16)
@@ -254,7 +254,7 @@ function ParticleSystemManager:createItemDestroyParticleSystem()
 end
 
 function ParticleSystemManager:createDefaultWreckageParticleSystem()
-    local tex = AssetsManager:instance().images.particle_smoke
+    local tex = assets.particles.smoke
     local emitter = love.graphics.newParticleSystem(tex,16)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",16,16)
@@ -279,7 +279,7 @@ function ParticleSystemManager:createDefaultWreckageParticleSystem()
 end
 
 function ParticleSystemManager:createBarrierWreckageParticleSystem()
-    local tex = AssetsManager:instance().images.particle_barrier
+    local tex = assets.particles.barrier
     local emitter = love.graphics.newParticleSystem(tex,8)
     emitter:setDirection(0)
     emitter:setAreaSpread("uniform",16,16)

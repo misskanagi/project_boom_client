@@ -22,8 +22,8 @@ local createNormalShell = function(x, y, w, h, r, dmg, range, world, light_world
     body:setAngle(r or 0)
     fixture:setSensor(true)
     e:add(DrawablePolygon({body:getWorldPoints(shape:getPoints())}, shell_color, "fill"))
-    e:add(Explosive(sx, sy, dmg or 60, range or 20 * love.physics.getMeter(), PSM:createParticleSystem("nuclear_explosion")))
-    e:add(Booster(body))
+    e:add(Explosive(sx, sy, dmg or 200, range or 20 * love.physics.getMeter(), PSM:createParticleSystem("nuclear_explosion")))
+    e:add(Booster(body, nil, 3))
     e:add(Physic(body, nil, nil, nil, 0.01))
     --local t = light_world and e:add(ShaderPolygon(light_world, body))
     local sg = light_world and e:add(Light(light_world, sx, sy, 4, nil, nil, nil, 80))
@@ -34,12 +34,6 @@ local createNormalShell = function(x, y, w, h, r, dmg, range, world, light_world
                 -- explode!
                 e:get("Explosive").is_exploded = true
                 e:get("Explosive").explosion_ps:start()
-                local x1, y1 = body:getWorldCenter()
-                local cx, cy = camera:position()
-                local dist = math.sqrt(math.pow(x1-cx, 2) + math.pow(y1-cy, 2))
-                local shake = 0
-                if dist < 640 then shake = -(4.883e-05)*dist*dist + 50 end
-                camera:instance():shake(shake, true)
                 light_world:remove(e:get("Light").light)
             end
         end

@@ -9,6 +9,7 @@ function Launchable:initialize()
     self.shell_count = 10
     self.cool_down_time = 1
     self.need_cool_down = false
+    self.launch_sound = assets.sound.shell_normal_launch
 end
 
 return Launchable

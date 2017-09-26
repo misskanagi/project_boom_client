@@ -33,8 +33,14 @@ function LaunchableSync:update(dt)
                 local e = EM:createEntity(L.shell_name, cx+v.x-w/2, cy+v.y-h/2, w, h, body:getAngle())
                 e:setParent(entity)
                 engine:addEntity(e)
+                -- play sound
+                local cax, cay = camera:position()
+                local meter = love.physics.getMeter() * audio_distance_scale
+                L.launch_sound:setPosition( (cax - cx)/meter, (cay - cy)/meter, 0 )
+                L.launch_sound:play()
                 -- give negative push
                 if entity:has("Physic") and e:has("Booster") then
+                    -- push back
                     local p_body = entity:get("Physic").body
                     local cx, cy = body:getWorldCenter()
                     local nx, ny = body:getWorldVector(0, 1)

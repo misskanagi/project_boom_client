@@ -8,7 +8,7 @@ return {
   height = 51,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 626,
+  nextobjectid = 646,
   backgroundcolor = { 150, 150, 150 },
   properties = {},
   tilesets = {
@@ -52,7 +52,7 @@ return {
       properties = {},
       encoding = "base64",
       compression = "zlib",
-      data = "eJztnNFuwyAMRfsr0d6mrS99769N+fN1D0iRZxsbuOCkRrrSsjSpzeEaQqTebtmitOdLj4C6v/QF0j1AflTP4Cw2kJKFn0X6Ylxf1qRd/wMWMnYEi55cLfmg+zti7D0sNK/vlfOtKnF/gFTuPyMXmheKBaqmr2CBnJ+SRbLgtAsqtbccX4EFl+cMFtYay32O/m81i1Hzxd99jg3JQhrjdKxLY15jUbSKhTcvK4vyeQSLY0w940c6F8EXtdx28rcmpC+SxX8WnwdJ1yeL67DQ5ljOo63zRTQWWq2xsODyQ/jC068t10RhcWwaC84DCBaW9YPHz8kC6wsaC/W0FKtU21ax4GqrFKNlHUXvFZWFpgi+qEnKqeb31fNFsuhjIa1ZR83dV2WhjTvtPVQrC6mmSutZqYbWWKA1Oy8EC8/4afHKKhbovM7Igvvu74HH3P3PysLr39qemRTzBpLEYlZeo1jM0Apf9HqhtKuxWDFfJItk0cvCsj/gqaMSi5nPF5FZSM/d9Lu576fnazFGYeGZn1vm7tF7ID0sqG+kdxwrWVg8oJ3X6vooFrWxQGsUx0LLJ1n4WFjeI1pqVLJIFtb5gluD1Pq6VjN2MAtpjHhZrJovtD6XxknLXvloX3j2ps7CwtqP78SC3jsii5p3LM/F6HWUp3ZGZeHZX4jAwutHTz70ODKLCDXqyiw8no/EwvKsfzYWWo49dZm+A0H4olfafkiJ+Ux7g1ZFZGGJOVkki8gsWkVrJaeR74VGChl7K4seWfLRrkf3NzL2FuXvgcRRdBYbSMnCz+LdfJEtTvsFSzNVFQ=="
+      data = "eJztnN1qwzAMhfsqZXejK4Xd99VG3nyFYQia9Wf7xHIqw4GlbVLJn4/sOHSXS7Yo7fnSd0DdX7qBdA+QH9UzOIsrSMnCzyJ9Ma4vNUnn/4CFjB3BoidXSz7o/o4Yew8Lyesb8/pDOU/7XIn7A6Ry/VouvbFLQrJA1fQZLJDzU7JIFjVtjErtLcdnYFHL8wgW3Hxh+Rx9bTYLay6WXPcNyYIb43Ssc2NeYlE0i4U3LyuL8nkEi31MPeOHey+CL7TcNvK3JKQvksV/Fp87cecni/OwkObYmkdb54toLKRaY2FRyw/hC0+/tpwThcW+SSxqHkCwsKwfPH5OFlhf0Fiop7lYudo2i0WttnIxWtZR9FpRWUiK4AtNXE6a33tY0P3IlvkiWfz1YysLbs06au4+Kwtp3EnPoVpZcDWVW89yNVRjgdbReSFYeMaP1yvFy0doX3/Rea3I4sZ899fA49r1V2Xh9a+2Z8bFfAWJY3FUXqNYHKEZvuj1QmlnYjFrvkgWdc1YR63KwrI/4KmjHIsj7y8is+Duu+l3176fvq/FGIWFZ372zt09993cflQPC+ob7hnHTBYWD0jvS3V9FAttLNAaVWMh5ZMsfCwszxEtNSpZJAvrfFFbg2h9rdWMDcyCGyNeFrPmC6nPuXHS8txitC88e1OrsLD24zuxoNeOyELzjuW+GL2O8tTOqCw8+wsRWHj96MmHHkdmEaFGnZmFx/ORWGixrshCyrGnLtNnIAhf9EraDykxr7Q3aFVEFpaYk8UYFiv+jnVU7EgWraK1sqaRz4VGChl7K4seWfKRzkf3NzL2FuX/A4mj6CyuICULP4t380W2OO0XKGlVVQ=="
     },
     {
       type = "objectgroup",
@@ -2559,7 +2559,7 @@ return {
           width = 704,
           height = 512,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Water"
           }
@@ -2574,7 +2574,7 @@ return {
           width = 704,
           height = 512,
           rotation = 0,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "Water"
           }
@@ -3376,7 +3376,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3392,7 +3392,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3408,7 +3408,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3424,7 +3424,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3440,7 +3440,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3456,7 +3456,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3472,7 +3472,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3488,7 +3488,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3504,7 +3504,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3520,7 +3520,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3536,7 +3536,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3568,7 +3568,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3584,7 +3584,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3600,7 +3600,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3616,7 +3616,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3632,7 +3632,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3648,7 +3648,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3664,7 +3664,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3680,7 +3680,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3696,7 +3696,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3792,7 +3792,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -3808,7 +3808,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4189,7 +4189,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4285,7 +4285,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4333,7 +4333,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4381,7 +4381,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4397,7 +4397,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4413,7 +4413,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4429,7 +4429,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4445,7 +4445,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4461,7 +4461,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4477,7 +4477,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4493,7 +4493,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4509,7 +4509,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4525,7 +4525,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4541,7 +4541,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4557,7 +4557,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4573,7 +4573,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4589,7 +4589,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4605,7 +4605,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4621,7 +4621,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4637,7 +4637,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4653,7 +4653,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4669,7 +4669,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4685,7 +4685,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4701,7 +4701,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4717,7 +4717,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4733,7 +4733,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -4749,7 +4749,7 @@ return {
           gid = 137,
           visible = true,
           properties = {
-            ["type"] = "barrierExplosive"
+            ["type"] = "BarrierExplosive"
           }
         },
         {
@@ -5074,257 +5074,271 @@ return {
           }
         },
         {
-          id = 601,
+          id = 626,
           name = "",
           type = "",
           shape = "rectangle",
-          x = 256,
-          y = 672,
-          width = 32,
-          height = 32,
+          x = 352,
+          y = 1056,
+          width = 96,
+          height = 96,
           rotation = 0,
-          gid = 48,
           visible = true,
           properties = {
-            ["type"] = "light"
+            ["type"] = "BloodSpring"
           }
         },
         {
-          id = 607,
+          id = 627,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2624,
+          y = 416,
+          width = 96,
+          height = 96,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["type"] = "BloodSpring"
+          }
+        },
+        {
+          id = 629,
           name = "",
           type = "",
           shape = "rectangle",
           x = 672,
-          y = 224,
+          y = 192,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 608,
+          id = 631,
           name = "",
           type = "",
           shape = "rectangle",
           x = 992,
-          y = 224,
+          y = 192,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 610,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1152,
-          y = 768,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 613,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1152,
-          y = 896,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 615,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2016,
-          y = 768,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 616,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2016,
-          y = 896,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 617,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 672,
-          y = 1440,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 618,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 992,
-          y = 1440,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 619,
+          id = 632,
           name = "",
           type = "",
           shape = "rectangle",
           x = 256,
-          y = 992,
+          y = 640,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 620,
+          id = 633,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 256,
+          y = 960,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 634,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 672,
+          y = 1408,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 635,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 992,
+          y = 1408,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 636,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1152,
+          y = 864,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 637,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1152,
+          y = 736,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 638,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2016,
+          y = 736,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 639,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2016,
+          y = 864,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 640,
           name = "",
           type = "",
           shape = "rectangle",
           x = 2176,
-          y = 1440,
+          y = 192,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 621,
+          id = 641,
           name = "",
           type = "",
           shape = "rectangle",
           x = 2496,
-          y = 1440,
+          y = 192,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 622,
+          id = 642,
           name = "",
           type = "",
           shape = "rectangle",
           x = 2880,
-          y = 672,
+          y = 640,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 623,
+          id = 643,
           name = "",
           type = "",
           shape = "rectangle",
           x = 2880,
-          y = 992,
+          y = 960,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }
         },
         {
-          id = 624,
+          id = 644,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 2496,
+          y = 1408,
+          width = 32,
+          height = 32,
+          rotation = 0,
+          visible = false,
+          properties = {
+            ["type"] = "light"
+          }
+        },
+        {
+          id = 645,
           name = "",
           type = "",
           shape = "rectangle",
           x = 2176,
-          y = 224,
+          y = 1408,
           width = 32,
           height = 32,
           rotation = 0,
-          gid = 48,
-          visible = true,
-          properties = {
-            ["type"] = "light"
-          }
-        },
-        {
-          id = 625,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 2496,
-          y = 224,
-          width = 32,
-          height = 32,
-          rotation = 0,
-          gid = 48,
-          visible = true,
+          visible = false,
           properties = {
             ["type"] = "light"
           }

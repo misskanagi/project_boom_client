@@ -56,7 +56,7 @@ function test_network:enter(pre, info)
     local max_player_num = #info.players_info
     for _, o in pairs(layer.objects) do
         local type = o.properties["type"]
-        local x, y, w, h = o.x, o.y, o.width, o.height
+        local x, y, w, h, r = o.x, o.y, o.width, o.height, o.rotation
         if type == "Barrier" or type == "barrier" or type == "BarrierExplosive" or type == "barrierexplosive"  then
             local e = EM:createEntity(type, o)
             local t = e and engine:addEntity(e)
@@ -77,14 +77,14 @@ function test_network:enter(pre, info)
                   if player_id == info.room_master_id then
                       room_master_flag = true
                   end
-                  local e = EM:createEntity(type, x, y, w, h, 0.0, player_id, myself_flag, room_master_flag, id)
+                  local e = EM:createEntity(type, x, y, w, h, r, player_id, myself_flag, room_master_flag, id)
                   --player_info.is_room_master = room_master_flag
                   --player_info.is_myself = myself_flag
                   --local e = EM:createEntity(type, x, y, w, h, 0.0, id, player_info)
                   local t = e and engine:addEntity(e)
               end
             else
-              local e = EM:createEntity(type, x, y, w, h, 0.0)
+              local e = EM:createEntity(type, x, y, w, h, r)
               local t = e and engine:addEntity(e)
             end
         end

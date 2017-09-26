@@ -5,6 +5,7 @@ local DrawableSTIObject = require("boom.components.graphic.DrawableSTIObject")
 local EntityId = require("boom.components.identifier.EntityId")
 local Explosive = require("boom.components.vehicle.Explosive")
 local HasWreckage = require("boom.components.identifier.HasWreckage")
+local PSM = require "boom.particle"
 
 local Health = require("boom.components.logic.Health")
 
@@ -16,6 +17,7 @@ local createBarrierExplosive = function(object, map, world, light_world)
     local o = object
     local other_objects = {}
     local is_multi_part = false
+    local meter = love.physics.getMeter()
     if o.properties["is_multi_part"] then
       if not o.properties["is_main_part"] then return nil end
       is_multi_part = true
@@ -27,7 +29,7 @@ local createBarrierExplosive = function(object, map, world, light_world)
     local body = e:get("DrawableSTIObject").body
     t = light_world and e:add(ShaderPolygon(light_world, body, 4))
     local cx, cy = body:getWorldCenter()
-    e:add(Explosive(cx, cy))
+    e:add(Explosive(cx, cy, 90, 4 * meter, PSM:createParticleSystem("landmine_explosion")))
     e:add(HasWreckage("DefaultWreckage"))
     e:add(Physic(body))
     e:add(Health(20))

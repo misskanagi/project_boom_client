@@ -26,19 +26,24 @@ if not test_on_windows then
   --暂时在这里建立网络连接
   network = require("boom.network")
   net = network:instance()
-  net:connect("192.168.1.105", 8080)
+  --net:connect("192.168.1.105", 8080)
   --net:connect("172.28.37.19", 8080)
-  --net:connect("114.212.83.208", 8080)
+  net:connect("114.212.83.208", 8080)
   net:startReceiving()
 end
 --event manager
 eventmanager = EventManager()
 
+--assets manager
+assets = require("libs.cargo").init("assets")
+love.audio.setDistanceModel("exponent")
+audio_distance_scale = 5
+
 -- end global variables(only)
 
--- 加载资源
+--[[加载资源
 local AM = require("assets")
-local AssetsManager = AM:instance()
+local AssetsManager = AM:instance()]]
 
 -- game state
 local game_state = require("libs.hump.gamestate")
@@ -95,7 +100,7 @@ function love.load()
       [1] = {
         {player_id = "lsm", kill = 10, death = 2},
         {player_id = "hako", kill = 20, death = 2},
-        
+
       },
       [2] = {
         {player_id = "yuge", kill = 8, death = 2}
