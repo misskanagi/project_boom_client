@@ -43,7 +43,7 @@ function EntityDestroyHandler:fireEntityDestroy(event)
         -- update group
         local src_dmg_entity = entity:get("Health").src_dmg_entity
         local src_player_name = nil
-        if src_dmg_entity:has("IsPlayer") then
+        if src_dmg_entity and src_dmg_entity:has("IsPlayer") then
             src_player_name = src_dmg_entity:get("PlayerName").name
         end
         -- decrease group lives and add player death
