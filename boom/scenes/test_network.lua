@@ -108,7 +108,7 @@ end
 
 function test_network:update(dt)
     -- test 702
-    net:test702()
+    -- net:test702()
     -- update ECS engine
     engine:update(dt)
     -- update physics world
