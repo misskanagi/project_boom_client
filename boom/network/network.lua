@@ -318,6 +318,7 @@ function network:receive()
 end
 -- 无限循环receive，另开一个线程
 function network:startReceiving()
+    print("startreceiving")
     assert(self.is_connected==true)
     if self.is_connected then
         if self.receive_thread == nil then

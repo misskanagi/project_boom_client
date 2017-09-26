@@ -11,7 +11,6 @@ function network_delay(degree)
 end
 
 -- 实现与Server的数据更新操作
-
 log.newfreshlog("./log/logfile_game_thread.txt")
 log.debug("game thread start!")
 -- channel可以是每一种从S端得到的广播类型单独有一个channel，例如所有车辆子弹的用一个channel，所有地图道具的用一个channel，这样可以减轻main thread的解析压力。

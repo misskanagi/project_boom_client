@@ -11,8 +11,6 @@ local camera_shaking_interval = 1  --shake一次的时间长度
 local camera_shaking_account = 0   --已经shake了多久
 local camera_shaking = false
 local camera_start_shake, camera_stop_shake, camera_update
-local network = require("boom.network")
-net = network:instance()   --全局变量
 
 local gui = require("libs.Gspot")
 package.loaded["./libs/Gspot"] = nil
@@ -352,7 +350,7 @@ login_pressed = function()
         processbar_login:increaseAt(0.2)
         logining = true  --进入正在登陆中的状态
       else  --此时网络还未连接，开启connect_thread.lua去连接，并显示网络还未连接的提示信息
-        love.thread.newThread("boom/network/connect_thread.lua"):start()
+        --love.thread.newThread("boom/network/connect_thread.lua"):start()
         current_state = "focous_id"  --回到原来的状态
       end
     else
@@ -377,7 +375,7 @@ processbar_login_update = function()
       if net:testConnect() then  --此时网络还是好的
         --现在需要让进度条卡在0.2的位置，不再继续下去
         processbar_login:increaseAt(0)
-      else  --已经断网了
+      else  --还没有连接了
         current_state = "focous_id"
         processbar_login.value = 0
         processbar_login.increaseAt(0)
@@ -553,7 +551,6 @@ states.transfer = function(button)
 end
 
 function login:enter()
-  love.thread.newThread("boom/network/connect_thread.lua"):start()
   --注册事件监听函数
   print("login:enter()")
   gui:setOriginSize(window_w, window_h)    --不加这一个调用，scrollview会出问题
