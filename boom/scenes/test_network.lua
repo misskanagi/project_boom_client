@@ -71,7 +71,9 @@ function test_network:enter(pre, info)
                   local tank_type = player_info.tank_type
                   local myself_flag = false
                   local room_master_flag = false
-                  print(player_id, group_id, tank_type, my_name, info.room_master_id)
+                  print("player_id: ", player_id, "group_id: ", group_id,
+                        "tank_type: ", tank_type, "my_name: ", my_name,
+                        "room_master_id: ", info.room_master_id)
                   if player_id == my_name then
                       myself_flag = true
                   end
