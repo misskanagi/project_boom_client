@@ -455,12 +455,21 @@ get_gamebegin_broadcast = function(roomid)
         print(group[i].playerId, group_id, group[i].tankType)
       end
     end
-    --这里的info的players_info的顺序是乱的！要确定！
-    table.sort(info.players_info)
-
+    
+    --这里的info的players_info的顺序是乱的！要确定
+    table.sort(info.players_info, room.sort_players_info)
     game_state.switch(test_network, info)
   else
     gui:feedback("Cannot begin game!")
+  end
+end
+
+--新加的排序算子
+function room.sort_players_info(a, b)
+  if a.group_id == b.group_id then
+    return a.player_id < b.player_id
+  else
+    return a.group_id < b.group_id
   end
 end
 
