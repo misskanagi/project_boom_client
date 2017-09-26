@@ -51,7 +51,7 @@ local system_manager = {
     -- disable HUDBattle system first
     engine:stopSystem("HUDBattle")
   end,
-  
+
   removeAllEntities = function(self, root)
     print("system.reset")
     --local root = engine:getRootEntity()
@@ -64,12 +64,12 @@ local system_manager = {
       self:removeAllEntities(v)
     end
     engine:removeEntity(root, true)
-  end, 
-  
+  end,
+
   removeAllEntities_norec = function(root)
     engine:removeEntity(root, true)
   end,
-  
+
 }
 
 return system_manager
