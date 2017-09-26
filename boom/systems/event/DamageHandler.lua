@@ -15,7 +15,16 @@ function DamageHandler:fireDamage(event)
     if dst:has("Health") then
         local max_value = dst:get("Health").max_value
         dst:get("Health").value = dst:get("Health").value - true_dmg
-        dst:get("Health").src_dmg_entity = src
+        local src_player = src
+        while not src_player:has("IsPlayer") and src_player ~= engine:getRootEntity() do
+            src_player = src_player:getParent()
+        end
+        if src_player == engine:getRootEntity() then
+            dst:get("Health").src_dmg_entity = nil
+        elseif src_player:has("IsPlayer") then
+            dst:get("Health").src_dmg_entity = src_player
+        end
+
         if dst:get("Health").value < 0 then
             dst:get("Health").value = 0
         end

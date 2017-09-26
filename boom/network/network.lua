@@ -4,8 +4,8 @@ if not test_on_windows then
 end
 
 
---local json = require "libs.json"
-local json = require "cjson"
+local json = require "libs.json"
+--local json = require "cjson"
 --events
 local events = require("boom.events")
 

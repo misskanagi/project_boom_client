@@ -1,0 +1,1697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="99" height="51" tilewidth="32" tileheight="32" backgroundcolor="#969696" nextobjectid="626">
+ <tileset firstgid="1" name="cs2dnorm" tilewidth="32" tileheight="32" tilecount="255" columns="17">
+  <image source="cs2dnorm.bmp" width="544" height="480"/>
+ </tileset>
+ <layer name="ground_layer_1" width="99" height="51">
+  <data encoding="base64" compression="zlib">
+   eJztnNFuwyAMRfsr0d6mrS99769N+fN1D0iRZxsbuOCkRrrSsjSpzeEaQqTebtmitOdLj4C6v/QF0j1AflTP4Cw2kJKFn0X6Ylxf1qRd/wMWMnYEi55cLfmg+zti7D0sNK/vlfOtKnF/gFTuPyMXmheKBaqmr2CBnJ+SRbLgtAsqtbccX4EFl+cMFtYay32O/m81i1Hzxd99jg3JQhrjdKxLY15jUbSKhTcvK4vyeQSLY0w940c6F8EXtdx28rcmpC+SxX8WnwdJ1yeL67DQ5ljOo63zRTQWWq2xsODyQ/jC068t10RhcWwaC84DCBaW9YPHz8kC6wsaC/W0FKtU21ax4GqrFKNlHUXvFZWFpgi+qEnKqeb31fNFsuhjIa1ZR83dV2WhjTvtPVQrC6mmSutZqYbWWKA1Oy8EC8/4afHKKhbovM7Igvvu74HH3P3PysLr39qemRTzBpLEYlZeo1jM0Apf9HqhtKuxWDFfJItk0cvCsj/gqaMSi5nPF5FZSM/d9Lu576fnazFGYeGZn1vm7tF7ID0sqG+kdxwrWVg8oJ3X6vooFrWxQGsUx0LLJ1n4WFjeI1pqVLJIFtb5gluD1Pq6VjN2MAtpjHhZrJovtD6XxknLXvloX3j2ps7CwtqP78SC3jsii5p3LM/F6HWUp3ZGZeHZX4jAwutHTz70ODKLCDXqyiw8no/EwvKsfzYWWo49dZm+A0H4olfafkiJ+Ux7g1ZFZGGJOVkki8gsWkVrJaeR74VGChl7K4seWfLRrkf3NzL2FuXvgcRRdBYbSMnCz+LdfJEtTvsFSzNVFQ==
+  </data>
+ </layer>
+ <objectgroup name="entity_layer_1">
+  <object id="1" gid="150" x="544" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="4" gid="150" x="608" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="5" gid="150" x="608" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="6" gid="150" x="576" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="8" gid="150" x="288" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="9" gid="150" x="288" y="288" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="10" gid="150" x="256" y="288" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="11" gid="150" x="256" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="12" gid="150" x="256" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="13" gid="150" x="416" y="608" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="14" gid="150" x="416" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="15" gid="150" x="352" y="672" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="16" gid="150" x="352" y="704" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="17" gid="150" x="640" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="18" gid="150" x="736" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="19" gid="150" x="704" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="20" gid="150" x="768" y="704" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="21" gid="150" x="768" y="576" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="23" gid="150" x="864" y="384" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="24" gid="150" x="864" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="25" gid="150" x="832" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="26" gid="150" x="928" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="27" gid="150" x="928" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="28" gid="150" x="992" y="448" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="29" gid="150" x="928" y="448" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="30" gid="150" x="1152" y="1104" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="31" gid="150" x="1056" y="1088" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="32" gid="150" x="1152" y="1168" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="33" gid="150" x="1152" y="1136" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="34" gid="150" x="992" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="35" gid="150" x="1056" y="1120" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="36" gid="150" x="992" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="37" gid="150" x="960" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="38" gid="150" x="960" y="1248" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="39" gid="150" x="993.33" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="40" gid="150" x="896" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="41" gid="150" x="896" y="1376" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="42" gid="150" x="544" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="43" gid="150" x="576" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="44" gid="150" x="576" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="46" gid="150" x="512" y="1152" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="47" gid="150" x="512" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="48" gid="150" x="512" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="49" gid="150" x="544" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="50" gid="150" x="480" y="1312" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="51" gid="150" x="448" y="1312" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="52" gid="150" x="448" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="53" gid="150" x="448" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="54" gid="150" x="416" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="55" gid="150" x="384" y="1376" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="56" gid="150" x="416" y="1376" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="57" gid="150" x="384" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="58" gid="150" x="320" y="992" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="59" gid="150" x="352" y="992" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="60" gid="150" x="384" y="992" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="65" x="480" y="192" width="32" height="32">
+   <properties>
+    <property name="type" value="Light"/>
+   </properties>
+  </object>
+  <object id="66" x="224" y="160" width="480" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="67" x="0" y="32" width="32" height="1568">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="68" x="480" y="320" width="32" height="32">
+   <properties>
+    <property name="type" value="Light"/>
+   </properties>
+  </object>
+  <object id="69" x="384" y="352" width="256" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="72" x="384" y="383.33" width="32" height="448.67">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="73" x="416" y="800" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="74" x="480" y="704" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="76" x="543.67" y="640" width="32.33" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="77" x="544" y="480" width="32" height="63.33">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="78" x="575.67" y="480" width="64.33" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="79" x="768" y="480" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="80" x="800" y="512" width="31.67" height="63.33">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="81" x="672" y="577.33" width="62.67" height="62">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="84" x="800" y="672" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="85" x="736" y="704" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="88" x="768.67" y="352" width="63.33" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="89" x="800" y="288" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="90" x="832" y="288" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="91" x="960.67" y="320" width="31.33" height="288">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="92" x="992" y="576" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="93" x="1056" y="288" width="64" height="32.08">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="94" x="1088" y="320" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="95" x="1120" y="352" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="96" x="960" y="704" width="32" height="128">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="97" x="640" y="800.08" width="320" height="31.92">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="98" x="672" y="928" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="99" x="832" y="960" width="32" height="288">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="100" x="672" y="960" width="32" height="288">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="101" x="704" y="1216" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="102" x="928" y="992" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="103" x="928" y="1024" width="32" height="352">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="104" x="1056" y="992" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="105" x="1088" y="1024" width="32" height="160">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="107" x="1056" y="1120" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="108" x="1056" y="1249" width="31.5" height="127">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="109" x="1024" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="110" x="416" y="928" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="111" x="544" y="960" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="112" x="416" y="960" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="113" x="320" y="1024" width="224" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="114" x="320" y="1055.67" width="32" height="96.33">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="115" x="480.33" y="1120.66" width="30.6667" height="126.667">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="116" x="320" y="1216" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="117" x="416" y="1248" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="119" x="384" y="1312" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="120" x="991.67" y="160" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="121" x="1184" y="160" width="64" height="544">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="122" x="1184" y="928" width="64" height="544">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="123" x="992" y="1440" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="124" x="255" y="1440" width="448" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="125" x="224" y="960" width="31" height="512">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="129" name="spawn_point_4" x="800" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="131" name="spawn_point_1" x="800" y="56" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="133" x="1184" y="704" width="832" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="141" x="448" y="1248" width="31.3333" height="31.3333">
+   <properties>
+    <property name="type" value="Light"/>
+   </properties>
+  </object>
+  <object id="147" x="1216" y="1472" width="768" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="149" x="1216" y="128" width="768" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="221" x="1952" y="928" width="64" height="544">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="222" x="2016" y="1440" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="225" x="2496" y="1440" width="448" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="226" x="2912" y="960" width="32" height="480">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="227" x="2912" y="160" width="32" height="512">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="228" x="2496" y="160" width="416" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="229" x="1952" y="160" width="256" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="231" x="1952" y="192" width="64" height="512">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="233" x="2112" y="192" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="234" x="2144" y="352" width="224" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="235" x="2112" y="320" width="32" height="512">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="236" x="2144" y="800" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="237" x="2208" y="704" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="239" x="2240" y="480" width="32" height="128">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="240" x="2272" y="480" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="242" x="2368" y="512" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="243" x="2272" y="576" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="244" x="2496" y="352" width="32" height="256">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="245" x="2464" y="704" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="246" x="2368" y="800" width="320" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="247" x="2688" y="704" width="32" height="288">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="250" x="2592" y="832" width="32" height="128">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="251" x="2144" y="960" width="544" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="254" x="2432" y="992" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="255" x="2144" y="992" width="32" height="160">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="256" x="2176" y="1088" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="257" x="2080" y="1120" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="259" x="2080" y="1152" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="260" x="2080" y="1280" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="263" x="2208" y="1312" width="256" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="264" x="2272" y="1088" width="96" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="266" x="2336" y="1120" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="267" x="2368" y="1184" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="268" x="2432" y="1184" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="271" x="2624" y="1088" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="272" x="2624" y="1248" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="273" x="2656" y="1312" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="274" x="2656" y="1088" width="192" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="275" x="2880" y="1088" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="276" x="2880" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="278" x="2848" y="576" width="64" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="279" x="2752" y="480" width="32" height="128">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="280" x="2592" y="576" width="160" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="281" x="2688" y="608" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="282" x="2592" y="384" width="32" height="128">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="283" x="2624" y="384" width="224" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="284" x="2688" y="288" width="32" height="96">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="286" x="2720" y="288" width="128" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="287" x="2816" y="320" width="32" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="288" x="1248" y="192" width="704" height="512">
+   <properties>
+    <property name="type" value="Water"/>
+   </properties>
+  </object>
+  <object id="303" x="1248" y="928" width="704" height="512">
+   <properties>
+    <property name="type" value="Water"/>
+   </properties>
+  </object>
+  <object id="385" gid="150" x="2016" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="386" gid="150" x="2048" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="387" gid="150" x="2048" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="388" gid="150" x="2176" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="389" gid="150" x="2368" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="390" gid="150" x="2208" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="391" gid="150" x="2144" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="392" gid="150" x="2880" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="393" gid="150" x="2848" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="394" gid="150" x="2464" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="395" gid="150" x="2144" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="396" gid="150" x="2304" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="397" gid="150" x="2656" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="398" gid="150" x="2560" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="399" gid="150" x="2528.67" y="224.937" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="401" gid="150" x="2624" y="384" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="403" gid="150" x="2624.67" y="352.94" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="404" gid="150" x="2656" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="405" gid="150" x="2592" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="406" gid="150" x="2624" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="408" gid="150" x="2464" y="512" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="415" gid="55" x="2880" y="544" width="32" height="32"/>
+  <object id="417" gid="54" x="2848" y="544" width="32" height="32">
+   <properties>
+    <property name="is_main_part" type="bool" value="true"/>
+    <property name="is_multi_part" type="bool" value="true"/>
+    <property name="other_parts_count" type="int" value="3"/>
+    <property name="other_parts_id_1" type="int" value="415"/>
+    <property name="other_parts_id_2" type="int" value="419"/>
+    <property name="other_parts_id_3" type="int" value="420"/>
+    <property name="type" value="Barrier"/>
+   </properties>
+  </object>
+  <object id="419" gid="59" x="2848" y="576" width="32" height="32"/>
+  <object id="420" gid="60" x="2880" y="576" width="32" height="32"/>
+  <object id="422" gid="150" x="2880" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="423" gid="150" x="2720" y="672" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="425" gid="150" x="2752" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="426" gid="150" x="2880" y="1088" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="427" gid="150" x="2144" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="428" gid="150" x="2272" y="1280" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="429" gid="150" x="2240" y="1280" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="430" gid="150" x="2208" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="432" gid="150" x="2176" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="433" gid="150" x="2272" y="1312" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="434" gid="150" x="2048" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="435" gid="150" x="2016" y="1376" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="437" gid="150" x="2016" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="438" gid="150" x="2048" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="440" gid="150" x="2848" y="1248" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="441" gid="150" x="2848" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="442" gid="150" x="2880" y="1248" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="443" gid="150" x="2816" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="445" gid="150" x="2720" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="447" gid="150" x="2656" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="448" gid="150" x="2688" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="449" gid="150" x="2753" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="450" gid="150" x="2592" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="451" gid="150" x="2624" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="456" gid="137" x="2336" y="480" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="458" gid="137" x="2016" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="459" gid="137" x="2144" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="460" gid="137" x="2144" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="462" gid="137" x="2656" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="464" gid="137" x="2016" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="465" gid="137" x="2560" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="466" gid="137" x="2656" y="383" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="467" gid="137" x="2880" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="468" gid="137" x="2720" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="469" gid="137" x="2880" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="470" gid="150" x="2880" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="472" gid="137" x="2176" y="1184" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="473" gid="137" x="2016" y="1408" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="474" gid="137" x="2656" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="475" gid="137" x="2688" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="476" gid="137" x="832" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="477" gid="137" x="832" y="384" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="478" gid="137" x="256" y="256" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="479" gid="137" x="576" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="480" gid="137" x="544" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="481" gid="150" x="512" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="482" gid="150" x="2496" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="483" gid="150" x="2464" y="1088" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="484" gid="150" x="2880" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="485" gid="150" x="2528" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="486" gid="137" x="2880" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="487" gid="137" x="2464" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="488" gid="150" x="2464" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="489" gid="150" x="2721" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="490" gid="150" x="2080" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="491" gid="150" x="2080" y="352" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="492" gid="150" x="2080" y="384" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="508" x="1184" y="864" width="832" height="64">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="509" x="-1" y="0" width="3168" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="510" x="0" y="1600" width="3168" height="32">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="511" x="224" y="192" width="32" height="480">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="512" x="3134" y="32" width="32" height="1568">
+   <properties>
+    <property name="type" value="Wall"/>
+   </properties>
+  </object>
+  <object id="513" name="spawn_point_6" x="63" y="1151" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="514" name="spawn_point_2" x="1056" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="515" name="spawn_point_3" x="64" y="768" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="516" name="spawn_point_5" x="64" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="517" name="spawn_point_7" x="64" y="128" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="518" name="spawn_point_8" x="64" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="519" name="spawn_point_13" x="3072" y="1176" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="520" name="spawn_point_9" x="2080" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="521" name="spawn_point_15" x="3069" y="97" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="522" name="spawn_point_16" x="3066" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="523" name="spawn_point_12" x="3067" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="524" name="spawn_point_14" x="3071" y="411" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="525" name="spawn_point_11" x="2368" y="64" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="526" name="spawn_point_10" x="2397" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="PlayerSpawner"/>
+   </properties>
+  </object>
+  <object id="527" gid="137" x="2080" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="528" gid="150" x="2080" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="529" gid="150" x="2112" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="530" gid="150" x="2112" y="1024" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="532" gid="150" x="2335.33" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="533" gid="150" x="2144" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="534" gid="137" x="2271.33" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="535" gid="150" x="2303.33" y="640" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="537" gid="150" x="2560" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="538" gid="137" x="2528" y="928" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="539" gid="150" x="2560" y="928" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="540" gid="150" x="2528" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="541" gid="137" x="2560" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="542" gid="137" x="2144" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="543" gid="137" x="2592" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="550" gid="137" x="160" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="551" gid="137" x="160" y="704" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="552" gid="137" x="160" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="553" gid="137" x="160" y="1120" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="554" gid="137" x="160" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="555" gid="137" x="160" y="320" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="556" gid="137" x="160" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="557" gid="137" x="160" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="558" gid="137" x="2976" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="559" gid="137" x="2976" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="560" gid="137" x="2976" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="561" gid="137" x="2976" y="1120" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="562" gid="137" x="2976" y="704" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="563" gid="137" x="2976" y="1344" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="564" gid="137" x="2976" y="320" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="565" gid="137" x="2976" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="566" gid="137" x="2144" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="567" gid="137" x="640" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="568" gid="137" x="1056" y="160" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="569" gid="137" x="640" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="570" gid="137" x="1056" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrierExplosive"/>
+   </properties>
+  </object>
+  <object id="571" gid="150" x="2720" y="864" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="572" gid="150" x="2720" y="896" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="573" gid="150" x="2720" y="928" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="574" x="60" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="575" x="64" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="576" x="3040" y="544" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="577" x="3040" y="1056" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="578" x="2524" y="1216" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="580" x="2784" y="960" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="581" x="2016" y="382" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="583" x="1568" y="800" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="584" x="2440" y="408" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="585" x="2179" y="928" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="586" x="872" y="928" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="587" x="1120" y="1248" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="588" x="344" y="416" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="589" x="352" y="219" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="590" x="768" y="442" width="32" height="32">
+   <properties>
+    <property name="type" value="ItemSpawner"/>
+   </properties>
+  </object>
+  <object id="591" gid="151" x="2112" y="1504" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="594" gid="151" x="2112" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="595" gid="151" x="2144" y="1536" width="32" height="32">
+   <properties>
+    <property name="type" value="barrier"/>
+   </properties>
+  </object>
+  <object id="601" gid="48" x="256" y="672" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="607" gid="48" x="672" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="608" gid="48" x="992" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="610" gid="48" x="1152" y="768" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="613" gid="48" x="1152" y="896" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="615" gid="48" x="2016" y="768" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="616" gid="48" x="2016" y="896" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="617" gid="48" x="672" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="618" gid="48" x="992" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="619" gid="48" x="256" y="992" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="620" gid="48" x="2176" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="621" gid="48" x="2496" y="1440" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="622" gid="48" x="2880" y="672" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="623" gid="48" x="2880" y="992" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="624" gid="48" x="2176" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+  <object id="625" gid="48" x="2496" y="224" width="32" height="32">
+   <properties>
+    <property name="type" value="light"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
