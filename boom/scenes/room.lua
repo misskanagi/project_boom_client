@@ -455,7 +455,8 @@ get_gamebegin_broadcast = function(roomid)
         print(group[i].playerId, group_id, group[i].tankType)
       end
     end
-
+    --这里的info的players_info的顺序是乱的！要确定！
+    table.sort(info.players_info)
 
     game_state.switch(test_network, info)
   else
