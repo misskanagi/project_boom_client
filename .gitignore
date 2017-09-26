@@ -5,3 +5,5 @@ libtcp.so
 cjson.so
 log
 tools
+logfile_send.txt
+logfile_receive.txt
