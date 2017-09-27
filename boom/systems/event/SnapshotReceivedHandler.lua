@@ -13,11 +13,16 @@ end
 function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local roomId = event.roomId
     local snapshot_entities = event.entities
-    local delta_t = 0.001 * network:instance().delta_t
+    local masterPing = event.masterPing
+    local delta_t = 0.001 * (network:instance().ping + masterPing)
     print("delta_t: ", delta_t)
     if delta_t < 0 then
         print("fuck!!!")
         delta_t = 0
+    end
+    if delta_t > 0.020 then
+        print("san tian san ye!!!")
+        delta_t = 0.020
     end
     for _, se in pairs(snapshot_entities) do
       local id = se.entityId
@@ -74,7 +79,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
       end
     end
     --request ping
-    network:instance():requestToRoomMasterPing()
+    --network:instance():requestToRoomMasterPing()
 end
 
 return SnapshotReceivedHandler

@@ -64,6 +64,7 @@ local network = {
   },
   is_connected = false,
   delta_t = 0,
+  ping = 0,
 }
 
 function network:new(o)
@@ -160,6 +161,7 @@ function network:updateReceive(dt)
         print("received delta_t: " , data.ping)
       elseif data.cmdType == 703 then
         print("CHECK_PING_RES data.ping: ", data.ping)
+        self.ping = data.ping
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
         eventmanager:fireEvent(events.GameOverBroadcast(data.roomId, data.winGroupId))
@@ -269,7 +271,7 @@ end
 local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
-    data = {roomId = self.roomId, entities = snapshot_entities}
+    data = {roomId = self.roomId, masterPing = self.ping, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
     --print(("snapshot: %d"):format(i))
@@ -323,6 +325,18 @@ function network:receive()
     end
     return nil
 end
+-- 非阻塞的ping，首先得运行startPing
+function network:ping()
+    assert(self.is_connected==true)
+    if self.is_connected then
+        if self.ping_thread == nil then
+            self:startPing()
+        end
+        local c = love.thread.getChannel("network_send")
+        c:push(self.playerId)
+    end
+    return true
+end
 -- 无限循环receive，另开一个线程
 function network:startReceiving()
     print("startreceiving")
@@ -348,6 +362,18 @@ function network:startSending()
         end
     end
 end
+-- 无限循环ping，另开一个线程
+function network:startPing()
+    assert(self.is_connected==true)
+    if self.is_connected then
+        if self.ping_thread == nil then
+          self.ping_thread = love.thread.newThread("boom/network/endless_ping_thread.lua")
+          self.ping_thread:start()
+          -- give network thread fd
+          self.network_ping_channel = love.thread.getChannel("network_ping")
+        end
+    end
+end
 -- 发送关闭信息给“无限循环receive”线程
 function network:stopReceiving()
     assert(self.is_connected==true)
@@ -359,8 +385,16 @@ end
 -- 发送关闭信息给“无限循环send”线程
 function network:stopSending()
     assert(self.is_connected==true)
-    if self.receive_thread ~= nil then
+    if self.send_thread ~= nil then
       local c = love.thread.getChannel("network_send")
+      c:push("stop")
+    end
+end
+-- 发送关闭信息给“无限循环ping”线程
+function network:stopSending()
+    assert(self.is_connected==true)
+    if self.ping_thread ~= nil then
+      local c = love.thread.getChannel("network_ping")
       c:push("stop")
     end
 end
