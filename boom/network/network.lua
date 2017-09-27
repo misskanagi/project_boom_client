@@ -160,7 +160,7 @@ function network:updateReceive(dt)
         self.delta_t = data.ping
         print("received delta_t: " , data.ping)
       elseif data.cmdType == 703 then
-        --print("CHECK_PING_RES data.ping: ", data.ping)
+        print("CHECK_PING_RES data.ping: ", data.ping)
         self.ping_value = data.ping
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
