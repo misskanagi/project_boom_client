@@ -128,7 +128,7 @@ function network:updateReceive(dt)
         --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
-        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.entities))
+        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.masterPing, data.entities))
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
