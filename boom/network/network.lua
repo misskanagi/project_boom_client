@@ -160,7 +160,7 @@ function network:updateReceive(dt)
         self.delta_t = data.ping
         print("received delta_t: " , data.ping)
       elseif data.cmdType == 703 then
-        print("CHECK_PING_RES data.ping: ", data.ping)
+        --print("CHECK_PING_RES data.ping: ", data.ping)
         self.ping_value = data.ping
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
@@ -271,7 +271,7 @@ end
 local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
-    print("ping:", self.ping_value)
+    --print("ping:", self.ping_value)
     data = {roomId = self.roomId, masterPing = self.ping_value, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1

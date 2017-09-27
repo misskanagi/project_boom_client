@@ -15,14 +15,14 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local snapshot_entities = event.entities
     local masterPing = event.masterPing
     local delta_t = 0.001 * (network:instance().ping_value + masterPing)
-    print("delta_t: ", delta_t)
+    --print("delta_t: ", delta_t)
     if delta_t < 0 then
         print("fuck!!!")
         delta_t = 0
     end
-    if delta_t > 0.020 then
+    if delta_t > 0.030 then
         print("san tian san ye!!!")
-        delta_t = 0.020
+        delta_t = 0.030
     end
     for _, se in pairs(snapshot_entities) do
       local id = se.entityId
