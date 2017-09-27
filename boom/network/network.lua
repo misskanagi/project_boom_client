@@ -92,6 +92,7 @@ function network:updateReceive(dt)
       --print(json_string)
       --data = json.decode(json_string)
       local data = msg
+      print(data.cmdType)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
@@ -128,9 +129,7 @@ function network:updateReceive(dt)
         --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
-        if self.network_receive_channel:getCount() <= 20 then
-            eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.masterPing, data.entities))
-        end
+        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.masterPing, data.entities))
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
