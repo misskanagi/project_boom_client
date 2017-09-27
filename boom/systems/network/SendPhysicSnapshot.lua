@@ -24,7 +24,7 @@ function SendPhysicSnapshot:sendSnapshot()
   for k, entity in pairs(self.targets) do
     -- root body
     local body = entity:get("Physic").body
-    if entity:has("IsPlayer") and body:getType() == "dynamic" then
+    if body:getType() == "dynamic" then
     --if entity:get("IsPlayer") then
       local snapshot_entity = {
         worldId = 1,

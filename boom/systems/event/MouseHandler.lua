@@ -4,9 +4,10 @@ local Vector = require "libs.hump.vector"
 local events = require "boom.events"
 local MouseHandler = class("MouseHandler", System)
 local timer = 0
-local fire_interval = 0.100   --采集鼠标当前位置的时间间隔
+local fire_interval = 0.200   --采集鼠标当前位置的时间间隔
 local v = Vector(0, 0)
 local nv = Vector(1, 0)
+--local last_x, last_y = 0, 0
 
 --处理鼠标移动的事件
 function MouseHandler:fireMovedEvent(event)
