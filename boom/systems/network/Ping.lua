@@ -3,7 +3,7 @@ local timer = require("libs.hump.timer")
 local Ping = class("Ping", System)
 
 local elapsed = 0.0
-local every = 0.030
+local every = 1.000
 
 function Ping:update(dt)
     elapsed = elapsed + dt
