@@ -64,7 +64,7 @@ local network = {
   },
   is_connected = false,
   delta_t = 0,
-  ping = 0,
+  ping_value = 0,
 }
 
 function network:new(o)
@@ -161,7 +161,7 @@ function network:updateReceive(dt)
         print("received delta_t: " , data.ping)
       elseif data.cmdType == 703 then
         print("CHECK_PING_RES data.ping: ", data.ping)
-        self.ping = data.ping
+        self.ping_value = data.ping
       elseif data.cmdType == self.cmd_code.GAME_OVER_BROADCAST then
         print("got GAME_OVER_BROADCAST")
         eventmanager:fireEvent(events.GameOverBroadcast(data.roomId, data.winGroupId))
@@ -271,7 +271,8 @@ end
 local i = 0
 function network:sendSnapshot(snapshot_entities)
     if not self.is_connected or self.roomId == nil then return end
-    data = {roomId = self.roomId, masterPing = self.ping, entities = snapshot_entities}
+    print("ping:", self.ping_value)
+    data = {roomId = self.roomId, masterPing = self.ping_value, entities = snapshot_entities}
     self:send(self.cmd_code.ROOM_MASTER_SEND_SNAPSHOT, data)
     i = i + 1
     --print(("snapshot: %d"):format(i))
@@ -332,7 +333,7 @@ function network:ping()
         if self.ping_thread == nil then
             self:startPing()
         end
-        local c = love.thread.getChannel("network_send")
+        local c = love.thread.getChannel("network_ping")
         c:push(self.playerId)
     end
     return true

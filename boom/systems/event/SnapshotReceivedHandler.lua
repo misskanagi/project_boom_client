@@ -14,7 +14,7 @@ function SnapshotReceivedHandler:fireSnapshotReceived(event)
     local roomId = event.roomId
     local snapshot_entities = event.entities
     local masterPing = event.masterPing
-    local delta_t = 0.001 * (network:instance().ping + masterPing)
+    local delta_t = 0.001 * (network:instance().ping_value + masterPing)
     print("delta_t: ", delta_t)
     if delta_t < 0 then
         print("fuck!!!")
