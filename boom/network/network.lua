@@ -322,6 +322,9 @@ function network:receive()
             self:startReceiving()
         end
         local data = love.thread.getChannel("network_receive"):pop()
+        if data then
+          print("channel object count:", love.thread.getChannel("network_receive"):getCount())
+        end
         return data
     end
     return nil
