@@ -11,7 +11,7 @@ function SendPhysicSnapshot:update(dt)
       elapsed = 0.0
       for _, e in pairs(engine:getEntitiesWithComponent("IsMyself")) do
           if e:get("IsRoomMaster") then
-            --self:sendSnapshot()
+            self:sendSnapshot()
             --print("i can send snapshot")
           end
           break
