@@ -26,7 +26,8 @@ if not test_on_windows then
   --暂时在这里建立网络连接
   network = require("boom.network")
   net = network:instance()
-  net:connect("192.168.1.105", 8080)
+  net:connect("192.168.1.101", 8080)
+  --net:connect("192.168.1.105", 8080)
   --net:connect("172.28.37.19", 8080)
   --net:connect("114.212.83.208", 8080)
   --net:connect("192.168.233.181", 8080)
