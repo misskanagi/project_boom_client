@@ -17,7 +17,7 @@ while true do
       local ddd = json.decode(json_string)
       --local dt = netLib.Lua_getTime() - t
       --log.debug(dt)
-      c:supply(ddd)
+      c:push(ddd)
   end
   --查看有没有关闭消息
   local msg = c:peek()
