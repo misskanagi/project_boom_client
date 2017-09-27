@@ -128,7 +128,9 @@ function network:updateReceive(dt)
         --print(json_string)
         --print("data:", data)
         --print("entities:", data.entities)
-        eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.masterPing, data.entities))
+        if self.network_receive_channel:getCount() <= 20 then
+            eventmanager:fireEvent(events.SnapshotReceived(data.roomId, data.masterPing, data.entities))
+        end
       elseif data.cmdType == self.cmd_code.LOGIN_RES then
         print("got LOGIN_RES")
         eventmanager:fireEvent(events.LoginRes(data.resultCode))
@@ -285,7 +287,7 @@ function network:send(type, data)
         if self.send_thread == nil then
             self:startSending()
         end
-        local c = love.thread.getChannel("network_send")
+        local c = self.network_send_channel
         c:push(type)
         --c:push(json.encode(data))
         c:push(data)
@@ -321,9 +323,10 @@ function network:receive()
         if self.receive_thread == nil then
             self:startReceiving()
         end
-        local data = love.thread.getChannel("network_receive"):pop()
+        --local data = love.thread.getChannel("network_receive"):pop()
+        local data = self.network_receive_channel:pop()
         if data then
-          print("channel object count:", love.thread.getChannel("network_receive"):getCount())
+          print("channel object count:", self.network_receive_channel:getCount())
         end
         return data
     end
@@ -336,7 +339,7 @@ function network:ping()
         if self.ping_thread == nil then
             self:startPing()
         end
-        local c = love.thread.getChannel("network_ping")
+        local c = self.network_ping_channel
         c:push(self.playerId)
     end
     return true
