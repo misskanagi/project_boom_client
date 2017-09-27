@@ -92,13 +92,14 @@ function network:updateReceive(dt)
       --print(json_string)
       --data = json.decode(json_string)
       local data = msg
-      print(data.cmdType)
+      print("cmdType: ", data.cmdType)
       if data.cmdType == self.cmd_code.PLAYER_COMMAND_BROADCAST then
         --获取到其他玩家的操作序列广播，
         local playerId = data.playerId
         if playerId ~= self.playerId then
           local playerCommands = data.playerCommands
           for _, cmd in pairs(playerCommands) do
+            print("input dev type: ", cmd.inputDevType)
             --需要区分是手柄操作还是键盘操作
             local inputDevType = cmd.inputDevType
             if inputDevType == 1 then -- 键盘操作
