@@ -10,11 +10,11 @@ local createPlayerSpawner = function(x, y, w, h, r, world, light_world, player_i
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     local group_mod = (group_id or 0) % 2
-    local tire_color = {r=104, g=55, b=55}
-    local turret_color = {r=204, g=55, b=55}
+    local tire_color = {r=55, g=55, b=104}
+    local turret_color = {r=55, g=55, b=204}
     if group_mod == 1 then
-        tire_color = {r=55, g=55, b=104}
-        turret_color = {r=55, g=55, b=204}
+        tire_color = {r=104, g=55, b=55}
+        turret_color = {r=204, g=55, b=55}
     end
     fixture:setSensor(true)
     e:add(Spawnable({"Player"},
