@@ -282,7 +282,6 @@ function network:sendSnapshot(snapshot_entities)
 end
 -- 非阻塞的send，首先得运行startSending
 function network:send(type, data)
-    assert(self.is_connected==true)
     if self.is_connected then
         if self.send_thread == nil then
             self:startSending()
@@ -291,11 +290,12 @@ function network:send(type, data)
         c:push(type)
         --c:push(json.encode(data))
         c:push(data)
+    else
+        return false
     end
     return true
 end
 function network:blockingSend(type, data)
-    assert(self.is_connected==true)
     if self.is_connected then
       --print(json.encode(data))
         --print("lua send")
@@ -309,7 +309,6 @@ function network:blockingSend(type, data)
 end
 -- 阻塞的receive
 function network:blockingReceive()
-    assert(self.is_connected==true)
     if self.is_connected then
         local data = {netLib.Lua_receive()}
         return data
@@ -318,7 +317,6 @@ function network:blockingReceive()
 end
 -- 非阻塞的receive，首先得运行startReceiving
 function network:receive()
-    assert(self.is_connected==true)
     if self.is_connected then
         if self.receive_thread == nil then
             self:startReceiving()
@@ -334,13 +332,14 @@ function network:receive()
 end
 -- 非阻塞的ping，首先得运行startPing
 function network:ping()
-    assert(self.is_connected==true)
     if self.is_connected then
         if self.ping_thread == nil then
             self:startPing()
         end
         local c = self.network_ping_channel
         c:push(self.playerId)
+    else
+      return false
     end
     return true
 end

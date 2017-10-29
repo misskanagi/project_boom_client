@@ -24,11 +24,15 @@ local Health = require("boom.components.logic.Health")
 
 
 -- player entity
-local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id)
+local createPlayer = function(x, y, w, h, r, world, light_world, player_id, is_myself, is_room_master, id, tire_color, turret_color)
     local e = Entity()
     local sx, sy = x + w/2, y + h/2
-    local tire = Tire(world, sx, sy)
-    local turret = Turret(world, sx, sy)
+    local tire = Tire(world, sx, sy, tire_color and tire_color.r,
+                      tire_color and tire_color.g,
+                      tire_color and tire_color.b)
+    local turret = Turret(world, sx, sy, turret_color and turret_color.r,
+                          turret_color and turret_color.g,
+                          turret_color and turret_color.b)
     local cx, cy = tire.body:getWorldCenter()
     local revolute_joint = love.physics.newRevoluteJoint(
         tire.body, turret.body, cx, cy, false)

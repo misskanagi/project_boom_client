@@ -1,6 +1,6 @@
 local Turret = Component.create("Turret")
 
-function Turret:initialize(world, x, y)
+function Turret:initialize(world, x, y, r, g, b)
     local m = love.physics.getMeter()
     self.world = world
     self.body = love.physics.newBody(world, x, y, "dynamic")
@@ -22,10 +22,13 @@ function Turret:initialize(world, x, y)
     -- speed
     self.spin_speed = 1
     self.spin_torque = 2000
-    
+
     --lsm for test
     self.sight_x = 0
     self.sight_y = 0
+
+    -- for color
+    self.r, self.g, self.b = r or 105, g or 144, b or 30
 end
 
 function Turret:updateSpin(controlState)

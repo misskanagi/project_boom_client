@@ -3,13 +3,14 @@ local PlayerDraw = class("PlayerDraw", System)
 function PlayerDraw:draw()
 
     for index, entity in pairs(self.targets) do
-        love.graphics.setColor(67, 168, 45, 255)
         -- draw tire
+        local tire = entity:get("Tire")
+        love.graphics.setColor(tire.r, tire.g, tire.b, 255)
         love.graphics.polygon("fill", entity:get("Tire").body:getWorldPoints(
             entity:get("Tire").shape:getPoints()))
         -- draw cannon
-        love.graphics.setColor(105, 144, 30, 255)
         local turret = entity:get("Turret")
+        love.graphics.setColor(turret.r, turret.g, turret.b, 255)
         for _, fix in pairs(turret.body:getFixtureList()) do
           local shape = fix:getShape()
           if shape:typeOf("PolygonShape") then

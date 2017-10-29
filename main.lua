@@ -24,16 +24,16 @@ end
 local network = nil
 if not test_on_windows then
   --暂时在这里建立网络连接
-  network = require("boom.network")
-  net = network:instance()
-  net:connect("192.168.1.101", 8080)
+  --network = require("boom.network")
+  --net = network:instance()
+  --net:connect("192.168.1.101", 8080)
   --net:connect("192.168.1.105", 8080)
   --net:connect("172.28.37.19", 8080)
   --net:connect("114.212.83.208", 8080)
   --net:connect("192.168.233.181", 8080)
-  net:startSending()
-  net:startReceiving()
-  net:startPing()
+  --net:startSending()
+  --net:startReceiving()
+  --net:startPing()
 end
 --event manager
 eventmanager = EventManager()
@@ -111,9 +111,9 @@ function love.load()
       },
     }
     --game_state.switch(gameover, init_table)
-    --game_state.switch(titles)
+    game_state.switch(titles)
     --game_state.switch(test_choice)
     --game_state.switch(test_network)
     --game_state.switch(test_place)
-    game_state.switch(login)
+    --game_state.switch(login)
 end

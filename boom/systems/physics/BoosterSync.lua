@@ -35,7 +35,7 @@ function BoosterSync:update(dt)
                 --local cx, cy = camera:position()
                 local meter = love.physics.getMeter() * audio_distance_scale
                 --print(dist, 50 * love.physics.getMeter())
-                booster.boost_sound:setPosition( (cax - cx)/meter, (cay - cy)/meter, 0 )
+                booster.boost_sound:setPosition( (cx - cax)/meter, (cy - cay)/meter, 0 )
                 booster.boost_sound:play()
             end
         else

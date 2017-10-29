@@ -1,7 +1,7 @@
 local Vector = require "libs.hump.vector"
 local Tire = Component.create("Tire")
 
-function Tire:initialize(world, x, y)
+function Tire:initialize(world, x, y, r, g, b)
     local m = love.physics.getMeter()
     self.world = world
     self.body = love.physics.newBody(world, x, y, "dynamic")
@@ -23,6 +23,9 @@ function Tire:initialize(world, x, y)
     -- for impulse
     self.max_drive_impulse_constant = 10
     self.torque_impulse_constant = 22
+
+    -- for color
+    self.r, self.g, self.b = r or 67, g or 168, b or 45
 end
 
 function Tire:getLateralVelocity()

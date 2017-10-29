@@ -38,7 +38,7 @@ function ExplosiveSync:update(dt)
                 local meter = love.physics.getMeter()*audio_distance_scale
                 local dist = math.sqrt(math.pow(x1-cx, 2) + math.pow(y1-cy, 2))
                 --print(dist, 50 * love.physics.getMeter())
-                exp.exploded_sound:setPosition( (cx - x1)/meter, (cy - y1)/meter, 0 )
+                exp.exploded_sound:setPosition( (x1 - cx)/meter, (y1 - cy)/meter, 0 )
                 --exp.exploded_sound:setAttenuationDistances( dist, 50 * love.physics.getMeter() )
                 exp.exploded_sound:play()
                 exp.exploded_callback(entity)
